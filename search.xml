@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>笔记：JavaSE语言基础——基础语法</title>
+    <url>/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%AC%94%E8%AE%B0%EF%BC%9AJavaSE%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<p>本篇章以Core Java为基础，记录自己学习java以及这本书时候的笔记，供自己后续翻阅回顾用。</p>
+<p>分为基础语法，面向对象，接口，容器，异常，泛型，反射，注解和I/O等篇章。</p>
+<p>本小节为语言基础的基础语法篇，主要记录了数据类型，字符串，数组，控制流程等方面的笔记。</p>
+<a id="more"></a>
+
+<hr>
+<h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><p>&emsp;&emsp;在java中一共有8种基本数据类型，分别为：byte、short，int，long（4种整型）；float，double（2种浮点型）；char（1种字符类型）；boolean（1种布尔型）。</p>
+<h4 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h4><h4 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h4><h4 id="char类型"><a href="#char类型" class="headerlink" title="char类型"></a>char类型</h4><h4 id="boolean类型"><a href="#boolean类型" class="headerlink" title="boolean类型"></a>boolean类型</h4><hr>
+<h3 id="变量与常量"><a href="#变量与常量" class="headerlink" title="变量与常量"></a>变量与常量</h3><hr>
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><h4 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h4><h4 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h4><h4 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h4><h4 id="数据类型转换"><a href="#数据类型转换" class="headerlink" title="数据类型转换"></a>数据类型转换</h4><hr>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><hr>
+<h3 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h3><hr>
+<h3 id="控制流程"><a href="#控制流程" class="headerlink" title="控制流程"></a>控制流程</h3><h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>&emsp;&emsp;if条件语句为当条件为true的时执行代码块的语句。</p>
+<p>&emsp;&emsp;<code>if</code>条件语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;<code>if else</code>条件语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement1</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    statement2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用<code>else if</code>的条件语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement1</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement2</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    statement3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="不循环语句"><a href="#不循环语句" class="headerlink" title="不循环语句"></a>不循环语句</h4><p>&emsp;&emsp;while循环语句为当条件为true时循环执行代码块，直至条件为false.因为while循环在最前面检测循环语句，因此循环体中的代码可能一次都不执行。</p>
+<p>&emsp;&emsp;<code>while</code>循环语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (condition)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;do while循环将检测放在最后，因此循环体中的代码至少会执行一次。</p>
+<p>&emsp;&emsp;<code>do while</code>循环语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;<span class="keyword">while</span> (condition);</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※有时会看到do{statement}while(0);这种语句，代码永远只执行一次，但可以让代码更为直观和整洁</p>
+<h4 id="确定循环语句"><a href="#确定循环语句" class="headerlink" title="确定循环语句"></a>确定循环语句</h4><p>&emsp;&emsp;for循环是支持迭代的一种循环，由一个计数器控制迭代次数，每次迭代后计数器会更新。for循环的第一部分通常为计数器的初始化，第二部分为每次新一轮循环执行前要检测的循环条件，第三部分为制定如何更新计数器。</p>
+<p>&emsp;&emsp;<code>for</code>循环语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(expression1;expression2;expression3)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※在循环中，检测两个浮点是否相等要格外小心，由于舍入误差的原因，可能永远达不到精度的最终值。</p>
+<p>&emsp;&emsp;for循环的第一部分声明了一个变量之后，这个变量的作用于就扩展到这个for循环体的末尾，这个变量不能再循环体之外使用。另一方面，可以在不同的for循环中定义同名的变量。</p>
+<p>&emsp;&emsp;※还有个循环结构为泛型for循环，又称<code>for each</code>，一般使用于数组上。</p>
+<h4 id="多重选择语句"><a href="#多重选择语句" class="headerlink" title="多重选择语句"></a>多重选择语句</h4><p>&emsp;&emsp;switch语句将从与选项值匹配的case标签开始执行，直到遇到break语句，或者执行到switch语句的结束为止。如果没有相匹配的case标签，而有default子句，就执行这一条子句。</p>
+<p>&emsp;&emsp;<code>switch</code>选择语句</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">switch</span>(controllingExpression)&#123;</span><br><span class="line">    <span class="keyword">case</span> constantExpression1:</span><br><span class="line">        statement1</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> constantExpression2:</span><br><span class="line">        statement2</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> constantExpression3:</span><br><span class="line">        statement3</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        statement</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※需要注意的是，如果在case分支语句的末尾没有break语句的话，那么就会接着执行下一个case分支语句</p>
+<p>&emsp;&emsp;case标签可以是：类型char，byte，short或int的常量表达式。</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;枚举常量。（不必再每个标签中指明枚举名）</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;字符串字面量。（Java7开始）</p>
+<h4 id="终端流程语句"><a href="#终端流程语句" class="headerlink" title="终端流程语句"></a>终端流程语句</h4><p>&emsp;&emsp;Java的设计者保留了goto作为保留字，但实际上并没有打算在语言中使用它。相对的，Java语言中增加了一条新的语句：带标签的break，用于跳出多重嵌套的循环语句（通常的break语句只跳出一层）。标签必须放在希望跳出的最外循环之前，并且必须紧跟一个冒号。需要注意的是，break只能跳出语句块，而不能跳入语句块。</p>
+<p>&emsp;&emsp;<code>break</code>语句（带标签的）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">label:</span><br><span class="line"><span class="keyword">while</span>(...)&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">for</span>(...)&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">if</span>(...)&#123;</span><br><span class="line">            <span class="keyword">break</span> label;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;还有一个continue语句，与break一样，它将中断正常的控制流程。continue语句将控制转移到最内层的循环首部。同样的，continue语句也有一种带标签的，将跳转与标签匹配的循环首部<br>&emsp;&emsp;<code>continue</code>语句（不带标签的）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (...)&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (...)&#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※break和continue语句完全是可选的，也就是说不适用它们也可以表达相同的逻辑含义</p>
+<hr>
+<h3 id="大数"><a href="#大数" class="headerlink" title="大数"></a>大数</h3><p>&emsp;&emsp;当基本数据类型的整型和浮点型精度已经无法满足要求（如无法接受舍入误差的金融计算），就可以使用java.math里面的BigInteger和BigDecimal这两个类。</p>
+<h4 id="大数的声明与初始化"><a href="#大数的声明与初始化" class="headerlink" title="大数的声明与初始化"></a>大数的声明与初始化</h4><p>&emsp;&emsp;可以使用<code>valueOf</code>方法将普通的数值转换为大数，例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BigInteger bigNum = BigInteger.valueOf(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;也可以使用大数类的带字符串参数的构造方法<code>new</code>一个对象，例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BigInteger bigNum = <span class="keyword">new</span> BigInteger(<span class="string">"12345678987654321"</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="大数的运算"><a href="#大数的运算" class="headerlink" title="大数的运算"></a>大数的运算</h4><p>&emsp;&emsp;大数无法使用算数运算符，而且Java没有提供运算符重载功能，无法对算数运算符进行重定义，所以需要调用大数类中的方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">BigInteger <span class="title">add</span><span class="params">(BigInteger other)</span></span>;  <span class="comment">//和，other为加数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">subtract</span><span class="params">(BigInteger other)</span></span>;    <span class="comment">//差，other为减数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">multiply</span><span class="params">(BigInteger other)</span></span>;    <span class="comment">//积，other为乘数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">divide</span><span class="params">(BigInteger other)</span></span>;  <span class="comment">//商，other为除数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">mod</span><span class="params">(BigInteger other)</span></span>;   <span class="comment">//余数，other为取余数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">sqrt</span><span class="params">()</span></span>;  <span class="comment">//取平方根</span></span><br><span class="line"><span class="function">BigInteger <span class="title">compareTO</span><span class="params">(BigInteger other)</span></span>; <span class="comment">//比较大小，等于返回0，小于other返回负数，大于other返回正数</span></span><br><span class="line"><span class="function">BigDecimal <span class="title">divide</span><span class="params">(BidDecimal other,RoundingMode model)</span></span>; <span class="comment">//BigDecimal类除了普通的求商，还能再加一个参数，这个参数取RoundingMode.HALF_UP就是我们熟知的四舍五入方式</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><hr>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>《Core Java Volume I-Fundamentals》第三章</p>
+]]></content>
+      <categories>
+        <category>编程笔记</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Core Java</tag>
+      </tags>
+  </entry>
+</search>
