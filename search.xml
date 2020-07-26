@@ -332,7 +332,7 @@
 <p>&emsp;&emsp;<code>switch</code>选择语句</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">switch</span>(controllingExpression)&#123;</span><br><span class="line">    <span class="keyword">case</span> constantExpression1:</span><br><span class="line">        statement1</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> constantExpression2:</span><br><span class="line">        statement2</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> constantExpression3:</span><br><span class="line">        statement3</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        statement</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;※需要注意的是，如果在case分支语句的末尾没有break语句的话，那么就会接着执行下一个case分支语句</p>
+<p>&emsp;&emsp;※需要注意的是，如果在case分支语句的末尾没有break语句的话，那么就会接着执行下一个case分支语句（case穿透现象）</p>
 <p>&emsp;&emsp;case标签可以是：类型char，byte，short或int的常量表达式。</p>
 <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;枚举常量。（不必再每个标签中指明枚举名）</p>
 <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;字符串字面量。（Java7开始）</p>
@@ -383,7 +383,7 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> element : a)&#123;</span><br><span class="line">    System.out.println(element);    <span class="comment">//打印的元素每个占一行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;for each循环将会遍历数组中的每一个元素，如果不希望遍历每个元素还是只能使用传统的for循环。for each和for不同的是，for each遍历的是数组的元素，for循环判断的是下标。</p>
 <p>&emsp;&emsp;※可以使用Arrays类，调用toString()方法来打印数组的每一个元素。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(Arrays.tiString(a));</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(Arrays.toString(a));</span><br></pre></td></tr></table></figure>
 
 <h4 id="数组与命令行"><a href="#数组与命令行" class="headerlink" title="数组与命令行"></a>数组与命令行</h4><p>&emsp;&emsp;在写main方法的时候的数组：<code>public static void main(String arg[])</code>。在控制台使用java命令运行java程序的时候，java名后面输入的内容就被存放到arg[]这个数组里。例如：</p>
 <figure class="highlight dos"><table><tr><td class="code"><pre><span class="line">java Message -g world</span><br></pre></td></tr></table></figure>
