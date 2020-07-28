@@ -1,6 +1,291 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>笔记：JavaSE语言基础——基础语法</title>
+    <url>/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%AC%94%E8%AE%B0%EF%BC%9AJavaSE%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<p>本篇章以Core Java为基础，记录自己学习Java以及这本书时候的笔记，供自己后续翻阅回顾用。</p>
+<p>分为基础语法，面向对象，接口，容器，异常，泛型，反射，注解和I/O等篇章。</p>
+<p>本小节为语言基础的基础语法篇，主要记录了数据类型，字符串，数组，控制流程等方面的笔记。</p>
+<a id="more"></a>
+
+<hr>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>&emsp;&emsp;在Java中，/**/不能嵌套。也就是说不能简单得把代码括起来作为注释，代码块里面可能也含有多行注释。</p>
+<h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><p>&emsp;&emsp;在Java中一共有8种基本数据类型，分别为：byte、short，int，long（4种整型）；float，double（2种浮点型）；char（1种字符类型）；boolean（1种布尔型）。</p>
+<h4 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h4><p>&emsp;&emsp;int类型：4字节；short类型：2字节；long类型：8字节；byte类型：1字节。</p>
+<p>&emsp;&emsp;长整型数值有一个后缀L或l（推荐使用大写的L）；十六进制数值有一个前缀0x或者0X；八进制数值有一个前缀0（因为表示方法容易混淆，所以不建议使用八进制常数）；二进制数值有有一个前缀0b或0B。另外从Java7开始可以为数字字面量加下划线，更加易读（如1_000_000)表示100万，编译器会自动忽略掉下划线。</p>
+<p>※在Java中没有任何无符号（unsigned）形式的int，long，short或byte类型。（C语言有）</p>
+<h4 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h4><p>&emsp;&emsp;float类型：4字节；double类型：8字节。</p>
+<p>&emsp;&emsp;float类型有一个后缀F或f，没有后缀的浮点型都默认为double类型。</p>
+<p>&emsp;&emsp;浮点型还有三个特殊的浮点数值：正无穷大（<code>DOuble.POSITIVE_INFINITY</code>）；负无穷大（<code>Double.NEGATIVE_INFINITY</code>）；不是一个数字（<code>Double.NaN</code>），计算0/0的时候结果会是NaN。（因为所有“非数值”的值都认为是不相同的，所有不能用<code>x == Double.NaN</code>来判断x是不是一个数字，应该使用<code>Double.isNaN(x)</code>来判断x是不是一个数字）</p>
+<p><strong>※浮点型不适用与无法接受舍入误差的金融计算。</strong>&emsp;打印2.0-1.1时，将打印出0.8999999而不是0.9.如果不允许这种误差，就应该使用大数BigDecimal类。</p>
+<h4 id="char类型"><a href="#char类型" class="headerlink" title="char类型"></a>char类型</h4><p>&emsp;&emsp;char类型原本用于表示单个字符。但如今有些Unicode字符可以用一个char值描述，另外一些Unicode字符需要用两个char值描述。在Java中char类型描述了UTF-16编码中的一个代码单元。</p>
+<p>&emsp;&emsp;char类型的字面量值要用单引号括起来。（’A’与”A”不同，前者是字符类型，后者是字符串类型）char类型的值可以表示为十六进制，范围为\u0000到\uFFFF。</p>
+<p>&emsp;&emsp;常见的转义字符：\b表示退格，\t表示制表符，\n表示换行，\r表示回车，&#39;表示单引号，&quot;表示双引号，\表示反斜杠</p>
+<p><strong>强烈建议不要在程序中使用char类型，除非确实需要处理UTF-16代码单元。最好将字符串作为抽象数据类型处理（建议使用String）。</strong></p>
+<h4 id="boolean类型"><a href="#boolean类型" class="headerlink" title="boolean类型"></a>boolean类型</h4><p>&emsp;&emsp;boolean类型只有两个值：true和false，用来判断逻辑条件。<strong>整型和布尔类型之间不能相互转换！</strong>（在C++中值0相当于false，值1相当于true，但在Java中不是这样的）</p>
+<hr>
+<h3 id="变量与常量"><a href="#变量与常量" class="headerlink" title="变量与常量"></a>变量与常量</h3><h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><p>&emsp;&emsp;声明变量：先指定一个变量类型，然后是变量名。例如:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> number;</span><br></pre></td></tr></table></figure>
+
+<p>变量名中所有的字符都是有意义的，并且大小写敏感。变量名的长度基本上没有限制。（一般采用小驼峰命名，即第一个单词首字母小写，后面每个单词首字母都大写）</p>
+<p><strong>※虽然$是一个合法的Java字符，但不要再自己的代码中使用这个字符，它只用在Java编译器或其他工具生成的名字中。</strong></p>
+<p>&emsp;&emsp;</p>
+<p>&emsp;&emsp;变量的初始化：声明变量之后，必须用赋值语句对变量进行显式初始化。例如:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> number;</span><br><span class="line">number = <span class="number">10</span>；</span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line"><span class="keyword">int</span> personNum = <span class="number">20</span>；</span><br></pre></td></tr></table></figure>
+
+<p>在Java中，变量的声明尽可能靠近变量第一次使用的地方，这是一个良好的编程风格。</p>
+<p>※<font color="#FF0000"><strong>在Java10开始</strong></font>对于局部变量，如果可以从变量的初始值推断出它的类型的话，就不需要声明类型，只需要使用关键字<code>var</code>而无需指定类型。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> greeting = <span class="string">"Hello"</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><p>&emsp;&emsp;关键字final表示这个变量只能被赋值一次。一旦被赋值之后，就不能再更改了。习惯上，常量名使用全大写。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">double</span> CM_PER_INCH = <span class="number">2.54</span>;</span><br></pre></td></tr></table></figure>
+
+<p>可以使用关键字static final设置一个类常量。类常量的定义位于main方法的外部，因此同一个类的其他方法中也可以用这个常量。如果这个常量被声明为public，那么其他类的方法也可以使用这个常量。</p>
+<h4 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h4><p>&emsp;&emsp;枚举类型使用在变量的取值只在一个有限的集合内。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> Size &#123;SMALL, MEDIUM, LAGER, EXTRA_LAGER &#125;;</span><br><span class="line"><span class="comment">//现在可以这定义变量</span></span><br><span class="line">Size s = Size.MEDIUM;</span><br></pre></td></tr></table></figure>
+
+<p>这个类型的变量只能存储这个类型声明中给定的某个枚举值，或者特殊值null，null表示这个变量没有设置任何值。</p>
+<hr>
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><h4 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h4><p>&emsp;&emsp;在Java中，算数运算符有+，-，*，/，%（加，减，乘，除，求余）。两个整型使用除的时候，结果将会是整型；否则，结果是浮点型。</p>
+<p><strong>※整型被0除将会产生一个异常，而浮点型被0除将会得到无穷大或NaN结果。</strong></p>
+<p>&emsp;&emsp;</p>
+<p>&emsp;&emsp;数学函数：在Java中，有Math类，里面包含了各种各样的数学函数。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Math.sqrt();    <span class="comment">//求平方根</span></span><br><span class="line">Math.pow();     <span class="comment">//幂运算</span></span><br><span class="line">Math.floorMod();<span class="comment">//求余</span></span><br><span class="line">Math.sin();     <span class="comment">//三角函数</span></span><br><span class="line">Math.log();     <span class="comment">//对数</span></span><br><span class="line">Math.PI;        <span class="comment">//π</span></span><br><span class="line">Math.random();  <span class="comment">//返回一个0到1（包括0不包括1）的随机浮点数</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;floorMod()方法求余的目的是解决负数对正数取余的问题。使用%进行负数对正数取余时（-3 % 2），结果会是负数，但结果应该为正数。所以引进了floorMod()方法。使用floorMod()方法的话，负数对正数取余会得到正数。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">floodMod(number,<span class="number">12</span>);    <span class="comment">//结果总是会得到一个0～11的数字</span></span><br></pre></td></tr></table></figure>
+
+<p>但遗憾的是，正数（负数）对负数取余得到的还是负数（但实际中很少）。</p>
+<p>&emsp;&emsp;Math类中的这些数学函数，都是静态方法（使用static关键字修饰的），所以使用“类名.”的方式访问，当使用<code>import static java.lang.Math.*;</code>（导包）操作后就不必在方法名前加Math.了。</p>
+<p>&emsp;&emsp;Math类提供了一些方法使运算更加安全。如果一个计算溢出，算数运算符只会把返回结果而不会做任何提示，但如果使用Math中的方法，就会产生一个异常。程序员可以捕捉这个异常或让程序终止，而不是返回一个错误的结果。</p>
+<h4 id="数据类型转换"><a href="#数据类型转换" class="headerlink" title="数据类型转换"></a>数据类型转换</h4><p>&emsp;&emsp;自动类型转换：当用一个二元运算符连接两个值时，先要将两个操作数转化为同一种类型，然后进行计算。</p>
+<p>&emsp;&emsp;<strong>如果两个操作数中有一个是double类型，另一个操作数就会被转换为double类型。</strong></p>
+<p>&emsp;&emsp;<strong>否则，如果两个操作数中有一个是float类型，另一个操作数就会被转换为float类型。</strong></p>
+<p>&emsp;&emsp;<strong>否则，如果两个操作数中有一个是long类型，另一个操作数就会被转换为long类型。</strong></p>
+<p>&emsp;&emsp;<strong>否则，两个操作数都被转换为int类型。</strong></p>
+<p>&emsp;&emsp;强制类型转换：诸如double转int时（和上面四条反着来就要强转）要使用强制类型转换，当然可能存在丢失一些信息。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> x = <span class="number">9.99</span>;</span><br><span class="line"><span class="keyword">int</span> nx = (<span class="keyword">int</span>) x;   <span class="comment">//nx的值为9</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;如果想对浮点数进行舍入运算，以便得到最接近的整数，那就可以使用Math.round()方法。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> x = <span class="number">9.99</span></span><br><span class="line"><span class="keyword">int</span> nx = (<span class="keyword">int</span>)Math.round(x);    <span class="comment">//现在nx的值为10</span></span><br></pre></td></tr></table></figure>
+
+<p>使用Math.round()方法任然需要使用(int)强制类型转换的原因是这个方法返回的是long类型。</p>
+<p>※信息丢失和数据溢出：当整型类转换成float型时，会得到正确的大小，但会损失一些精度。但把100强转给byte时，得到的数字是44,（byte数据溢出）</p>
+<h4 id="自加和自减"><a href="#自加和自减" class="headerlink" title="自加和自减"></a>自加和自减</h4><p>&emsp;&emsp;前缀++n为先完成+1操作，再进行后续操作；后缀n++会先用原来的值进行操作，操作完再进行+1操作。</p>
+<p>※建议不要再表达式中使用++，会造成困惑</p>
+<h4 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h4><p>&emsp;&emsp;关系运算符：检测相等用==；检测不等用!=；另外还有&lt;（小于）;&gt;（大于）;&lt;=（小于等于）;&gt;=（大于等于）运算符。</p>
+<p>&emsp;&emsp;逻辑运算符：&amp;&amp;表示与，||表示或，!表示非。&amp;&amp;和||是按照短路方式来求值的，也就是说，一侧能确定了另一侧就不用计算了。</p>
+<p>&emsp;&emsp;三目运算符：?:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">condition ? expression1 : expression2</span><br></pre></td></tr></table></figure>
+
+<p>如果条件为true，则执行表达式1，否则执行表达式2</p>
+<h4 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h4><p>&emsp;&emsp;为操作对二进制的位进行操作：&amp;（按位与）；|（按位或）；^（异或）；~（取反）；&gt;&gt;（左移）；&lt;&lt;（右移）；&gt;&gt;&gt;（高位用0填充）。<strong>不存在&lt;&lt;&lt;运算符。</strong></p>
+<h4 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h4><p>&emsp;&emsp;如果不使用圆括号，就按照给出的运算符优先级次序进行计算。同一级别的运算符按照从左到右的次序进行计算（右结合运算符除外）。</p>
+<hr>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>&emsp;&emsp;在Java中，String不是基本数据类型而是引用数据类型，是Java的一个预定义类。另外再C++中String类是一个字符数组，可以用指针访问每一个字符，而在Java中并不是数组。</p>
+<h4 id="子串"><a href="#子串" class="headerlink" title="子串"></a>子串</h4><p>&emsp;&emsp;String类中substring()方法可以从字符串中提取出一个子串。substring()方法第一个参数为子串的起始位置，第二个参数为子串的结束位置。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String greeting  = <span class="string">"Hello"</span>;</span><br><span class="line">String s = greeting.substring(<span class="number">0</span>, <span class="number">3</span>);    <span class="comment">//这是创建了有Hel组成的字符串</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="拼接"><a href="#拼接" class="headerlink" title="拼接"></a>拼接</h4><p>&emsp;&emsp;在Java中允许使用+来拼接两个字符串。当一个字符串与非字符串的值进行拼接时，后者会被转换成字符串。（任何一个对象都有toString()方法，所以都能被转换成字符串）例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String expletive = <span class="string">"Expletive"</span>;</span><br><span class="line">String PG13 = <span class="string">"deleted"</span>;</span><br><span class="line"><span class="keyword">int</span> age = <span class="number">13</span>;</span><br><span class="line">System.out.println(expletive + PG13 + age);</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;<font color="#FF0000"><strong>在Java11中，</strong></font>还提供了repeat方法。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String java = <span class="string">"Java"</span>;</span><br><span class="line">String repeated = java.repeat(<span class="number">3</span>);   <span class="comment">//repeated为"JavaJavaJava"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="不可变字符串"><a href="#不可变字符串" class="headerlink" title="不可变字符串"></a>不可变字符串</h4><p>&emsp;&emsp;在Java中，String类对象被称为是不可变的。只能通过用子串和拼接来完成对字符串的修改。但其实大多数情况下都不会去修改字符串，而只是要对字符串进行比较。</p>
+<h4 id="检测字符串是否相等"><a href="#检测字符串是否相等" class="headerlink" title="检测字符串是否相等"></a>检测字符串是否相等</h4><p>&emsp;&emsp;可以通过equals()方法检测两个字符串是否相等。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">s.equals(t);</span><br></pre></td></tr></table></figure>
+
+<p>如果字符串s与字符串t相等，返回true，否则返回false。其中，s和t可以是字符串变量也可以是字符串字面量。</p>
+<p>&emsp;&emsp;可以通过equalsIgnoreCase()方法检测两个字符串是否相等而不区分大小写。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="string">"Hello"</span>.equalsIgnoreCase(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;千万不要使用==来检测两个字符串是否相等，这个运算符只能够确定两个字符串是否存放在同一个位置（也就是说检测内存地址是否相同）。当然存在同一个内存地址的字符串必然是相等的。</p>
+<p>&emsp;&emsp;String类有个compareTO()的方法，比较字符串的ASCII码的差值，返回第一个不同字符的ASCII的差值。如果返回的值为0，那么两个字符串相等。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (greeting.compareTo(<span class="string">"Hello"</span>) == <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="空串和null"><a href="#空串和null" class="headerlink" title="空串和null"></a>空串和null</h4><p>&emsp;&emsp;空串””是长度为0的字符串，空串还是字符串，所以用equals或者length检测是否是空串。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (str.length() == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (str.equals(<span class="string">""</span>))</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;null表示没有任何对象与该变量关联。因为null是空地址，所以检测一个字符串是否是null用==。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (str == <span class="keyword">null</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="构建字符串"><a href="#构建字符串" class="headerlink" title="构建字符串"></a>构建字符串</h4><p>&emsp;&emsp;有些时候，需要由较短的字符串构建字符串。对String对象，既耗时，又浪费空间。使用StringBuilder类就能避免这个问题,只要调用append()方法就能拼接字符串。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">StringBuilder builder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">builder.append(ch);</span><br><span class="line">builder.append(str);</span><br><span class="line">String completedString = builder.toString();    <span class="comment">//这是里面存的就是chstr</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h3><h4 id="读取输入"><a href="#读取输入" class="headerlink" title="读取输入"></a>读取输入</h4><p>&emsp;&emsp;想要通过控制台进行输入，首先需要构造一个与“标准输入流”System.in关联的Scanner对象。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br></pre></td></tr></table></figure>
+
+<p>现在可以用各种方法读取输入了。nextLine()方法读取一行输入；next()方法读取一个单词（以空白符作为分隔符）；nextInt()方法读取一个整型等等。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line"></span><br><span class="line">String name = in.nextLine();    <span class="comment">//读取一整行</span></span><br><span class="line">String word = in.next();        <span class="comment">//读取一个单词</span></span><br><span class="line">String age = in.nextInt();      <span class="comment">//读取一个整型</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;由于输入是课件的，所以Scanner不适合于控制台读取密码。所以就引入了Console类来实现这个目的。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Console cons = System.console();</span><br><span class="line">String username = cons.readLine(<span class="string">"User name: "</span>);</span><br><span class="line"><span class="keyword">char</span>[] passwd = cons.readPassword(<span class="string">"Password: "</span>);</span><br></pre></td></tr></table></figure>
+
+<p>为安全起见，返回的密码存放在一个字符串数组中，而不是字符串中。在对密码处理完成后，应该马上用一个填充覆盖数组元素。Console类每次读取一行输入，没有能够读取单词或数值的方法。</p>
+<h4 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h4><p>&emsp;&emsp;标准输出流只要调用System.out.println()方法即可。不过Java沿用了C语言中的printf()方法。所以能够进行格式化的输出。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.printf(<span class="string">"Hello, %s."</span>, name);</span><br></pre></td></tr></table></figure>
+
+<p>%为格式说明符，s为字符串类型，name为对应的替代参数。</p>
+<p>&emsp;&emsp;常用的printf转换符：d（十进制整数）；x（十六进制整数）；o（八进制整数）；f（定点浮点数）；a（十六进制浮点数）；s（字符串）；c（字符）；b（布尔）。</p>
+<p>&emsp;&emsp;另外，还可以指定控制格式化输出外观的各种标志。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.printf(<span class="string">"%,.2f"</span>, <span class="number">10000.0</span> / <span class="number">3.0</span>);      <span class="comment">//会输出3333.33</span></span><br></pre></td></tr></table></figure>
+
+<p>控制了输出为float，保留两位小数。</p>
+<p>&emsp;&emsp;可以使用String.format()方法创建一个格式化的字符串而不打印输出。</p>
+<h4 id="文件的输入和输出"><a href="#文件的输入和输出" class="headerlink" title="文件的输入和输出"></a>文件的输入和输出</h4><p>&emsp;&emsp;想要读取一个文件，需要构造一个Scanner对象。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner in = <span class="keyword">new</span> Scanner(Path.of(myfile.txt), StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
+
+<p>其中StandardCharsets.UTF_8为文件的字符编码（读取一个文本文件时，需要知道它的字符编码）</p>
+<p>&emsp;&emsp;如果文件名包含反斜杠符号，那么每个反斜杠之前都要再加一个额外的反斜杠（转义字符）。例如：”C:\mydir\myfile.txt”。</p>
+<p>&emsp;&emsp;</p>
+<p>&emsp;&emsp;想要写入一个文件，需要构建一个PrintWriter对象。同样的要提供字符编码。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">PrintWriter out = <span class="keyword">new</span> PrintWriter(<span class="string">"myfile.txt"</span>, StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
+
+<p>可以像输出到System.out一样使用print，printf以及println。</p>
+<p>&emsp;&emsp;</p>
+<p>&emsp;&emsp;指定一个相对文件的时候，不同的集成开发环境，启动目录不同。IDEA为project根目录下，当然可以考虑使用绝对路径名来指定文件</p>
+<p>※需要记住一点，如果用一个不存在的文件构造一个Scanner（读取一个不存在的文件），或者用一个无法创建的文件名构造一个PrintWriter（写入一个重名或有非法字符的文件）时，就会产生异常</p>
+<hr>
+<h3 id="控制流程"><a href="#控制流程" class="headerlink" title="控制流程"></a>控制流程</h3><h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>&emsp;&emsp;if条件语句为当条件为true的时执行代码块的语句。</p>
+<p>&emsp;&emsp;<code>if</code>条件语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;<code>if else</code>条件语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement1</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    statement2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用<code>else if</code>的条件语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement1</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement2</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    statement3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="不循环语句"><a href="#不循环语句" class="headerlink" title="不循环语句"></a>不循环语句</h4><p>&emsp;&emsp;while循环语句为当条件为true时循环执行代码块，直至条件为false.因为while循环在最前面检测循环语句，因此循环体中的代码可能一次都不执行。</p>
+<p>&emsp;&emsp;<code>while</code>循环语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (condition)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;do while循环将检测放在最后，因此循环体中的代码至少会执行一次。</p>
+<p>&emsp;&emsp;<code>do while</code>循环语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;<span class="keyword">while</span> (condition);</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※有时会看到do{statement}while(false);这种语句，代码永远只执行一次，但可以让代码更为直观和整洁。</p>
+<h4 id="确定循环语句"><a href="#确定循环语句" class="headerlink" title="确定循环语句"></a>确定循环语句</h4><p>&emsp;&emsp;for循环是支持迭代的一种循环，由一个计数器控制迭代次数，每次迭代后计数器会更新。for循环的第一部分通常为计数器的初始化，第二部分为每次新一轮循环执行前要检测的循环条件，第三部分为制定如何更新计数器。</p>
+<p>&emsp;&emsp;<code>for</code>循环语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(expression1;expression2;expression3)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※在循环中，检测两个浮点是否相等要格外小心，由于舍入误差的原因，可能永远达不到精度的最终值。</p>
+<p>&emsp;&emsp;for循环的第一部分声明了一个变量之后，这个变量的作用于就扩展到这个for循环体的末尾，这个变量不能再循环体之外使用。另一方面，可以在不同的for循环中定义同名的变量。</p>
+<p>&emsp;&emsp;</p>
+<p>&emsp;&emsp;※还有个循环结构为泛型for循环，又称<code>for each</code>，一般使用于数组上。</p>
+<h4 id="多重选择语句"><a href="#多重选择语句" class="headerlink" title="多重选择语句"></a>多重选择语句</h4><p>&emsp;&emsp;switch语句将从与选项值匹配的case标签开始执行，直到遇到break语句，或者执行到switch语句的结束为止。如果没有相匹配的case标签，而有default子句，就执行这一条子句。</p>
+<p>&emsp;&emsp;<code>switch</code>选择语句</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">switch</span>(controllingExpression)&#123;</span><br><span class="line">    <span class="keyword">case</span> constantExpression1:</span><br><span class="line">        statement1</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> constantExpression2:</span><br><span class="line">        statement2</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> constantExpression3:</span><br><span class="line">        statement3</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        statement</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※需要注意的是，如果在case分支语句的末尾没有break语句的话，那么就会接着执行下一个case分支语句（case穿透现象）</p>
+<p>&emsp;&emsp;case标签可以是：类型char，byte，short或int的常量表达式。</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;枚举常量。（不必再每个标签中指明枚举名）</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;字符串字面量。（Java7开始）</p>
+<h4 id="终端流程语句"><a href="#终端流程语句" class="headerlink" title="终端流程语句"></a>终端流程语句</h4><p>&emsp;&emsp;Java的设计者保留了goto作为保留字，但实际上并没有打算在语言中使用它。相对的，Java语言中增加了一条新的语句：带标签的break，用于跳出多重嵌套的循环语句（通常的break语句只跳出一层）。标签必须放在希望跳出的最外循环之前，并且必须紧跟一个冒号。需要注意的是，break只能跳出语句块，而不能跳入语句块。</p>
+<p>&emsp;&emsp;<code>break</code>语句（带标签的）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">label:</span><br><span class="line"><span class="keyword">while</span>(...)&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">for</span>(...)&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">if</span>(...)&#123;</span><br><span class="line">            <span class="keyword">break</span> label;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;continue语句，与break一样，它将中断正常的控制流程。continue语句将控制转移到最内层的循环首部。同样的，continue语句也有一种带标签的，将跳转与标签匹配的循环首部<br>&emsp;&emsp;<code>continue</code>语句（不带标签的）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (...)&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (...)&#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※break和continue语句完全是可选的，也就是说不适用它们也可以表达相同的逻辑含义</p>
+<hr>
+<h3 id="大数"><a href="#大数" class="headerlink" title="大数"></a>大数</h3><p>&emsp;&emsp;当基本数据类型的整型和浮点型精度已经无法满足要求（如无法接受舍入误差的金融计算），就可以使用Java.math里面的BigInteger和BigDecimal这两个类。</p>
+<h4 id="大数的声明与初始化"><a href="#大数的声明与初始化" class="headerlink" title="大数的声明与初始化"></a>大数的声明与初始化</h4><p>&emsp;&emsp;可以使用<code>valueOf</code>方法将普通的数值转换为大数，例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BigInteger bigNum = BigInteger.valueOf(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用大数类的带字符串参数的构造方法<code>new</code>一个对象，例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BigInteger bigNum = <span class="keyword">new</span> BigInteger(<span class="string">"12345678987654321"</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="大数的运算"><a href="#大数的运算" class="headerlink" title="大数的运算"></a>大数的运算</h4><p>&emsp;&emsp;大数无法使用算数运算符，而且Java没有提供运算符重载功能，无法对算数运算符进行重定义，所以需要调用大数类中的方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">BigInteger <span class="title">add</span><span class="params">(BigInteger other)</span></span>;  <span class="comment">//和，other为加数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">subtract</span><span class="params">(BigInteger other)</span></span>;    <span class="comment">//差，other为减数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">multiply</span><span class="params">(BigInteger other)</span></span>;    <span class="comment">//积，other为乘数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">divide</span><span class="params">(BigInteger other)</span></span>;  <span class="comment">//商，other为除数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">mod</span><span class="params">(BigInteger other)</span></span>;   <span class="comment">//余数，other为取余数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">sqrt</span><span class="params">()</span></span>;  <span class="comment">//取平方根</span></span><br><span class="line"><span class="function">BigInteger <span class="title">compareTO</span><span class="params">(BigInteger other)</span></span>; <span class="comment">//比较大小，等于返回0，小于other返回负数，大于other返回正数</span></span><br><span class="line"><span class="function">BigDecimal <span class="title">divide</span><span class="params">(BidDecimal other,RoundingMode model)</span></span>; <span class="comment">//BigDecimal类除了普通的求商，还能再加一个参数，这个参数取RoundingMode.HALF_UP就是我们熟知的四舍五入方式</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>&emsp;&emsp;数组是一种数据结构，用来存储同一类型的集合。通过一个整型下标来访问数组中的每个成员。</p>
+<p>&emsp;&emsp;<strong>但与C++不同的是，Java中的[]被预定义了会越界检查，而没有指针运算，所以不同通过数组+1的方式来访问下一个元素。</strong></p>
+<blockquote>
+<p><font color="#1E90FF"><strong>2020-07-26补充：使用数组的优缺点：</strong></font></p>
+<p>&emsp;&emsp;优点：检索某个下标的元素时效率高。因为数组的每个元素的内存地址在空间存储上是连续的；然后每个元素的类型相同，所占用空间大小也就一样。所以想要知道某个下标的元素的内存地址可以通过数学表达式计算出来，直接通过内存地址定位到那个元素。</p>
+<p>&emsp;&emsp;缺点：由于数组中的每个元素的内存地址是连续的，所以在数组上随机删除和增加元素的时候效率低，因为会涉及到后面元素向前或向后位移的操作。</p>
+</blockquote>
+<h4 id="声明数组"><a href="#声明数组" class="headerlink" title="声明数组"></a>声明数组</h4><p>&emsp;&emsp;在声明数组变量时，需要指定输出类型和数组变量的名字。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用new操作符初始化数组。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>];</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;在Java中提供了一种创建数组对象并同时提供初始值的简写形式。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = &#123;<span class="number">1</span> , <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法不需要new，也不需要指定长度。</p>
+<p>&emsp;&emsp;※一旦创建了数组，就不能再改变它的长度了。如果程序运行中要扩展数组的大小米酒应该使用另一个数据结构：数组列表。</p>
+<h4 id="访问数组元素"><a href="#访问数组元素" class="headerlink" title="访问数组元素"></a>访问数组元素</h4><p>&emsp;&emsp;数组元素的下标是从0开始。</p>
+<p>&emsp;&emsp;创建一个数组时，所有元素都被初始化为0；boolean数组被初始化false；对象数组被初始化null（表示这些元素还未存放对象）。</p>
+<p>&emsp;&emsp;<strong>如果访问的元素下标超过了元素个数，则会引发异常：array index out of bounds。</strong></p>
+<p>&emsp;&emsp;想要获得数组中元素的个数，可以使用array.length。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= a.length; i++)</span><br></pre></td></tr></table></figure>
+
+<h4 id="for-each循环"><a href="#for-each循环" class="headerlink" title="for each循环"></a>for each循环</h4><p>&emsp;&emsp;for each循环可以用来一次处理数组中的每一个元素。</p>
+<p>&emsp;&emsp;<code>for each</code>循环语句：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(variable : collection)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它定义一个变量用于暂存集合中的每一个元素，并执行对应的语句。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> element : a)&#123;</span><br><span class="line">    System.out.println(element);    <span class="comment">//打印的元素每个占一行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;for each循环将会遍历数组中的每一个元素，如果不希望遍历每个元素还是只能使用传统的for循环。for each和for不同的是，for each遍历的是数组的元素，for循环判断的是下标。</p>
+<p>&emsp;&emsp;※可以使用Arrays类，调用toString()方法来打印数组的每一个元素。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(Arrays.toString(a));</span><br></pre></td></tr></table></figure>
+
+<h4 id="数组与命令行"><a href="#数组与命令行" class="headerlink" title="数组与命令行"></a>数组与命令行</h4><p>&emsp;&emsp;在写main方法的时候的数组：<code>public static void main(String arg[])</code>。在控制台使用java命令运行java程序的时候，java名后面输入的内容就被存放到arg[]这个数组里。例如：</p>
+<figure class="highlight dos"><table><tr><td class="code"><pre><span class="line">java Message -g world</span><br></pre></td></tr></table></figure>
+
+<p>Message是类名，-g和world被存储在arg[0]和arg[1]中了。</p>
+<h4 id="数组拷贝"><a href="#数组拷贝" class="headerlink" title="数组拷贝"></a>数组拷贝</h4><p>&emsp;&emsp;使用赋值符=的话，两个变量将引用同一个数组（实际堆中只有一个数组）例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">int</span>[] b = a;</span><br><span class="line">b[<span class="number">1</span>] = <span class="number">4</span>;       <span class="comment">//现在数组a中的第二个元素也被修改为4了。</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用Arrays类中的copyOf()方法的话，为创建一个新数组（堆中有两个数组，但里面的字面量都是相同的）例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">int</span>[] b = Arrays.copyOf(a,a.length);</span><br></pre></td></tr></table></figure>
+
+<p>第二个参数是新数组的长度，如果比原数组数目少，则值拷贝前面的值；如果比原数组数目多，则额外的部分会被初始化0或者false。</p>
+<blockquote>
+<p><font color="#1E90FF"><strong>2020-07-26补充：System类中的数组拷贝：</strong></font></p>
+<p>&emsp;&emsp;使用System类中的arraycopy()方法进行拷贝（效果同Arrays类中的copyOf()），效率高。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.arraycopy(str, <span class="number">0</span>, dest, <span class="number">0</span>, str.length);</span><br></pre></td></tr></table></figure>
+
+<p>其中第一个参数为源数组，第二个参数为源数组起始下标，第三个参数为目标数组，第四个参数为目标数组起始下标，第五个参数为拷贝的长度。</p>
+</blockquote>
+<h4 id="数组排序"><a href="#数组排序" class="headerlink" title="数组排序"></a>数组排序</h4><p>&emsp;&emsp;使用Arrays类中的sort()方法可以对数值型的数组进行排序。这个方法使用了优化的快速排序算法。对大多数集合来说都是效率比较高的。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span> [<span class="number">100</span>];</span><br><span class="line">...</span><br><span class="line">Arrays.sort(a);</span><br></pre></td></tr></table></figure>
+
+<h4 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h4><p>&emsp;&emsp;二维数组，也称为矩阵。声明一个二维数组。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] a = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">20</span>][<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;创建二维数组对象并同时提供初始值的简写形式。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] a = &#123;</span><br><span class="line">    &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;,</span><br><span class="line">    &#123;<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;访问二维数组可以利用两个中括号访问各个元素</p>
+<p>&emsp;&emsp;for each循环不能自动处理二维数组中的每一个元素。想要访问二维数组中的所有元素，需要使用两个嵌套的循环。例如</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">double</span>[] row : a)&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">double</span> value : row)&#123;</span><br><span class="line">        System.out.println(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;想要快速打印一个二维数组的元素列表，可以使用Arrays类中的deepToString()方法。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>][<span class="number">4</span>];</span><br><span class="line">...</span><br><span class="line">System.out.println(Arrays.deepToString(a));</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出格式为：[[x,x,x,x],[x,x,x,x][x,x,x,x]]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="不规则数组"><a href="#不规则数组" class="headerlink" title="不规则数组"></a>不规则数组</h4><p>&emsp;&emsp;在Java中，只有一位数组，多维数组只是被解释为数组的数组，所有可以构造一个不规则二维数组，即数组的每一行数组都有着不同的长度。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] odds = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; <span class="number">9</span>; n++)&#123;</span><br><span class="line">    odds[n] = <span class="keyword">new</span> <span class="keyword">int</span>[n + <span class="number">1</span>];   <span class="comment">//第一个数组有1个元素，第二个数组有2个元素...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>《Core Java Volume I-Fundamentals》第三章</p>
+]]></content>
+      <categories>
+        <category>编程笔记</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Core Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>记录：hexo+next博客搭建</title>
     <url>/%E7%BC%96%E7%A8%8B%E5%BF%83%E5%BE%97/%E8%AE%B0%E5%BD%95%EF%BC%9Ahexo-next%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>本篇以记录为主，记录自己搭建hexo+next时候所配置功能的过程，所以并没有把所有的功能都配置上去，现在所看到的的博客就是根据接下来记录的来配置的。（无音乐播放器，无live2D，无鼠标特效等等）</p>
@@ -151,291 +436,6 @@
       <tags>
         <tag>hexo</tag>
         <tag>next</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>笔记：JavaSE语言基础——基础语法</title>
-    <url>/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%AC%94%E8%AE%B0%EF%BC%9AJavaSE%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</url>
-    <content><![CDATA[<p>本篇章以Core Java为基础，记录自己学习Java以及这本书时候的笔记，供自己后续翻阅回顾用。</p>
-<p>分为基础语法，面向对象，接口，容器，异常，泛型，反射，注解和I/O等篇章。</p>
-<p>本小节为语言基础的基础语法篇，主要记录了数据类型，字符串，数组，控制流程等方面的笔记。</p>
-<a id="more"></a>
-
-<hr>
-<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>&emsp;&emsp;在Java中，/**/不能嵌套。也就是说不能简单得把代码括起来作为注释，代码块里面可能也含有多行注释。</p>
-<h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><p>&emsp;&emsp;在Java中一共有8种基本数据类型，分别为：byte、short，int，long（4种整型）；float，double（2种浮点型）；char（1种字符类型）；boolean（1种布尔型）。</p>
-<h4 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h4><p>&emsp;&emsp;int类型：4字节；short类型：2字节；long类型：8字节；byte类型：1字节。</p>
-<p>&emsp;&emsp;长整型数值有一个后缀L或l（推荐使用大写的L）；十六进制数值有一个前缀0x或者0X；八进制数值有一个前缀0（因为表示方法容易混淆，所以不建议使用八进制常数）；二进制数值有有一个前缀0b或0B。另外从Java7开始可以为数字字面量加下划线，更加易读（如1_000_000)表示100万，编译器会自动忽略掉下划线。</p>
-<p>※在Java中没有任何无符号（unsigned）形式的int，long，short或byte类型。（C语言有）</p>
-<h4 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h4><p>&emsp;&emsp;float类型：4字节；double类型：8字节。</p>
-<p>&emsp;&emsp;float类型有一个后缀F或f，没有后缀的浮点型都默认为double类型。</p>
-<p>&emsp;&emsp;浮点型还有三个特殊的浮点数值：正无穷大（<code>DOuble.POSITIVE_INFINITY</code>）；负无穷大（<code>Double.NEGATIVE_INFINITY</code>）；不是一个数字（<code>Double.NaN</code>），计算0/0的时候结果会是NaN。（因为所有“非数值”的值都认为是不相同的，所有不能用<code>x == Double.NaN</code>来判断x是不是一个数字，应该使用<code>Double.isNaN(x)</code>来判断x是不是一个数字）</p>
-<p><strong>※浮点型不适用与无法接受舍入误差的金融计算。</strong>&emsp;打印2.0-1.1时，将打印出0.8999999而不是0.9.如果不允许这种误差，就应该使用大数BigDecimal类。</p>
-<h4 id="char类型"><a href="#char类型" class="headerlink" title="char类型"></a>char类型</h4><p>&emsp;&emsp;char类型原本用于表示单个字符。但如今有些Unicode字符可以用一个char值描述，另外一些Unicode字符需要用两个char值描述。在Java中char类型描述了UTF-16编码中的一个代码单元。</p>
-<p>&emsp;&emsp;char类型的字面量值要用单引号括起来。（’A’与”A”不同，前者是字符类型，后者是字符串类型）char类型的值可以表示为十六进制，范围为\u0000到\uFFFF。</p>
-<p>&emsp;&emsp;常见的转义字符：\b表示退格，\t表示制表符，\n表示换行，\r表示回车，&#39;表示单引号，&quot;表示双引号，\表示反斜杠</p>
-<p><strong>强烈建议不要在程序中使用char类型，除非确实需要处理UTF-16代码单元。最好将字符串作为抽象数据类型处理（建议使用String）。</strong></p>
-<h4 id="boolean类型"><a href="#boolean类型" class="headerlink" title="boolean类型"></a>boolean类型</h4><p>&emsp;&emsp;boolean类型只有两个值：true和false，用来判断逻辑条件。<strong>整型和布尔类型之间不能相互转换！</strong>（在C++中值0相当于false，值1相当于true，但在Java中不是这样的）</p>
-<hr>
-<h3 id="变量与常量"><a href="#变量与常量" class="headerlink" title="变量与常量"></a>变量与常量</h3><h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><p>&emsp;&emsp;声明变量：先指定一个变量类型，然后是变量名。例如:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> number;</span><br></pre></td></tr></table></figure>
-
-<p>变量名中所有的字符都是有意义的，并且大小写敏感。变量名的长度基本上没有限制。（一般采用小驼峰命名，即第一个单词首字母小写，后面每个单词首字母都大写）</p>
-<p><strong>※虽然$是一个合法的Java字符，但不要再自己的代码中使用这个字符，它只用在Java编译器或其他工具生成的名字中。</strong></p>
-<p>&emsp;&emsp;</p>
-<p>&emsp;&emsp;变量的初始化：声明变量之后，必须用赋值语句对变量进行显式初始化。例如:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> number;</span><br><span class="line">number = <span class="number">10</span>；</span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line"><span class="keyword">int</span> personNum = <span class="number">20</span>；</span><br></pre></td></tr></table></figure>
-
-<p>在Java中，变量的声明尽可能靠近变量第一次使用的地方，这是一个良好的编程风格。</p>
-<p>※<strong>在Java10开始</strong>对于局部变量，如果可以从变量的初始值推断出它的类型的话，就不需要声明类型，只需要使用关键字<code>var</code>而无需指定类型。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> greeting = <span class="string">"Hello"</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><p>&emsp;&emsp;关键字final表示这个变量只能被赋值一次。一旦被赋值之后，就不能再更改了。习惯上，常量名使用全大写。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">double</span> CM_PER_INCH = <span class="number">2.54</span>;</span><br></pre></td></tr></table></figure>
-
-<p>可以使用关键字static final设置一个类常量。类常量的定义位于main方法的外部，因此同一个类的其他方法中也可以用这个常量。如果这个常量被声明为public，那么其他类的方法也可以使用这个常量。</p>
-<h4 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h4><p>&emsp;&emsp;枚举类型使用在变量的取值只在一个有限的集合内。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> Size &#123;SMALL, MEDIUM, LAGER, EXTRA_LAGER &#125;;</span><br><span class="line"><span class="comment">//现在可以这定义变量</span></span><br><span class="line">Size s = Size.MEDIUM;</span><br></pre></td></tr></table></figure>
-
-<p>这个类型的变量只能存储这个类型声明中给定的某个枚举值，或者特殊值null，null表示这个变量没有设置任何值。</p>
-<hr>
-<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><h4 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h4><p>&emsp;&emsp;在Java中，算数运算符有+，-，*，/，%（加，减，乘，除，求余）。两个整型使用除的时候，结果将会是整型；否则，结果是浮点型。</p>
-<p><strong>※整型被0除将会产生一个异常，而浮点型被0除将会得到无穷大或NaN结果。</strong></p>
-<p>&emsp;&emsp;</p>
-<p>&emsp;&emsp;数学函数：在Java中，有Math类，里面包含了各种各样的数学函数。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Math.sqrt();    <span class="comment">//求平方根</span></span><br><span class="line">Math.pow();     <span class="comment">//幂运算</span></span><br><span class="line">Math.floorMod();<span class="comment">//求余</span></span><br><span class="line">Math.sin();     <span class="comment">//三角函数</span></span><br><span class="line">Math.log();     <span class="comment">//对数</span></span><br><span class="line">Math.PI;        <span class="comment">//π</span></span><br><span class="line">Math.random();  <span class="comment">//返回一个0到1（包括0不包括1）的随机浮点数</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;floorMod()方法求余的目的是解决负数对正数取余的问题。使用%进行负数对正数取余时（-3 % 2），结果会是负数，但结果应该为正数。所以引进了floorMod()方法。使用floorMod()方法的话，负数对正数取余会得到正数。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">floodMod(number,<span class="number">12</span>);    <span class="comment">//结果总是会得到一个0～11的数字</span></span><br></pre></td></tr></table></figure>
-
-<p>但遗憾的是，正数（负数）对负数取余得到的还是负数（但实际中很少）。</p>
-<p>&emsp;&emsp;Math类中的这些数学函数，都是静态方法（使用static关键字修饰的），所以使用“类名.”的方式访问，当使用<code>import static java.lang.Math.*;</code>（导包）操作后就不必在方法名前加Math.了。</p>
-<p>&emsp;&emsp;Math类提供了一些方法使运算更加安全。如果一个计算溢出，算数运算符只会把返回结果而不会做任何提示，但如果使用Math中的方法，就会产生一个异常。程序员可以捕捉这个异常或让程序终止，而不是返回一个错误的结果。</p>
-<h4 id="数据类型转换"><a href="#数据类型转换" class="headerlink" title="数据类型转换"></a>数据类型转换</h4><p>&emsp;&emsp;自动类型转换：当用一个二元运算符连接两个值时，先要将两个操作数转化为同一种类型，然后进行计算。</p>
-<p>&emsp;&emsp;<strong>如果两个操作数中有一个是double类型，另一个操作数就会被转换为double类型。</strong></p>
-<p>&emsp;&emsp;<strong>否则，如果两个操作数中有一个是float类型，另一个操作数就会被转换为float类型。</strong></p>
-<p>&emsp;&emsp;<strong>否则，如果两个操作数中有一个是long类型，另一个操作数就会被转换为long类型。</strong></p>
-<p>&emsp;&emsp;<strong>否则，两个操作数都被转换为int类型。</strong></p>
-<p>&emsp;&emsp;强制类型转换：诸如double转int时（和上面四条反着来就要强转）要使用强制类型转换，当然可能存在丢失一些信息。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> x = <span class="number">9.99</span>;</span><br><span class="line"><span class="keyword">int</span> nx = (<span class="keyword">int</span>) x;   <span class="comment">//nx的值为9</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;如果想对浮点数进行舍入运算，以便得到最接近的整数，那就可以使用Math.round()方法。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">double</span> x = <span class="number">9.99</span></span><br><span class="line"><span class="keyword">int</span> nx = (<span class="keyword">int</span>)Math.round(x);    <span class="comment">//现在nx的值为10</span></span><br></pre></td></tr></table></figure>
-
-<p>使用Math.round()方法任然需要使用(int)强制类型转换的原因是这个方法返回的是long类型。</p>
-<p>※信息丢失和数据溢出：当整型类转换成float型时，会得到正确的大小，但会损失一些精度。但把100强转给byte时，得到的数字是44,（byte数据溢出）</p>
-<h4 id="自加和自减"><a href="#自加和自减" class="headerlink" title="自加和自减"></a>自加和自减</h4><p>&emsp;&emsp;前缀++n为先完成+1操作，再进行后续操作；后缀n++会先用原来的值进行操作，操作完再进行+1操作。</p>
-<p>※建议不要再表达式中使用++，会造成困惑</p>
-<h4 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h4><p>&emsp;&emsp;关系运算符：检测相等用==；检测不等用!=；另外还有&lt;（小于）;&gt;（大于）;&lt;=（小于等于）;&gt;=（大于等于）运算符。</p>
-<p>&emsp;&emsp;逻辑运算符：&amp;&amp;表示与，||表示或，!表示非。&amp;&amp;和||是按照短路方式来求值的，也就是说，一侧能确定了另一侧就不用计算了。</p>
-<p>&emsp;&emsp;三目运算符：?:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">condition ? expression1 : expression2</span><br></pre></td></tr></table></figure>
-
-<p>如果条件为true，则执行表达式1，否则执行表达式2</p>
-<h4 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h4><p>&emsp;&emsp;为操作对二进制的位进行操作：&amp;（按位与）；|（按位或）；^（异或）；~（取反）；&gt;&gt;（左移）；&lt;&lt;（右移）；&gt;&gt;&gt;（高位用0填充）。<strong>不存在&lt;&lt;&lt;运算符。</strong></p>
-<h4 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h4><p>&emsp;&emsp;如果不使用圆括号，就按照给出的运算符优先级次序进行计算。同一级别的运算符按照从左到右的次序进行计算（右结合运算符除外）。</p>
-<hr>
-<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>&emsp;&emsp;在Java中，String不是基本数据类型而是引用数据类型，是Java的一个预定义类。另外再C++中String类是一个字符数组，可以用指针访问每一个字符，而在Java中并不是数组。</p>
-<h4 id="子串"><a href="#子串" class="headerlink" title="子串"></a>子串</h4><p>&emsp;&emsp;String类中substring()方法可以从字符串中提取出一个子串。substring()方法第一个参数为子串的起始位置，第二个参数为子串的结束位置。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String greeting  = <span class="string">"Hello"</span>;</span><br><span class="line">String s = greeting.substring(<span class="number">0</span>, <span class="number">3</span>);    <span class="comment">//这是创建了有Hel组成的字符串</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="拼接"><a href="#拼接" class="headerlink" title="拼接"></a>拼接</h4><p>&emsp;&emsp;在Java中允许使用+来拼接两个字符串。当一个字符串与非字符串的值进行拼接时，后者会被转换成字符串。（任何一个对象都有toString()方法，所以都能被转换成字符串）例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String expletive = <span class="string">"Expletive"</span>;</span><br><span class="line">String PG13 = <span class="string">"deleted"</span>;</span><br><span class="line"><span class="keyword">int</span> age = <span class="number">13</span>;</span><br><span class="line">System.out.println(expletive + PG13 + age);</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;<strong>在Java11中，</strong>还提供了repeat方法。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String java = <span class="string">"Java"</span>;</span><br><span class="line">String repeated = java.repeat(<span class="number">3</span>);   <span class="comment">//repeated为"JavaJavaJava"</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="不可变字符串"><a href="#不可变字符串" class="headerlink" title="不可变字符串"></a>不可变字符串</h4><p>&emsp;&emsp;在Java中，String类对象被称为是不可变的。只能通过用子串和拼接来完成对字符串的修改。但其实大多数情况下都不会去修改字符串，而只是要对字符串进行比较。</p>
-<h4 id="检测字符串是否相等"><a href="#检测字符串是否相等" class="headerlink" title="检测字符串是否相等"></a>检测字符串是否相等</h4><p>&emsp;&emsp;可以通过equals()方法检测两个字符串是否相等。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">s.equals(t);</span><br></pre></td></tr></table></figure>
-
-<p>如果字符串s与字符串t相等，返回true，否则返回false。其中，s和t可以是字符串变量也可以是字符串字面量。</p>
-<p>&emsp;&emsp;可以通过equalsIgnoreCase()方法检测两个字符串是否相等而不区分大小写。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="string">"Hello"</span>.equalsIgnoreCase(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;千万不要使用==来检测两个字符串是否相等，这个运算符只能够确定两个字符串是否存放在同一个位置（也就是说检测内存地址是否相同）。当然存在同一个内存地址的字符串必然是相等的。</p>
-<p>&emsp;&emsp;String类有个compareTO()的方法，比较字符串的ASCII码的差值，返回第一个不同字符的ASCII的差值。如果返回的值为0，那么两个字符串相等。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (greeting.compareTo(<span class="string">"Hello"</span>) == <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-
-<h4 id="空串和null"><a href="#空串和null" class="headerlink" title="空串和null"></a>空串和null</h4><p>&emsp;&emsp;空串””是长度为0的字符串，空串还是字符串，所以用equals或者length检测是否是空串。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (str.length() == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (str.equals(<span class="string">""</span>))</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;null表示没有任何对象与该变量关联。因为null是空地址，所以检测一个字符串是否是null用==。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (str == <span class="keyword">null</span>)</span><br></pre></td></tr></table></figure>
-
-<h4 id="构建字符串"><a href="#构建字符串" class="headerlink" title="构建字符串"></a>构建字符串</h4><p>&emsp;&emsp;有些时候，需要由较短的字符串构建字符串。对String对象，既耗时，又浪费空间。使用StringBuilder类就能避免这个问题,只要调用append()方法就能拼接字符串。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">StringBuilder builder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">builder.append(ch);</span><br><span class="line">builder.append(str);</span><br><span class="line">String completedString = builder.toString();    <span class="comment">//这是里面存的就是chstr</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h3><h4 id="读取输入"><a href="#读取输入" class="headerlink" title="读取输入"></a>读取输入</h4><p>&emsp;&emsp;想要通过控制台进行输入，首先需要构造一个与“标准输入流”System.in关联的Scanner对象。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br></pre></td></tr></table></figure>
-
-<p>现在可以用各种方法读取输入了。nextLine()方法读取一行输入；next()方法读取一个单词（以空白符作为分隔符）；nextInt()方法读取一个整型等等。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line"></span><br><span class="line">String name = in.nextLine();    <span class="comment">//读取一整行</span></span><br><span class="line">String word = in.next();        <span class="comment">//读取一个单词</span></span><br><span class="line">String age = in.nextInt();      <span class="comment">//读取一个整型</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;由于输入是课件的，所以Scanner不适合于控制台读取密码。所以就引入了Console类来实现这个目的。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Console cons = System.console();</span><br><span class="line">String username = cons.readLine(<span class="string">"User name: "</span>);</span><br><span class="line"><span class="keyword">char</span>[] passwd = cons.readPassword(<span class="string">"Password: "</span>);</span><br></pre></td></tr></table></figure>
-
-<p>为安全起见，返回的密码存放在一个字符串数组中，而不是字符串中。在对密码处理完成后，应该马上用一个填充覆盖数组元素。Console类每次读取一行输入，没有能够读取单词或数值的方法。</p>
-<h4 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h4><p>&emsp;&emsp;标准输出流只要调用System.out.println()方法即可。不过Java沿用了C语言中的printf()方法。所以能够进行格式化的输出。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.printf(<span class="string">"Hello, %s."</span>, name);</span><br></pre></td></tr></table></figure>
-
-<p>%为格式说明符，s为字符串类型，name为对应的替代参数。</p>
-<p>&emsp;&emsp;常用的printf转换符：d（十进制整数）；x（十六进制整数）；o（八进制整数）；f（定点浮点数）；a（十六进制浮点数）；s（字符串）；c（字符）；b（布尔）。</p>
-<p>&emsp;&emsp;另外，还可以指定控制格式化输出外观的各种标志。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.printf(<span class="string">"%,.2f"</span>, <span class="number">10000.0</span> / <span class="number">3.0</span>);      <span class="comment">//会输出3333.33</span></span><br></pre></td></tr></table></figure>
-
-<p>控制了输出为float，保留两位小数。</p>
-<p>&emsp;&emsp;可以使用String.format()方法创建一个格式化的字符串而不打印输出。</p>
-<h4 id="文件的输入和输出"><a href="#文件的输入和输出" class="headerlink" title="文件的输入和输出"></a>文件的输入和输出</h4><p>&emsp;&emsp;想要读取一个文件，需要构造一个Scanner对象。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner in = <span class="keyword">new</span> Scanner(Path.of(myfile.txt), StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
-
-<p>其中StandardCharsets.UTF_8为文件的字符编码（读取一个文本文件时，需要知道它的字符编码）</p>
-<p>&emsp;&emsp;如果文件名包含反斜杠符号，那么每个反斜杠之前都要再加一个额外的反斜杠（转义字符）。例如：”C:\mydir\myfile.txt”。</p>
-<p>&emsp;&emsp;</p>
-<p>&emsp;&emsp;想要写入一个文件，需要构建一个PrintWriter对象。同样的要提供字符编码。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">PrintWriter out = <span class="keyword">new</span> PrintWriter(<span class="string">"myfile.txt"</span>, StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
-
-<p>可以像输出到System.out一样使用print，printf以及println。</p>
-<p>&emsp;&emsp;</p>
-<p>&emsp;&emsp;指定一个相对文件的时候，不同的集成开发环境，启动目录不同。IDEA为project根目录下，当然可以考虑使用绝对路径名来指定文件</p>
-<p>※需要记住一点，如果用一个不存在的文件构造一个Scanner（读取一个不存在的文件），或者用一个无法创建的文件名构造一个PrintWriter（写入一个重名或有非法字符的文件）时，就会产生异常</p>
-<hr>
-<h3 id="控制流程"><a href="#控制流程" class="headerlink" title="控制流程"></a>控制流程</h3><h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>&emsp;&emsp;if条件语句为当条件为true的时执行代码块的语句。</p>
-<p>&emsp;&emsp;<code>if</code>条件语句：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;<code>if else</code>条件语句：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement1</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    statement2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用<code>else if</code>的条件语句：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement1</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span> (condition)&#123;</span><br><span class="line">    statement2</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    statement3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="不循环语句"><a href="#不循环语句" class="headerlink" title="不循环语句"></a>不循环语句</h4><p>&emsp;&emsp;while循环语句为当条件为true时循环执行代码块，直至条件为false.因为while循环在最前面检测循环语句，因此循环体中的代码可能一次都不执行。</p>
-<p>&emsp;&emsp;<code>while</code>循环语句：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (condition)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;do while循环将检测放在最后，因此循环体中的代码至少会执行一次。</p>
-<p>&emsp;&emsp;<code>do while</code>循环语句：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;<span class="keyword">while</span> (condition);</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;※有时会看到do{statement}while(0);这种语句，代码永远只执行一次，但可以让代码更为直观和整洁。</p>
-<h4 id="确定循环语句"><a href="#确定循环语句" class="headerlink" title="确定循环语句"></a>确定循环语句</h4><p>&emsp;&emsp;for循环是支持迭代的一种循环，由一个计数器控制迭代次数，每次迭代后计数器会更新。for循环的第一部分通常为计数器的初始化，第二部分为每次新一轮循环执行前要检测的循环条件，第三部分为制定如何更新计数器。</p>
-<p>&emsp;&emsp;<code>for</code>循环语句：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(expression1;expression2;expression3)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;※在循环中，检测两个浮点是否相等要格外小心，由于舍入误差的原因，可能永远达不到精度的最终值。</p>
-<p>&emsp;&emsp;for循环的第一部分声明了一个变量之后，这个变量的作用于就扩展到这个for循环体的末尾，这个变量不能再循环体之外使用。另一方面，可以在不同的for循环中定义同名的变量。</p>
-<p>&emsp;&emsp;</p>
-<p>&emsp;&emsp;※还有个循环结构为泛型for循环，又称<code>for each</code>，一般使用于数组上。</p>
-<h4 id="多重选择语句"><a href="#多重选择语句" class="headerlink" title="多重选择语句"></a>多重选择语句</h4><p>&emsp;&emsp;switch语句将从与选项值匹配的case标签开始执行，直到遇到break语句，或者执行到switch语句的结束为止。如果没有相匹配的case标签，而有default子句，就执行这一条子句。</p>
-<p>&emsp;&emsp;<code>switch</code>选择语句</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">switch</span>(controllingExpression)&#123;</span><br><span class="line">    <span class="keyword">case</span> constantExpression1:</span><br><span class="line">        statement1</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> constantExpression2:</span><br><span class="line">        statement2</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> constantExpression3:</span><br><span class="line">        statement3</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        statement</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;※需要注意的是，如果在case分支语句的末尾没有break语句的话，那么就会接着执行下一个case分支语句（case穿透现象）</p>
-<p>&emsp;&emsp;case标签可以是：类型char，byte，short或int的常量表达式。</p>
-<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;枚举常量。（不必再每个标签中指明枚举名）</p>
-<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;字符串字面量。（Java7开始）</p>
-<h4 id="终端流程语句"><a href="#终端流程语句" class="headerlink" title="终端流程语句"></a>终端流程语句</h4><p>&emsp;&emsp;Java的设计者保留了goto作为保留字，但实际上并没有打算在语言中使用它。相对的，Java语言中增加了一条新的语句：带标签的break，用于跳出多重嵌套的循环语句（通常的break语句只跳出一层）。标签必须放在希望跳出的最外循环之前，并且必须紧跟一个冒号。需要注意的是，break只能跳出语句块，而不能跳入语句块。</p>
-<p>&emsp;&emsp;<code>break</code>语句（带标签的）：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">label:</span><br><span class="line"><span class="keyword">while</span>(...)&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">for</span>(...)&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">if</span>(...)&#123;</span><br><span class="line">            <span class="keyword">break</span> label;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;continue语句，与break一样，它将中断正常的控制流程。continue语句将控制转移到最内层的循环首部。同样的，continue语句也有一种带标签的，将跳转与标签匹配的循环首部<br>&emsp;&emsp;<code>continue</code>语句（不带标签的）：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (...)&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (...)&#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;※break和continue语句完全是可选的，也就是说不适用它们也可以表达相同的逻辑含义</p>
-<hr>
-<h3 id="大数"><a href="#大数" class="headerlink" title="大数"></a>大数</h3><p>&emsp;&emsp;当基本数据类型的整型和浮点型精度已经无法满足要求（如无法接受舍入误差的金融计算），就可以使用Java.math里面的BigInteger和BigDecimal这两个类。</p>
-<h4 id="大数的声明与初始化"><a href="#大数的声明与初始化" class="headerlink" title="大数的声明与初始化"></a>大数的声明与初始化</h4><p>&emsp;&emsp;可以使用<code>valueOf</code>方法将普通的数值转换为大数，例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BigInteger bigNum = BigInteger.valueOf(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
-
-<p>也可以使用大数类的带字符串参数的构造方法<code>new</code>一个对象，例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BigInteger bigNum = <span class="keyword">new</span> BigInteger(<span class="string">"12345678987654321"</span>);</span><br></pre></td></tr></table></figure>
-
-<h4 id="大数的运算"><a href="#大数的运算" class="headerlink" title="大数的运算"></a>大数的运算</h4><p>&emsp;&emsp;大数无法使用算数运算符，而且Java没有提供运算符重载功能，无法对算数运算符进行重定义，所以需要调用大数类中的方法。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">BigInteger <span class="title">add</span><span class="params">(BigInteger other)</span></span>;  <span class="comment">//和，other为加数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">subtract</span><span class="params">(BigInteger other)</span></span>;    <span class="comment">//差，other为减数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">multiply</span><span class="params">(BigInteger other)</span></span>;    <span class="comment">//积，other为乘数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">divide</span><span class="params">(BigInteger other)</span></span>;  <span class="comment">//商，other为除数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">mod</span><span class="params">(BigInteger other)</span></span>;   <span class="comment">//余数，other为取余数</span></span><br><span class="line"><span class="function">BigInteger <span class="title">sqrt</span><span class="params">()</span></span>;  <span class="comment">//取平方根</span></span><br><span class="line"><span class="function">BigInteger <span class="title">compareTO</span><span class="params">(BigInteger other)</span></span>; <span class="comment">//比较大小，等于返回0，小于other返回负数，大于other返回正数</span></span><br><span class="line"><span class="function">BigDecimal <span class="title">divide</span><span class="params">(BidDecimal other,RoundingMode model)</span></span>; <span class="comment">//BigDecimal类除了普通的求商，还能再加一个参数，这个参数取RoundingMode.HALF_UP就是我们熟知的四舍五入方式</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>&emsp;&emsp;数组是一种数据结构，用来存储同一类型的集合。通过一个整型下标来访问数组中的每个成员。</p>
-<p>&emsp;&emsp;<strong>但与C++不同的是，Java中的[]被预定义了会越界检查，而没有指针运算，所以不同通过数组+1的方式来访问下一个元素。</strong></p>
-<blockquote>
-<p><font color="#1E90FF"><strong>2020-07-26补充：使用数组的优缺点：</strong></font></p>
-<p>&emsp;&emsp;优点：检索某个下标的元素时效率高。因为数组的每个元素的内存地址在空间存储上是连续的；然后每个元素的类型相同，所占用空间大小也就一样。所以想要知道某个下标的元素的内存地址可以通过数学表达式计算出来，直接通过内存地址定位到那个元素。</p>
-<p>&emsp;&emsp;缺点：由于数组中的每个元素的内存地址是连续的，所以在数组上随机删除和增加元素的时候效率低，因为会涉及到后面元素向前或向后位移的操作。</p>
-</blockquote>
-<h4 id="声明数组"><a href="#声明数组" class="headerlink" title="声明数组"></a>声明数组</h4><p>&emsp;&emsp;在声明数组变量时，需要指定输出类型和数组变量的名字。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用new操作符初始化数组。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>];</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;在Java中提供了一种创建数组对象并同时提供初始值的简写形式。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = &#123;<span class="number">1</span> , <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>这个方法不需要new，也不需要指定长度。</p>
-<p>&emsp;&emsp;※一旦创建了数组，就不能再改变它的长度了。如果程序运行中要扩展数组的大小米酒应该使用另一个数据结构：数组列表。</p>
-<h4 id="访问数组元素"><a href="#访问数组元素" class="headerlink" title="访问数组元素"></a>访问数组元素</h4><p>&emsp;&emsp;数组元素的下标是从0开始。</p>
-<p>&emsp;&emsp;创建一个数组时，所有元素都被初始化为0；boolean数组被初始化false；对象数组被初始化null（表示这些元素还未存放对象）。</p>
-<p>&emsp;&emsp;<strong>如果访问的元素下标超过了元素个数，则会引发异常：array index out of bounds。</strong></p>
-<p>&emsp;&emsp;想要获得数组中元素的个数，可以使用array.length。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= a.length; i++)</span><br></pre></td></tr></table></figure>
-
-<h4 id="for-each循环"><a href="#for-each循环" class="headerlink" title="for each循环"></a>for each循环</h4><p>&emsp;&emsp;for each循环可以用来一次处理数组中的每一个元素。</p>
-<p>&emsp;&emsp;<code>for each</code>循环语句：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(variable : collection)&#123;</span><br><span class="line">    statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>它定义一个变量用于暂存集合中的每一个元素，并执行对应的语句。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> element : a)&#123;</span><br><span class="line">    System.out.println(element);    <span class="comment">//打印的元素每个占一行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;for each循环将会遍历数组中的每一个元素，如果不希望遍历每个元素还是只能使用传统的for循环。for each和for不同的是，for each遍历的是数组的元素，for循环判断的是下标。</p>
-<p>&emsp;&emsp;※可以使用Arrays类，调用toString()方法来打印数组的每一个元素。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(Arrays.toString(a));</span><br></pre></td></tr></table></figure>
-
-<h4 id="数组与命令行"><a href="#数组与命令行" class="headerlink" title="数组与命令行"></a>数组与命令行</h4><p>&emsp;&emsp;在写main方法的时候的数组：<code>public static void main(String arg[])</code>。在控制台使用java命令运行java程序的时候，java名后面输入的内容就被存放到arg[]这个数组里。例如：</p>
-<figure class="highlight dos"><table><tr><td class="code"><pre><span class="line">java Message -g world</span><br></pre></td></tr></table></figure>
-
-<p>Message是类名，-g和world被存储在arg[0]和arg[1]中了。</p>
-<h4 id="数组拷贝"><a href="#数组拷贝" class="headerlink" title="数组拷贝"></a>数组拷贝</h4><p>&emsp;&emsp;使用赋值符=的话，两个变量将引用同一个数组（实际堆中只有一个数组）例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">int</span>[] b = a;</span><br><span class="line">b[<span class="number">1</span>] = <span class="number">4</span>;       <span class="comment">//现在数组a中的第二个元素也被修改为4了。</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;使用Arrays类中的copyOf()方法的话，为创建一个新数组（堆中有两个数组，但里面的字面量都是相同的）例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">int</span>[] b = Arrays.copyOf(a,a.length);</span><br></pre></td></tr></table></figure>
-
-<p>第二个参数是新数组的长度，如果比原数组数目少，则值拷贝前面的值；如果比原数组数目多，则额外的部分会被初始化0或者false。</p>
-<blockquote>
-<p><font color="#1E90FF"><strong>2020-07-26补充：System类中的数组拷贝：</strong></font></p>
-<p>&emsp;&emsp;使用System类中的arraycopy()方法进行拷贝（效果同Arrays类中的copyOf()），效率高。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.arraycopy(str, <span class="number">0</span>, dest, <span class="number">0</span>, str.length);</span><br></pre></td></tr></table></figure>
-
-<p>其中第一个参数为源数组，第二个参数为源数组起始下标，第三个参数为目标数组，第四个参数为目标数组起始下标，第五个参数为拷贝的长度。</p>
-</blockquote>
-<h4 id="数组排序"><a href="#数组排序" class="headerlink" title="数组排序"></a>数组排序</h4><p>&emsp;&emsp;使用Arrays类中的sort()方法可以对数值型的数组进行排序。这个方法使用了优化的快速排序算法。对大多数集合来说都是效率比较高的。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span> [<span class="number">100</span>];</span><br><span class="line">...</span><br><span class="line">Arrays.sort(a);</span><br></pre></td></tr></table></figure>
-
-<h4 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h4><p>&emsp;&emsp;二维数组，也称为矩阵。声明一个二维数组。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] a = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">20</span>][<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;创建二维数组对象并同时提供初始值的简写形式。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] a = &#123;</span><br><span class="line">    &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;,</span><br><span class="line">    &#123;<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;访问二维数组可以利用两个中括号访问各个元素</p>
-<p>&emsp;&emsp;for each循环不能自动处理二维数组中的每一个元素。想要访问二维数组中的所有元素，需要使用两个嵌套的循环。例如</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">double</span>[] row : a)&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">double</span> value : row)&#123;</span><br><span class="line">        System.out.println(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;想要快速打印一个二维数组的元素列表，可以使用Arrays类中的deepToString()方法。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a[][] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>][<span class="number">4</span>];</span><br><span class="line">...</span><br><span class="line">System.out.println(Arrays.deepToString(a));</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出格式为：[[x,x,x,x],[x,x,x,x][x,x,x,x]]</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="不规则数组"><a href="#不规则数组" class="headerlink" title="不规则数组"></a>不规则数组</h4><p>&emsp;&emsp;在Java中，只有一位数组，多维数组只是被解释为数组的数组，所有可以构造一个不规则二维数组，即数组的每一行数组都有着不同的长度。例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] odds = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>][];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; <span class="number">9</span>; n++)&#123;</span><br><span class="line">    odds[n] = <span class="keyword">new</span> <span class="keyword">int</span>[n + <span class="number">1</span>];   <span class="comment">//第一个数组有1个元素，第二个数组有2个元素...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>《Core Java Volume I-Fundamentals》第三章</p>
-]]></content>
-      <categories>
-        <category>编程笔记</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Core Java</tag>
       </tags>
   </entry>
 </search>
