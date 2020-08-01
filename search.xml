@@ -1,6 +1,403 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>记录：hexo+next博客搭建</title>
+    <url>/%E7%BC%96%E7%A8%8B%E5%BF%83%E5%BE%97/%E8%AE%B0%E5%BD%95%EF%BC%9Ahexo-next%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>本篇以记录为主，记录自己搭建hexo+next时候所配置功能的过程，所以并没有把所有的功能都配置上去，现在所看到的的博客就是根据接下来记录的来配置的。（无音乐播放器，无live2D，无鼠标特效等等）</p>
+<p>这是我目前觉得比较简洁平衡的配置了，尽管如此，还是有许多不太满意的地方，<del>比如我还希望能够点击头像回到首页的功能。</del>（已经实现，虽然可能不是正确的改法）</p>
+<a id="more"></a>
+
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>※之前在查找资料的时候经常能看见诸如还在用hexo？next已经烂大街了之类的言论，但我认为，对于一般人来说并不需要去在意什么烂不烂大街，自己能够搭建起来就好，个人博客重要的是里面的内容，而不是去追求一些花里胡哨的功能，hexo和next说白了只是提供了一个平台和一个模板而已。</p>
+<p><strong>nodejs版本：12.18.2</strong></p>
+<p><strong>hexo版本：3.1.0</strong></p>
+<p><strong>next版本：7.8.0</strong></p>
+<p>下面把Blog下的_config.yml文件简称为站点配置文件<br>把主题下的_config.yml文件简称为主题配置文件</p>
+<hr>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>1.Nodejs下载并安装</p>
+<p>2.Git下载并安装<br>3.设置淘宝镜像</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p>4.使用Git安装hexo</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>5.新建Blog文件夹</p>
+<p>6.在Blog文件夹下使用Git初始化hexo</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<p>7.使用Git静态部署</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+
+<p>8.使用Git启动网页</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>9.下载next主题，<a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">下载地址</a>，推荐使用Git Bash下载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="站点基本属性的编辑和主题的修改"><a href="#站点基本属性的编辑和主题的修改" class="headerlink" title="站点基本属性的编辑和主题的修改"></a>站点基本属性的编辑和主题的修改</h3><h4 id="编辑基本信息"><a href="#编辑基本信息" class="headerlink" title="编辑基本信息"></a>编辑基本信息</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">ゆるる</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">''</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">LAST</span> <span class="string">STARDUST</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">摇曳Kumarinko</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="修改主题"><a href="#修改主题" class="headerlink" title="修改主题"></a>修改主题</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="主题优化"><a href="#主题优化" class="headerlink" title="主题优化"></a>主题优化</h3><h4 id="主题选择"><a href="#主题选择" class="headerlink" title="主题选择"></a>主题选择</h4><p>编辑 主题配置文件，一共四项主题可以选择，我选择的是Gemini。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">scheme:</span> <span class="string">Gemini</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="首页不显示全文"><a href="#首页不显示全文" class="headerlink" title="首页不显示全文"></a>首页不显示全文</h4><p>1.官方建议在写文章的时候加入以下代码，代码以上为首页可见，代码一下为首页不可见。</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="comment">&lt;!-- more --&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>2.编辑 主题配置文件，把variable取消注释</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">variable:</span> <span class="string">source/_data/variables.styl</span></span><br></pre></td></tr></table></figure>
+
+<p>3.在站点的source下新建_data文件夹，再在里面新建variables.styl，加入以下代码</p>
+<figure class="highlight styl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Buttons</span></span><br><span class="line">$btn-default-bg                 = white;</span><br><span class="line"><span class="variable">$btn</span>-default-<span class="attribute">color</span>              = <span class="number">#006762</span>;</span><br><span class="line"><span class="variable">$btn</span>-default-<span class="attribute">font-size</span>          = <span class="variable">$font</span>-size-small;</span><br><span class="line"><span class="variable">$btn</span>-default-<span class="attribute">border-width</span>       = <span class="number">2px</span>;</span><br><span class="line"><span class="variable">$btn</span>-default-<span class="attribute">border-color</span>       = <span class="number">#006762</span>;</span><br><span class="line">$btn-default-hover-bg           = #456f95;</span><br><span class="line"><span class="variable">$btn</span>-default-hover-<span class="attribute">color</span>        = white;</span><br><span class="line"><span class="variable">$btn</span>-default-hover-<span class="attribute">border-color</span> = <span class="number">#456f95</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="侧边菜单栏设定"><a href="#侧边菜单栏设定" class="headerlink" title="侧边菜单栏设定"></a>侧边菜单栏设定</h4><p>1.编辑 主题配置文件，把需要的菜单取消注释</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="comment">#schedule: /schedule/ || fa fa-calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || fa fa-sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || fa fa-heartbeat</span></span><br></pre></td></tr></table></figure>
+
+<p>2.在Git下创建对应的页面</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page about</span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+
+<p>3.对应的网页的markdown在站点的source文件夹下，tags和categories的markdown需要加入对应的type，about就像普通写文章一样就行。</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">type: "tags"</span><br></pre></td></tr></table></figure>
+
+<h4 id="头像设定"><a href="#头像设定" class="headerlink" title="头像设定"></a>头像设定</h4><p>编辑 主题配置文件，第一个选项是图片地址（themes\next\source\images\avatar.gif），第二个选项是把头像变圆，第三个选项是鼠标放上面头像会旋转。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="comment"># Replace the default image and set the url here.</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">/images/avatar.gif</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be dispalyed in circle.</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be rotated with the cursor.</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="社交设定"><a href="#社交设定" class="headerlink" title="社交设定"></a>社交设定</h4><p>把自己想要设定的选项前面的#去掉，fab fa-xxx为<a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>的图库</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/yourname</span> <span class="string">||</span> <span class="string">fab</span> <span class="string">fa-github</span></span><br><span class="line">  <span class="comment">#E-Mail: mailto:yourname@gmail.com || fa fa-envelope</span></span><br><span class="line">  <span class="comment">#Weibo: https://weibo.com/yourname || fab fa-weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || fab fa-google</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="打赏设定"><a href="#打赏设定" class="headerlink" title="打赏设定"></a>打赏设定</h4><p>编辑 主题配置文件,编辑reward。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Reward (Donate)</span></span><br><span class="line"><span class="comment"># Front-matter variable (unsupport animation).</span></span><br><span class="line"><span class="attr">reward_settings:</span></span><br><span class="line">  <span class="comment"># If true, reward will be displayed in every article by default.</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">animation:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">comment:</span> <span class="string">'谢谢你的投食~'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">reward:</span></span><br><span class="line">  <span class="attr">wechatpay:</span> <span class="string">/images/wechatpay.png</span></span><br><span class="line">  <span class="attr">alipay:</span> <span class="string">/images/alipay.png</span></span><br><span class="line">  <span class="comment">#paypal: /images/paypal.png</span></span><br><span class="line">  <span class="comment">#bitcoin: /images/bitcoin.png</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="背景以及各板块透明度设定"><a href="#背景以及各板块透明度设定" class="headerlink" title="背景以及各板块透明度设定"></a>背景以及各板块透明度设定</h4><p>1.编辑 主题配置文件，把style取消注释</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">style:</span> <span class="string">source/_data/styles.styl</span></span><br></pre></td></tr></table></figure>
+
+<p>2.在之前创建的_data下新建styles.styl文件，添加以下代码，透明度随自己设定</p>
+<figure class="highlight styl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Custom styles.</span></span><br><span class="line"><span class="comment">// 整体背景设置</span></span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line"> 	background:url(/images/background.jpg);// 设定背景图片,images同处于source文件夹下</span><br><span class="line"> 	<span class="attribute">background-repeat</span>: no-repeat;<span class="comment">// 设定背景图片非重复填充</span></span><br><span class="line">    <span class="attribute">background-attachment</span>:fixed;<span class="comment">// 设置背景图片不随页面滚动</span></span><br><span class="line">    <span class="attribute">background-position</span>:<span class="number">50%</span> <span class="number">50%</span>;<span class="comment">// 设置背景图片位置</span></span><br><span class="line">	<span class="attribute">background-size</span>: cover// 设置保持图像的纵横比并将图像缩放成将完全覆盖背景定位区域的最小大小</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 页面头样式属性</span></span><br><span class="line"><span class="selector-class">.header-inner</span> &#123;</span><br><span class="line">  <span class="comment">// 也可以同时定义背景色</span></span><br><span class="line">  <span class="comment">// background: #DDD </span></span><br><span class="line">  <span class="comment">// 透明度</span></span><br><span class="line">  <span class="comment">//opacity: 0.9;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// sidebar侧边工具栏样式属性</span></span><br><span class="line">.sidebar&#123;</span><br><span class="line">    <span class="comment">// 动画过渡时间</span></span><br><span class="line">	<span class="attribute">transition-duration</span>: <span class="number">1.0s</span>;</span><br><span class="line">    <span class="comment">// 透明度</span></span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">0.9</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 标题样式</span></span><br><span class="line"><span class="selector-class">.posts-expand</span> <span class="selector-class">.post-title-link</span> &#123;</span><br><span class="line">	<span class="comment">// 设置字体颜色</span></span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#222</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 文章版块样式</span></span><br><span class="line"><span class="selector-class">.post-block</span> &#123;</span><br><span class="line">	<span class="attribute">background</span>: rgba(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>,<span class="number">0.7</span>); <span class="comment">//0.7是透明度</span></span><br><span class="line">    <span class="attribute">border-radius</span>: initial;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.12</span>), <span class="number">0</span> <span class="number">3px</span> <span class="number">1px</span> -<span class="number">2px</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.06</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.12</span>);</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">40px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 主页文章添加阴影效果</span></span><br><span class="line"><span class="selector-class">.post</span> &#123;</span><br><span class="line">   <span class="attribute">margin-top</span>: <span class="number">60px</span>;</span><br><span class="line">   <span class="attribute">margin-bottom</span>: <span class="number">60px</span>;</span><br><span class="line">   <span class="attribute">padding</span>: <span class="number">25px</span>;</span><br><span class="line">   -webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);</span><br><span class="line">   -moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.在站点的source下，新建images文件夹，把要放的背景图放在这个文件夹里</p>
+<h4 id="阅读进度百分比设定"><a href="#阅读进度百分比设定" class="headerlink" title="阅读进度百分比设定"></a>阅读进度百分比设定</h4><p>编辑 主题配置文件，编辑back2top，第一个选项是使能，第二个是侧边显示，右下方显示。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">back2top:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Back to top in sidebar.</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># Scroll percent label in b2t button.</span></span><br><span class="line">  <span class="attr">scrollpercent:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="代码块复制和代码高亮设定"><a href="#代码块复制和代码高亮设定" class="headerlink" title="代码块复制和代码高亮设定"></a>代码块复制和代码高亮设定</h4><p>编辑 主题配置文件，编辑codeblock，（注：markdown编写代码的时候在```之后加上使用的语言就可以实现变色。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">codeblock:</span></span><br><span class="line">  <span class="comment"># Code Highlight theme</span></span><br><span class="line">  <span class="attr">highlight_theme:</span> <span class="string">night</span></span><br><span class="line">  <span class="comment"># Add copy button on codeblock</span></span><br><span class="line">  <span class="attr">copy_button:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Show text copy result.</span></span><br><span class="line">    <span class="attr">show_result:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Available values: default | flat | mac</span></span><br><span class="line">    <span class="attr">style:</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="文章结束添加本文结束的小字"><a href="#文章结束添加本文结束的小字" class="headerlink" title="文章结束添加本文结束的小字"></a>文章结束添加本文结束的小字</h4><p>1.编辑 主题配置文件，把postBodyEnd取消注释</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">postBodyEnd:</span> <span class="string">source/_data/post-body-end.swig</span></span><br></pre></td></tr></table></figure>
+
+<p>2.在之前创建的_data下新建post-body-end.swig文件，添加以下代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">    &#123;% if not is_index %&#125;</span><br><span class="line">        &lt;div style&#x3D;&quot;text-align:center;color: #ccc;font-size:14px;&quot;&gt;-------------本文结束&lt;i class&#x3D;&quot;fa fa-hand-peace-o&quot;&gt;&lt;&#x2F;i&gt;感谢您的阅读-------------&lt;&#x2F;div&gt;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h4><p>使用GitBush安装插件,之后在markdown文章里加入top：就行，数字越大置顶等级越高。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-generator-index --save</span><br><span class="line">npm install hexo-generator-index-pin-top --save</span><br></pre></td></tr></table></figure>
+
+<h4 id="网页右上角的fork-me-on-github"><a href="#网页右上角的fork-me-on-github" class="headerlink" title="网页右上角的fork me on github"></a>网页右上角的fork me on github</h4><p>编辑 主题配置文件，编辑github_banner</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># `Follow me on GitHub` banner in the top-right corner.</span></span><br><span class="line"><span class="attr">github_banner:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">permalink:</span> <span class="string">https://github.com/Kumarinkoos</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">Follow</span> <span class="string">me</span> <span class="string">on</span> <span class="string">GitHub</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="网站图标设定"><a href="#网站图标设定" class="headerlink" title="网站图标设定"></a>网站图标设定</h4><p>编辑 主题配置文件，编辑favicon，把图片放到themes\next\source\images文件夹下再对应修改（和头像一个文件夹）</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">apple_touch_icon:</span> <span class="string">/images/apple-touch-icon-next.png</span></span><br><span class="line">  <span class="attr">safari_pinned_tab:</span> <span class="string">/images/logo.svg</span></span><br><span class="line">  <span class="comment">#android_manifest: /images/manifest.json</span></span><br><span class="line">  <span class="comment">#ms_browserconfig: /images/browserconfig.xml</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="底部标签样式设定"><a href="#底部标签样式设定" class="headerlink" title="底部标签样式设定"></a>底部标签样式设定</h4><p>编辑 主题配置文件，编辑tag_icon为true</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Use icon instead of the symbol # to indicate the tag at the bottom of the post</span></span><br><span class="line"><span class="attr">tag_icon:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h4><p>编辑 主题配置文件，编辑copyright,以及creative_commons。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">copyright:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">creative_commons:</span></span><br><span class="line">  <span class="attr">license:</span> <span class="string">by-nc-sa</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">post:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="※点击头像返回首页"><a href="#※点击头像返回首页" class="headerlink" title="※点击头像返回首页"></a>※点击头像返回首页</h4><p>※结合网上老版本next的方法，自己试出来的，有一定问题，但功能能够实现（我没学过前端）</p>
+<p>1.直接在主题文件夹的layout_macro\sidebar.swig里面</p>
+<p>代码div class=”sidebar-inner”下方加入以下代码</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"site-author-image"</span> <span class="attr">itemprop</span>=<span class="string">"image"</span></span></span><br><span class="line"><span class="tag">     <span class="attr">src</span>=<span class="string">"&#123;&#123; url_for( theme.avatar.url | default(theme.images + '/avatar.gif') ) &#125;&#125;"</span></span></span><br><span class="line"><span class="tag">     <span class="attr">alt</span>=<span class="string">"&#123;&#123; author &#125;&#125;"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.如果这个时候刷新页面的话会发现头像会有两个，一个是能够实现点击返回首页的，一个是不能够返回首页的，接下来把之前头像设定那边的设定的url给注释掉，就只剩下一个能够返回首页的头像了</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="comment"># Replace the default image and set the url here.</span></span><br><span class="line">  <span class="comment">#url: /images/avatar.gif</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="插件配置"><a href="#插件配置" class="headerlink" title="插件配置"></a>插件配置</h3><h4 id="评论系统（LiveRe）"><a href="#评论系统（LiveRe）" class="headerlink" title="评论系统（LiveRe）"></a>评论系统（LiveRe）</h4><p>注册 <a href="https://livere.com/" target="_blank" rel="noopener">来必力</a> 获取 LiveRe UID。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># LiveRe comments system</span></span><br><span class="line"><span class="attr">livere_uid:</span> <span class="comment">#在这里填入注册网址的uid代码</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="数据统计与分析（不蒜子）"><a href="#数据统计与分析（不蒜子）" class="headerlink" title="数据统计与分析（不蒜子）"></a>数据统计与分析（不蒜子）</h4><p>编辑 主题配置文件，编辑busuanzi_count。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">busuanzi_count:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_visitors:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_visitors_icon:</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">total_views:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_views_icon:</span> <span class="string">fa</span> <span class="string">fa-eye</span></span><br><span class="line">  <span class="attr">post_views:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">post_views_icon:</span> <span class="string">fa</span> <span class="string">fa-eye</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="搜索功能（本地搜索）"><a href="#搜索功能（本地搜索）" class="headerlink" title="搜索功能（本地搜索）"></a>搜索功能（本地搜索）</h4><p>1.安装 hexo-generator-searchdb</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+
+<p>2.编辑 站点配置文件，新增代码</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure>
+
+<p>3.编辑 主题配置文件，启用本地搜索功能</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local Search</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="推送到github或者gitee"><a href="#推送到github或者gitee" class="headerlink" title="推送到github或者gitee"></a>推送到github或者gitee</h3><p>1.安装hexo-deployer-git插件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>2.生成密钥SSH，输入下面的代码然后敲四下回车</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>3.生成的文件的位置在Git上有显示，复制公钥 id_rsa.pub 文件里的内容，粘贴到github或gitee的SSH公钥里（具体教程网上有很多），具体可以参考：<a href="https://zhuanlan.zhihu.com/p/103391101" target="_blank" rel="noopener">网址</a></p>
+<p>5.编辑 站点配置文件，编辑deploy</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">仓库地址</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<p>6.上面设定完后在Git依次执行下面的代码，其中hexo d为推送到仓库里去（需要注意的是，gitee部署网页每次需要手动更新）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://theme-next.js.org/docs/theme-settings/posts.html" target="_blank" rel="noopener">next官方文档</a></p>
+<p><a href="https://www.simon96.online/2018/10/12/hexo-tutorial/" target="_blank" rel="noopener">【持续更新】最全Hexo博客搭建+主题优化+插件配置+常用操作+错误分析</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/102592286" target="_blank" rel="noopener">从零开始搭建个人博客（超详细）</a></p>
+<p><a href="https://blog.csdn.net/qq_35396510/article/details/105953460" target="_blank" rel="noopener">hexo 主题 next7.8 版本配置美化</a></p>
+]]></content>
+      <categories>
+        <category>编程心得</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>笔记：JavaSE语言基础②——对象与类</title>
+    <url>/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%AC%94%E8%AE%B0%EF%BC%9AJavaSE%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E2%91%A1%E2%80%94%E2%80%94%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB/</url>
+    <content><![CDATA[<p>本篇章以Core Java为基础，记录自己学习Java以及这本书时候的笔记，供自己后续翻阅回顾用。</p>
+<p>分为基础语法，面向对象，接口，容器，异常，泛型，反射，注解和I/O等篇章。</p>
+<p>本小节为语言基础的对象与类篇，主要记录了面向对象，预定义类，自定义类等方面的笔记。</p>
+<a id="more"></a>
+
+<hr>
+<h3 id="面向对象概述"><a href="#面向对象概述" class="headerlink" title="面向对象概述"></a>面向对象概述</h3><p><strong>大三特性：封装，继承，多态</strong></p>
+<h4 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h4><p>&emsp;&emsp;面向对象程序设计（OOP），面向对象的程序由对象组成，每个对象包含对用户公开的特定功能部分和隐藏的实现部分。</p>
+<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>&emsp;&emsp;类是构造对象的模板或蓝图，由类构造对象的过程称为创建类的实例。</p>
+<p>&emsp;&emsp;封装：是处理对象的一个重要的概念。封装就是就是将数据和行为组合在一个包中，并对对象的使用者隐藏具体的实现方式。对象中的数据称为实例字段（实例变量），操作数据的过程称为方法。</p>
+<p>&emsp;&emsp;实现封装的关键在于，绝对不能让类中的方法直接访问其他类的实例字段。程序只能通过对象的方法与对象数据进行交互。</p>
+<p>&emsp;&emsp;继承：在Java中，所有的类都源于Object。所有类都扩展自这个Object。扩展一个已有的类时，这个扩展后的新类具有被扩展类的全部属性和方法（不继承构造方法）。通过扩展一个类来建立另外一个类的过程称为继承</p>
+<p>&emsp;&emsp;多态：</p>
+<h4 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h4><p>&emsp;&emsp;对象的三个主要特性：</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.对象的行为：可以对对象完成哪些操作，或者可以对对象应用哪些方法。</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.对象的状态：当调用那些方法时，对象会如何响应。</p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.对象的标识：如何区分具有相同行为和状态的不同对象。</p>
+<p>&emsp;&emsp;对象的行为是用可调用的方法来定义的。</p>
+<p>&emsp;&emsp;对象的状态的改变必须通过调用方法实现。</p>
+<p>&emsp;&emsp;每个对象都有一个唯一的标识。作为同一类的实例，每个对象的标识总是不同的，状态往往也会有差异。</p>
+<h4 id="类之间的关系"><a href="#类之间的关系" class="headerlink" title="类之间的关系"></a>类之间的关系</h4><p>&emsp;&emsp;在类之间，最常见的关系有：1.依赖（uses a）&emsp;&emsp;2.聚合（has a）&emsp;&emsp;3.继承（is a）</p>
+<p>&emsp;&emsp;依赖（uses a）：如果一个类的方法使用或操作另一个类的对象，我们就说一个类依赖于另一个类。我们应该尽可能地将相互依赖的类减至最少（解耦合）。即尽可能减少类之间的耦合。</p>
+<p>&emsp;&emsp;聚合（has a）：包容关系意味着类A的对象包含类B的对象。（即B是A的一个属性）</p>
+<p>&emsp;&emsp;继承（is a）：表示一个更特殊的类与一个更一般的类之间的关系。一般而言，如果类A扩展类B，类A不但包含从类B继承的方法，还会有一些额外的方法。</p>
+<hr>
+<h3 id="预定义类"><a href="#预定义类" class="headerlink" title="预定义类"></a>预定义类</h3><p>&emsp;&emsp;想要使用对象，首先必须构造对象，并指定其初始状态。然后对对象应该方法。</p>
+<h4 id="需要构造方法的Date类"><a href="#需要构造方法的Date类" class="headerlink" title="需要构造方法的Date类"></a>需要构造方法的Date类</h4><p>&emsp;&emsp;在Java中，要使用构造器（构造方法）构造新实例。构造器是一种特殊的方法，用来构造并初始化对象。</p>
+<p>&emsp;&emsp;构造器的名字应该和类名相同，想要通过构造器构造一个对象，需要在构造器前面加上一个new操作符。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Date birthday = <span class="keyword">new</span> Date();</span><br></pre></td></tr></table></figure>
+
+<p>其中new Date()为创建了一个对象，变量birthday是一个引用，里面存放的是对象的地址。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Date deadline;  <span class="comment">//变量deadline没有引用任何对象</span></span><br><span class="line"></span><br><span class="line">deadline = <span class="keyword">new</span> Date();  <span class="comment">//利用构造器，让变量deadline引用一个新的对象</span></span><br><span class="line"></span><br><span class="line">deadline = birthday;    <span class="comment">//利用赋值，让变量deadline引用已有对象</span></span><br></pre></td></tr></table></figure>
+
+<p>要重要的认识到一点：对象变量并没有实际包含一个对象，它只是引用一个对象。在Java中，任何对象变量的值都是对存储在堆内存中的某个对象的引用。包括new操作符的返回值也是一个引用。</p>
+<p>&emsp;&emsp;<strong>※对象由new+构造器创建并存在堆内存中，而引用变量存在栈中，变量里存放的引用指向的对象的内存地址。</strong></p>
+<p>&emsp;&emsp;可以显式地将对象变量设置为null，只是这个对象目前没有引用任何对象（编译能通过，但运行会有空指针异常NullPointException）。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">deadline = <span class="keyword">null</span>；   <span class="comment">//deadline被设置为空</span></span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※可以把Java中的对象变量看做类似于C++中的对象指针。</p>
+<h4 id="不需要构造方法的LocalDate类"><a href="#不需要构造方法的LocalDate类" class="headerlink" title="不需要构造方法的LocalDate类"></a>不需要构造方法的LocalDate类</h4><p>&emsp;&emsp;在创建LocalDate对象的时候，不需要调用构造器。应该使用静态工厂方法，它会代表你调用构造器。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">LocalDate time = LocalDate.now();    <span class="comment">//LocalDate为类名，静态方法采用类名.的方式调用</span></span><br></pre></td></tr></table></figure>
+
+<p>调用这个方法会构造一个新的对象，并把初始化为构造这个对象时的日期。</p>
+<p>&emsp;&emsp;可以使用LocalDate.of()来构造指定日期的对象</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">LocalDate time1 = LocalDate.of(<span class="number">1996</span>, <span class="number">3</span>, <span class="number">22</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="更改器方法（setter）和访问器方法（getter）"><a href="#更改器方法（setter）和访问器方法（getter）" class="headerlink" title="更改器方法（setter）和访问器方法（getter）"></a>更改器方法（setter）和访问器方法（getter）</h4><p>&emsp;&emsp;更改器方法能修改对象的状态，但不会产生新的对象。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;访问器方法只能访问对象而不修改对象的状态。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※因为封装完整性，每个类都应该有其各个属性的setter和getter，即使可能暂时用不着也要写出来。</p>
+<hr>
+<h3 id="自定义类"><a href="#自定义类" class="headerlink" title="自定义类"></a>自定义类</h3><h4 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h4><p>&emsp;&emsp;构造器与其他方法有有个重要的不同，构造器总是结合new运算符调用。不能对一个已经存在的对象调用构造器来达到重新设置实例字段的目的。</p>
+<p>&emsp;&emsp;构造器与类同名；每一个类可以有一个以上的构造器；构造器可以有多个参数；构造器没有返回值；构造器总是伴随着new一起调用。</p>
+<p>&emsp;&emsp;※不要再构造器中定义与实例字段同名的局部变量。但在构造器的参数列表里可以使用同名</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的this.name指的是类的实例字段，类似于对象.的方式。</p>
+<h4 id="var"><a href="#var" class="headerlink" title="var"></a>var</h4><p>&emsp;&emsp;<font color="#FF0000"><strong>在Java10中</strong></font>，如果可以从变量的初始值推导出它们的类型，那么可以用var关键字声明局部变量，而不需指定类型。</p>
+<p>&emsp;&emsp;<strong>※注意var关键字只能用于方法中的局部变量。参数和字段（成员变量）的类型必须声明。</strong></p>
+<h4 id="null"><a href="#null" class="headerlink" title="null"></a>null</h4><p>&emsp;&emsp;一个对象变量包含一个对象的引用，或者包含一个特殊值null，null表示没有引用任何对象。如果对null值应用一个方法，将会产生一个NullPointerException异常（空指针异常）。这是一个很严重的错误，为了解决这种错误，有两种解决方法：</p>
+<p>&emsp;&emsp;1：将null值转换为一个适当的非null值。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (n == <span class="keyword">null</span>)&#123;</span><br><span class="line">    name = <span class="string">"unknown"</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    name = n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><font color="#FF0000"><strong>在Java9中</strong></font>Object类提供了一个便利的方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">name = Object.requireNonNullElse(n, <span class="string">"unknown"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;2：直接拒绝null参数。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Object.requireNonNullElse(n, <span class="string">"The name cannot be null"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果有人用了null构造对象，就会产生一个空指针异常，异常报告会提供这个问题的描述，以及报告会准确地指出问题所在的位置。（抛出的异常会显示”The name cannot be null”）</p>
+<h4 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h4><p>&emsp;&emsp;想要获得或设置实例字段的值，就需要提供三项内容：1.一个私有的数据字段（private）2.一个公共的字段访问器方法（getter）3.一个公共的字段更改器方法（setter）。</p>
+<p>&emsp;&emsp;注意不要编写返回可变对象引用的访问器方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date hireDay;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getHireDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> hireDay; <span class="comment">//不要这么做</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Date类是可变类，返回了可变类后，接收Date类的变量d和Employee对象调用hireDay指向同一个Date对象了。那么对变量d的改变就能修改Date对象的私有状态了，这就破坏了封装性。如果需要返回一个可变对象的引用，首先应该对它进行克隆。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date hireDay;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getHireDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Date) hireDay.clone();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="%E8%BF%94%E5%9B%9E%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%E5%AD%97%E6%AE%B5%E7%9A%84%E5%BC%95%E7%94%A8.png" alt="返回可变数据字段的引用"></p>
+<h4 id="私有方法"><a href="#私有方法" class="headerlink" title="私有方法"></a>私有方法</h4><p>&emsp;&emsp;有时，可能希望将一个计算代码分解成若干个对立的辅助方法，通常这些辅助方法不应该成为公共接口的一部分。这时最好的方法是将这些辅助方法设置为私有方法。在Java中要实现私有方法只需要将关键字public改为private即可</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sum</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="final实例字段"><a href="#final实例字段" class="headerlink" title="final实例字段"></a>final实例字段</h4><p>&emsp;&emsp;可以将实例字段定义为final。这样的字段必须在构造对象时初始化。也就是说，必须确保在每一个构造器执行之后，这个字段的值以及设置，并且以后不能再修改。final修饰符对于基本类型和不可变类的字段尤其有用。</p>
+<hr>
+<h3 id="静态变量与静态方法"><a href="#静态变量与静态方法" class="headerlink" title="静态变量与静态方法"></a>静态变量与静态方法</h3><p>&emsp;&emsp;静态字段和静态方法都是由static修饰的。使用类名.来访问。</p>
+<h4 id="静态字段"><a href="#静态字段" class="headerlink" title="静态字段"></a>静态字段</h4><p>&emsp;&emsp;静态变量：成员变量使用static修饰后，将属于类，而不属于任何单个对象。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> nextId = <span class="number">1</span>;  <span class="comment">//静态字段，属于类，使用类名.的方式来访问</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id; <span class="comment">//实例字段，需要对象才能调用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;静态常量：静态变量实际使用不多，更多为静态常量，即使用static和final同时修饰。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Math</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">double</span> PI = <span class="number">3.1415926</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h4><p>&emsp;&emsp;在调用时不需要对象，使用类名.的方式来调用。静态方法因为不需要对象，所以不能访问实例字段，但静态方法可以访问静态字段。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> nextId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;※在Java中虽然可以使用对象来调用静态方法，但因为这样容易造成混淆，所以建议使用类名来调用静态方法。</p>
+<p>&emsp;&emsp;在以下两种情况下可以使用静态方法：1.方法不需要访问对象状态，因为它需要的所有参数都通过显式参数提供。2.方法只需要访问类的静态字段。</p>
+<p>&emsp;&emsp;</p>
+<p>&emsp;&emsp;工厂方法：静态方法还有另外一种常见的用途。类似LocalDate，NumberFormat的类使用静态工厂方法来构造对象（工厂方法代表程序员调用构造方法）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">LocalDate time = LocalDate.now();</span><br></pre></td></tr></table></figure>
+
+<p>为什么这些类不使用构造器呢：1.无法命名构造器。构造器名字必须和类名相同。但是这里希望有两个不同的名字分别得到不同的实例。2.使用构造器时，无法改变所构造对象的类型。而工厂方法实际将返回一个子类。而非调用这个方法的类 <strong>（存疑，可以直接使用向上转型而不必使用工厂方法）</strong></p>
+<h4 id="main方法"><a href="#main方法" class="headerlink" title="main方法"></a>main方法</h4><p>&emsp;&emsp;main方法前也是有static修饰的。其实可以在每个类中都设置main方法用于对类的测试（单元测试）。</p>
+<hr>
+<h3 id="方法参数"><a href="#方法参数" class="headerlink" title="方法参数"></a>方法参数</h3><p>&emsp;&emsp;程序设计中将参数传递给方法有：按值调用（表示方法接收的是调用者提供的值）；按引用调用（表示方法接收的是调用者提供的变量地址）；还有一种按名调用。在Java程序中，是采用按值调用的。也就是说吗，方法得到的是所有参数值的一个副本，方法的调用不能修改给它的任何参数变量的内容。</p>
+<p>&emsp;&emsp;对于基本数据类型：x初始化为percent值的副本，x乘3后，但percent仍然没变，方法结束后x释放，percent仍为10。所以一个方法不能修改基本数据类型。</p>
+<p><img data-src="%E4%BF%AE%E6%94%B9%E5%8F%82%E6%95%B0%E5%80%BC%E5%8F%82%E6%95%B0%E6%B2%A1%E6%9C%89%E6%8C%81%E4%B9%85%E6%95%88%E6%9E%9C.png" alt="修改参数值参数没有持久效果"></p>
+<p>&emsp;&emsp;对于引用数据类型：x初始化为harry的一个副本，这里就是一个对象的引用，x副本引用和harry引用同时指向Employee，所有对引用调用方法，就能改变对象的状态，方法结束后x释放，但harry指向的对象的状态已经被改变。</p>
+<p><img data-src="%E4%BF%AE%E6%94%B9%E5%AF%B9%E8%B1%A1%E5%8F%82%E6%95%B0%E6%9C%89%E6%8C%81%E4%B9%85%E6%95%88%E6%9E%9C.png" alt="修改对象参数有持久效果"></p>
+<p>&emsp;&emsp;对于交换对象：a，b初始化为alice和bob的副本，这里就是这两个对象的引用，a副本和alice指向同一个对象，b副本和bob指向同一个对象，现在将a和b进行交换，a副本和bob指向同一个对象，b副本和alice指向同一个对象，方法结束后，释放a和b，alice和bob仍然指向调用方法前的对象。</p>
+<p><img data-src="%E4%BA%A4%E6%8D%A2%E5%AF%B9%E8%B1%A1%E5%8F%82%E6%95%B0%E6%B2%A1%E6%9C%89%E6%8C%81%E4%B9%85%E6%95%88%E6%9E%9C.png" alt="交换对象参数没有持久效果"></p>
+<p>※总结：方法不能修改基本数据类型的参数（即数值型和布尔型）。</p>
+<p>&emsp;&emsp;&emsp;&emsp;方法可以改变对象参数的状态。</p>
+<p>&emsp;&emsp;&emsp;&emsp;方法不能让一个对象参数引用一个新的对象。</p>
+<hr>
+<h3 id="对象构造"><a href="#对象构造" class="headerlink" title="对象构造"></a>对象构造</h3><h4 id="重载（overlord）"><a href="#重载（overlord）" class="headerlink" title="重载（overlord）"></a>重载（overlord）</h4><p>&emsp;&emsp;如果多个方法有相同的名字，不同的参数，便会出现重载。编译器必须挑选出具体条用哪个方法。它用各个方法首部中的参数类型与特定方法调用中所使用的的值的类型进行匹配，来选出正确的方法。（这个查找的过程被称为重载解析）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">overloadTest</span><span class="params">(<span class="keyword">int</span> a)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">overloadTest</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">overloadTest</span><span class="params">(<span class="keyword">double</span> c)</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在Java中允许重载任何方法，要完整地描述一个方法，需要指定方法名以及参数类型。（这叫作方法的签名）。返回类型不是方法签名的一部分，也就是说不能有两个名字相同，参数类型和数目相同，却又不同返回类型的方法。</p>
+<h4 id="构造器-1"><a href="#构造器-1" class="headerlink" title="构造器"></a>构造器</h4><p>&emsp;&emsp;如果写一个类时没有编写构造器，系统会默认提供一个无参数构造器。这个构造器将所有的实例字段设置为默认值（数值为0，布尔为false，对象引用为null）。</p>
+<p>&emsp;&emsp;如果一个类中手动提供了一个有参数构造器，系统默认提供的无参数构造器会消失。那么创建对象时调用无参构造器将是不合法的。（一般建议无参数构造器和有参数构造器都手动添加）。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name)</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name, <span class="keyword">int</span> id)</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;在构造器中，参数变量名经常会和实例字段名相同。但实例字段名前面其实是有this.（指示隐式参数），也就是所构建的对象。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name, <span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.id = id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用构造器时，将传进来的name变量和id变量的值赋值给name实例字段和id实例字段。（this.是可以省略的，编译器编译时会自动填充this.）</p>
+<h4 id="调用另一个构造器"><a href="#调用另一个构造器" class="headerlink" title="调用另一个构造器"></a>调用另一个构造器</h4><p>&emsp;&emsp;如果构造器的第一句语句形式是this(…)，这个构造器将调用同一个类的另一个构造器，具体调用哪个构造器，看传进来的参数类型和参数个数。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> Employee&#123;</span><br><span class="line">    <span class="keyword">this</span>(<span class="string">"Harry"</span>, <span class="number">123</span>); <span class="comment">//调用了另一个构造器</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name, <span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.id = id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="初始化块"><a href="#初始化块" class="headerlink" title="初始化块"></a>初始化块</h4><p>&emsp;&emsp;初始化数据字段除了在构造器中设置值和在声明中赋值，还有使用初始化块。</p>
+<p>&emsp;&emsp;非静态代码块，在创建对象时运行且在构造器之前运行。</p>
+<p>&emsp;&emsp;静态代码块，在类第一次加载时运行。并且使用static修饰。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span></span>&#123;</span><br><span class="line">    <span class="comment">//非静态代码块，创建对象时，先执行代码块进行初始化，再执行构造器。</span></span><br><span class="line">    &#123;</span><br><span class="line">        nextId++；</span><br><span class="line">        id = nextId；</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//静态代码块，第一次类加载时执行初始化。</span></span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        nextId = <span class="number">0</span>；</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;静态代码块为程序员提供了一个时机，即加载类的时机。非静态代码块也为程序员提供了一个时机，即创建对象的时机。</p>
+<p>&emsp;&emsp;※从类加载到初始化：</p>
+<p>&emsp;&emsp;&emsp;&emsp;创建对象时，先加载对象的类，加载时执行类的静态代码块，对象创建，执行费静态代码块，最后执行构造器。如果构造器的第一行调用了其他构造器则调用所对应的构造器。</p>
+<hr>
+<h3 id="包"><a href="#包" class="headerlink" title="包"></a>包</h3><p>&emsp;&emsp;使用包的主要原因是为了保证包名的绝对唯一性，通常使用因特网域名逆序的形式作为包名，然后对于不同的工程师使用不同的子包。例如：com.kumarinko.core.Employee。</p>
+<h4 id="导包"><a href="#导包" class="headerlink" title="导包"></a>导包</h4><p>&emsp;&emsp;我们可以采用两种方式访问另一个保重的公共类。</p>
+<p>&emsp;&emsp;&emsp;&emsp;第一种方式就是使用完全限定名，就是类名前面有包名。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">java.time.LocalDate today = java.time.LocalDate.now();</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;&emsp;&emsp;第二种方式就是使用import语句。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.time.*;</span><br><span class="line">LocalDate today = LocalDate.now();</span><br></pre></td></tr></table></figure>
+
+<p>使用java,time.*的语法比较简单，对代码的规范也没有任何负面影响。不过，如果能够明确地指出所导入的类，代码的读者能更加准确地知道使用了哪些类。</p>
+<p>※需要注意的是，只能使用星号导入一个包，而不能使用import java.<em>或者import java.</em>.*来导入以java为前缀的所有包。</p>
+<p>&emsp;&emsp;如果发生命名冲突的时候，需要特别注意。例如java.util和java.sql包都有Date类。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*</span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"></span><br><span class="line">Date date;</span><br></pre></td></tr></table></figure>
+
+<p>这时候会出现编译错误，编译器无法知道哪个是需要用的包，这时候将特定的包导进来就好，但如果两个Date类都要使用的话，那只能在每个类名的前面加上完整的包名了。</p>
+<h4 id="静态导入"><a href="#静态导入" class="headerlink" title="静态导入"></a>静态导入</h4><p>&emsp;&emsp;静态导入允许导入静态方法和静态字段，而不只是类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.System.*;</span><br><span class="line">out.println(<span class="string">"Hello"</span>);   <span class="comment">//完整的应该是System.out.println()</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="建包"><a href="#建包" class="headerlink" title="建包"></a>建包</h4><p>&emsp;&emsp;package是java中的包机制，要想将类放入包中，就必须将包的名字放在源文件的开头，即放在定义这个包中各种类的代码前。</p>
+<p>&emsp;&emsp;如果没有在源文件中放置package语句，这个源文件中的类就属于无名类。</p>
+<p>&emsp;&emsp;※编译器在编译源文件的时候不检查目录结构。即使源文件不在子目录下，也可以进行编译。如果它不依赖与其他包，就可以通过编译，但最终程序运行不了，因为如果包与目录不匹配，虚拟机就找不到类。</p>
+<h4 id="访问权限"><a href="#访问权限" class="headerlink" title="访问权限"></a>访问权限</h4><table>
+<thead>
+<tr>
+<th>访问权限</th>
+<th>含义</th>
+<th>本类</th>
+<th>本包类</th>
+<th>非本包子类</th>
+<th>非本包非子类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public</td>
+<td>公共的</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>protected</td>
+<td>保护访问权限</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>default</td>
+<td>包访问权限</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>private</td>
+<td>私有的</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="文档注释"><a href="#文档注释" class="headerlink" title="文档注释"></a>文档注释</h3><p>&emsp;&emsp;JDK有个叫做javadoc的工具，它可以由源文件生成一个HTML文档。文档注释以 /** 开头，以 */ 结束。注释中的标记以@开始。</p>
+<p>&emsp;&emsp;文档注释的第一句话应该是一个概要性的句子。javadoc会将这些句子抽取来生成概要页。</p>
+<h4 id="通用注释"><a href="#通用注释" class="headerlink" title="通用注释"></a>通用注释</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@since</span>  <span class="comment">//这个标记会创建一个始于条目。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@author</span>  <span class="comment">//这个标记会产生一个作者条目。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@version</span> <span class="comment">//这个标记会产生一个版本条目。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@see</span>  <span class="keyword">package</span><span class="class">.<span class="keyword">class</span>#<span class="title">label</span>//这个标记可以使用超链接</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"></span>&#123;<span class="meta">@link</span> <span class="keyword">package</span><span class="class">.<span class="keyword">class</span>#<span class="title">label</span>&#125; //这个标记可以使用超链接</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"></span>&#123;<span class="meta">@index</span> entry&#125;  <span class="comment">//在Java9中，这个标记可以为搜索添加一个条目</span></span><br></pre></td></tr></table></figure>
+
+<p>※需要注意的是，在使用@see和@link的时候一定要用#来分隔类名与方法名，或者类名与变量名。</p>
+<p>@see标记后加&lt; 可以超链接到任何URL。</p>
+<h4 id="类注释"><a href="#类注释" class="headerlink" title="类注释"></a>类注释</h4><p>&emsp;&emsp;类注释必须放在import语句之后，类定义之前。</p>
+<h4 id="方法注释"><a href="#方法注释" class="headerlink" title="方法注释"></a>方法注释</h4><p>&emsp;&emsp;每个方法注释必须放在所描述的方法之前。除了通用标记以外，还可以有一下标记：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@param</span>  <span class="comment">//这个标记将给当前方法的参数部分添加一个条目。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@return</span> <span class="comment">//这个标记将给当前方法添加返回部分。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@throw</span>  <span class="comment">//这个标记将添加一个注释，表示这个方法有可能抛出异常。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="字段注释"><a href="#字段注释" class="headerlink" title="字段注释"></a>字段注释</h4><p>&emsp;&emsp;对公共的字段（通常是静态常量）建立文档</p>
+<h4 id="包注释"><a href="#包注释" class="headerlink" title="包注释"></a>包注释</h4><p>&emsp;&emsp;包注释需要在每一个包目录中添加一个单独的文件，可以有以下两个选择：</p>
+<p>&emsp;&emsp;1.提供一个名为package-info.java的Java文件。这个文件必须包含一个初始的以 /** 和 */ 界定的Javadoc注释，后面是一个package语句。它不能包含更多的代码或注释。</p>
+<p>&emsp;&emsp;2.提供一个名为package.html的HTML文件。会抽取标记&lt; body &gt;…&lt; /body &gt;之间的所有文本。</p>
+<hr>
+<h3 id="类设计技巧"><a href="#类设计技巧" class="headerlink" title="类设计技巧"></a>类设计技巧</h3><p><strong>一定要保证数据私有。</strong></p>
+<p>&emsp;&emsp;绝对不要破坏封装性。保持实例变量的私有化。</p>
+<p><strong>一定要对数据进行初始化。</strong></p>
+<p><strong>不要在类中使用过多的基本类型。</strong></p>
+<p><strong>不是所有的字段都需要单独的访问器和更改器。</strong></p>
+<p><strong>分解有过多职责的类。</strong></p>
+<p><strong>类名和方法名要能体现它们的职责。</strong></p>
+<p>&emsp;&emsp;类名应该是一个名词，或者是有形容词修饰的名词，亦或是有动名词修饰的名词。</p>
+<p>&emsp;&emsp;方法名应该是一个动词。遵循标准惯例：访问器方法用小写get开头，更改器方法用小写的set开头。</p>
+<p><strong>优先使用不可变类。</strong></p>
+<hr>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>《Core Java Volume I-Fundamentals》第四章</p>
+]]></content>
+      <categories>
+        <category>编程笔记</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Core Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>笔记：JavaSE语言基础①——基础语法</title>
     <url>/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%AC%94%E8%AE%B0%EF%BC%9AJavaSE%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E2%91%A0%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[<p>本篇章以Core Java为基础，记录自己学习Java以及这本书时候的笔记，供自己后续翻阅回顾用。</p>
@@ -283,276 +680,6 @@
       <tags>
         <tag>Java</tag>
         <tag>Core Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>笔记：JavaSE语言基础②——对象与类</title>
-    <url>/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%AC%94%E8%AE%B0%EF%BC%9AJavaSE%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E2%91%A1%E2%80%94%E2%80%94%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB/</url>
-    <content><![CDATA[<p>本篇章以Core Java为基础，记录自己学习Java以及这本书时候的笔记，供自己后续翻阅回顾用。</p>
-<p>分为基础语法，面向对象，接口，容器，异常，泛型，反射，注解和I/O等篇章。</p>
-<p>本小节为语言基础的对象与类篇，主要记录了面向对象，预定义类，自定义类等方面的笔记。</p>
-<a id="more"></a>
-
-<hr>
-<h3 id="面向对象概述"><a href="#面向对象概述" class="headerlink" title="面向对象概述"></a>面向对象概述</h3><p><strong>大三特性：封装，继承，多态</strong></p>
-<h4 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h4><p>&emsp;&emsp;面向对象程序设计（OOP），面向对象的程序由对象组成，每个对象包含对用户公开的特定功能部分和隐藏的实现部分。</p>
-<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>&emsp;&emsp;类是构造对象的模板或蓝图，由类构造对象的过程称为创建类的实例。</p>
-<p>&emsp;&emsp;封装：是处理对象的一个重要的概念。封装就是就是将数据和行为组合在一个包中，并对对象的使用者隐藏具体的实现方式。对象中的数据称为实例字段（实例变量），操作数据的过程称为方法。</p>
-<p>&emsp;&emsp;实现封装的关键在于，绝对不能让类中的方法直接访问其他类的实例字段。程序只能通过对象的方法与对象数据进行交互。</p>
-<p>&emsp;&emsp;继承：在Java中，所有的类都源于Object。所有类都扩展自这个Object。扩展一个已有的类时，这个扩展后的新类具有被扩展类的全部属性和方法（不继承构造方法）。通过扩展一个类来建立另外一个类的过程称为继承</p>
-<p>&emsp;&emsp;多态：</p>
-<h4 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h4><p>&emsp;&emsp;对象的三个主要特性：</p>
-<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.对象的行为：可以对对象完成哪些操作，或者可以对对象应用哪些方法。</p>
-<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.对象的状态：当调用那些方法时，对象会如何响应。</p>
-<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.对象的标识：如何区分具有相同行为和状态的不同对象。</p>
-<p>&emsp;&emsp;对象的行为是用可调用的方法来定义的。</p>
-<p>&emsp;&emsp;对象的状态的改变必须通过调用方法实现。</p>
-<p>&emsp;&emsp;每个对象都有一个唯一的标识。作为同一类的实例，每个对象的标识总是不同的，状态往往也会有差异。</p>
-<h4 id="类之间的关系"><a href="#类之间的关系" class="headerlink" title="类之间的关系"></a>类之间的关系</h4><p>&emsp;&emsp;在类之间，最常见的关系有：1.依赖（uses a）&emsp;&emsp;2.聚合（has a）&emsp;&emsp;3.继承（is a）</p>
-<p>&emsp;&emsp;依赖（uses a）：如果一个类的方法使用或操作另一个类的对象，我们就说一个类依赖于另一个类。我们应该尽可能地将相互依赖的类减至最少（解耦合）。即尽可能减少类之间的耦合。</p>
-<p>&emsp;&emsp;聚合（has a）：包容关系意味着类A的对象包含类B的对象。（即B是A的一个属性）</p>
-<p>&emsp;&emsp;继承（is a）：表示一个更特殊的类与一个更一般的类之间的关系。一般而言，如果类A扩展类B，类A不但包含从类B继承的方法，还会有一些额外的方法。</p>
-<hr>
-<h3 id="预定义类"><a href="#预定义类" class="headerlink" title="预定义类"></a>预定义类</h3><p>&emsp;&emsp;想要使用对象，首先必须构造对象，并指定其初始状态。然后对对象应该方法。</p>
-<h4 id="需要构造方法的Date类"><a href="#需要构造方法的Date类" class="headerlink" title="需要构造方法的Date类"></a>需要构造方法的Date类</h4><p>&emsp;&emsp;在Java中，要使用构造器（构造方法）构造新实例。构造器是一种特殊的方法，用来构造并初始化对象。</p>
-<p>&emsp;&emsp;构造器的名字应该和类名相同，想要通过构造器构造一个对象，需要在构造器前面加上一个new操作符。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Date birthday = <span class="keyword">new</span> Date();</span><br></pre></td></tr></table></figure>
-
-<p>其中new Date()为创建了一个对象，变量birthday是一个引用，里面存放的是对象的地址。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Date deadline;  <span class="comment">//变量deadline没有引用任何对象</span></span><br><span class="line"></span><br><span class="line">deadline = <span class="keyword">new</span> Date();  <span class="comment">//利用构造器，让变量deadline引用一个新的对象</span></span><br><span class="line"></span><br><span class="line">deadline = birthday;    <span class="comment">//利用赋值，让变量deadline引用已有对象</span></span><br></pre></td></tr></table></figure>
-
-<p>要重要的认识到一点：对象变量并没有实际包含一个对象，它只是引用一个对象。在Java中，任何对象变量的值都是对存储在堆内存中的某个对象的引用。包括new操作符的返回值也是一个引用。</p>
-<p>&emsp;&emsp;<strong>※对象由new+构造器创建并存在堆内存中，而引用变量存在栈中，变量里存放的引用指向的对象的内存地址。</strong></p>
-<p>&emsp;&emsp;可以显式地将对象变量设置为null，只是这个对象目前没有引用任何对象（编译能通过，但运行会有空指针异常NullPointException）。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">deadline = <span class="keyword">null</span>；   <span class="comment">//deadline被设置为空</span></span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;※可以把Java中的对象变量看做类似于C++中的对象指针。</p>
-<h4 id="不需要构造方法的LocalDate类"><a href="#不需要构造方法的LocalDate类" class="headerlink" title="不需要构造方法的LocalDate类"></a>不需要构造方法的LocalDate类</h4><p>&emsp;&emsp;在创建LocalDate对象的时候，不需要调用构造器。应该使用静态工厂方法，它会代表你调用构造器。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">LocalDate time = LocalDate.now();    <span class="comment">//LocalDate为类名，静态方法采用类名.的方式调用</span></span><br></pre></td></tr></table></figure>
-
-<p>调用这个方法会构造一个新的对象，并把初始化为构造这个对象时的日期。</p>
-<p>&emsp;&emsp;可以使用LocalDate.of()来构造指定日期的对象</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">LocalDate time1 = LocalDate.of(<span class="number">1996</span>, <span class="number">3</span>, <span class="number">22</span>);</span><br></pre></td></tr></table></figure>
-
-<h4 id="更改器方法（setter）和访问器方法（getter）"><a href="#更改器方法（setter）和访问器方法（getter）" class="headerlink" title="更改器方法（setter）和访问器方法（getter）"></a>更改器方法（setter）和访问器方法（getter）</h4><p>&emsp;&emsp;更改器方法能修改对象的状态，但不会产生新的对象。</p>
-<p>&emsp;&emsp;访问器方法只能访问对象而不修改对象的状态。</p>
-<p>&emsp;&emsp;※因为封装完整性，每个类都应该有其各个属性的setter和getter，即使可能暂时用不着也要写出来。</p>
-<hr>
-<h3 id="自定义类"><a href="#自定义类" class="headerlink" title="自定义类"></a>自定义类</h3><hr>
-<h3 id="静态变量与静态方法"><a href="#静态变量与静态方法" class="headerlink" title="静态变量与静态方法"></a>静态变量与静态方法</h3><hr>
-<h3 id="对象构造"><a href="#对象构造" class="headerlink" title="对象构造"></a>对象构造</h3><h4 id="重载（overlord）"><a href="#重载（overlord）" class="headerlink" title="重载（overlord）"></a>重载（overlord）</h4><p>&emsp;&emsp;如果多个方法有相同的名字，不同的参数，便会出现重载。编译器必须挑选出具体条用哪个方法。它用各个方法首部中的参数类型与特定方法调用中所使用的的值的类型进行匹配，来选出正确的方法。（这个查找的过程被称为重载解析）</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">overloadTest</span><span class="params">(<span class="keyword">int</span> a)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">overloadTest</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">overloadTest</span><span class="params">(<span class="keyword">double</span> c)</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在Java中允许重载任何方法，要完整地描述一个方法，需要指定方法名以及参数类型。（这叫作方法的签名）。返回类型不是方法签名的一部分，也就是说不能有两个名字相同，参数类型和数目相同，却又不同返回类型的方法。</p>
-<h4 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h4><p>&emsp;&emsp;如果写一个类时没有编写构造器，系统会默认提供一个无参数构造器。这个构造器将所有的实例字段设置为默认值（数值为0，布尔为false，对象引用为null）。</p>
-<p>&emsp;&emsp;如果一个类中手动提供了一个有参数构造器，系统默认提供的无参数构造器会消失。那么创建对象时调用无参构造器将是不合法的。（一般建议无参数构造器和有参数构造器都手动添加）。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name)</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name, <span class="keyword">int</span> id)</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;在构造器中，参数变量名经常会和实例字段名相同。但实例字段名前面其实是有this.（指示隐式参数），也就是所构建的对象。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name, <span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.id = id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>调用构造器时，将传进来的name变量和id变量的值赋值给name实例字段和id实例字段。（this.是可以省略的，编译器编译时会自动填充this.）</p>
-<h4 id="调用另一个构造器"><a href="#调用另一个构造器" class="headerlink" title="调用另一个构造器"></a>调用另一个构造器</h4><p>&emsp;&emsp;如果构造器的第一句语句形式是this(…)，这个构造器将调用同一个类的另一个构造器，具体调用哪个构造器，看传进来的参数类型和参数个数。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> Employee&#123;</span><br><span class="line">    <span class="keyword">this</span>(<span class="string">"Harry"</span>, <span class="number">123</span>); <span class="comment">//调用了另一个构造器</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(String name, <span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.id = id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="初始化块"><a href="#初始化块" class="headerlink" title="初始化块"></a>初始化块</h4><p>&emsp;&emsp;初始化数据字段除了在构造器中设置值和在声明中赋值，还有使用初始化块。</p>
-<p>&emsp;&emsp;非静态代码块，在创建对象时运行且在构造器之前运行。</p>
-<p>&emsp;&emsp;静态代码块，在类第一次加载时运行。并且使用static修饰。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span></span>&#123;</span><br><span class="line">    <span class="comment">//非静态代码块，创建对象时，先执行代码块进行初始化，再执行构造器。</span></span><br><span class="line">    &#123;</span><br><span class="line">        nextId++；</span><br><span class="line">        id = nextId；</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//静态代码块，第一次类加载时执行初始化。</span></span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        nextId = <span class="number">0</span>；</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;静态代码块为程序员提供了一个时机，即加载类的时机。非静态代码块也为程序员提供了一个时机，即创建对象的时机。</p>
-<p>&emsp;&emsp;※从类加载到初始化：</p>
-<p>&emsp;&emsp;&emsp;&emsp;创建对象时，先加载对象的类，加载时执行类的静态代码块，对象创建，执行费静态代码块，最后执行构造器。如果构造器的第一行调用了其他构造器则调用所对应的构造器。</p>
-<hr>
-<h3 id="包"><a href="#包" class="headerlink" title="包"></a>包</h3><p>&emsp;&emsp;使用包的主要原因是为了保证包名的绝对唯一性，通常使用因特网域名逆序的形式作为包名，然后对于不同的工程师使用不同的子包。例如：com.kumarinko.core.Employee。</p>
-<h4 id="导包"><a href="#导包" class="headerlink" title="导包"></a>导包</h4><h4 id="静态导入"><a href="#静态导入" class="headerlink" title="静态导入"></a>静态导入</h4><h4 id="建包"><a href="#建包" class="headerlink" title="建包"></a>建包</h4><hr>
-<h3 id="文档注释"><a href="#文档注释" class="headerlink" title="文档注释"></a>文档注释</h3><p>&emsp;&emsp;JDK有个叫做javadoc的工具，它可以由源文件生成一个HTML文档。文档注释以 /** 开头，以 */ 结束。注释中的标记以@开始。</p>
-<p>&emsp;&emsp;文档注释的第一句话应该是一个概要性的句子。javadoc会将这些句子抽取来生成概要页。</p>
-<h4 id="通用注释"><a href="#通用注释" class="headerlink" title="通用注释"></a>通用注释</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@since</span>  <span class="comment">//这个标记会创建一个始于条目。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@author</span>  <span class="comment">//这个标记会产生一个作者条目。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@version</span> <span class="comment">//这个标记会产生一个版本条目。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@see</span>  <span class="keyword">package</span><span class="class">.<span class="keyword">class</span>#<span class="title">label</span>//这个标记可以使用超链接</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"></span>&#123;<span class="meta">@link</span> <span class="keyword">package</span><span class="class">.<span class="keyword">class</span>#<span class="title">label</span>&#125; //这个标记可以使用超链接</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"></span>&#123;<span class="meta">@index</span> entry&#125;  <span class="comment">//在Java9中，这个标记可以为搜索添加一个条目</span></span><br></pre></td></tr></table></figure>
-
-<p>※需要注意的是，在使用@see和@link的时候一定要用#来分隔类名与方法名，或者类名与变量名。</p>
-<p>@see标记后加&lt; 可以超链接到任何URL。</p>
-<h4 id="类注释"><a href="#类注释" class="headerlink" title="类注释"></a>类注释</h4><p>&emsp;&emsp;类注释必须放在import语句之后，类定义之前。</p>
-<h4 id="方法注释"><a href="#方法注释" class="headerlink" title="方法注释"></a>方法注释</h4><p>&emsp;&emsp;每个方法注释必须放在所描述的方法之前。除了通用标记以外，还可以有一下标记：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@param</span>  <span class="comment">//这个标记将给当前方法的参数部分添加一个条目。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@return</span> <span class="comment">//这个标记将给当前方法添加返回部分。</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@throw</span>  <span class="comment">//这个标记将添加一个注释，表示这个方法有可能抛出异常。</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="字段注释"><a href="#字段注释" class="headerlink" title="字段注释"></a>字段注释</h4><p>&emsp;&emsp;对公共的字段（通常是静态常量）建立文档</p>
-<h4 id="包注释"><a href="#包注释" class="headerlink" title="包注释"></a>包注释</h4><p>&emsp;&emsp;包注释需要在每一个包目录中添加一个单独的文件，可以有以下两个选择：</p>
-<p>&emsp;&emsp;1.提供一个名为package-info.java的Java文件。这个文件必须包含一个初始的以 /** 和 */ 界定的Javadoc注释，后面是一个package语句。它不能包含更多的代码或注释。</p>
-<p>&emsp;&emsp;2.提供一个名为package.html的HTML文件。会抽取标记&lt; body &gt;…&lt; /body &gt;之间的所有文本。</p>
-<hr>
-<h3 id="类设计技巧"><a href="#类设计技巧" class="headerlink" title="类设计技巧"></a>类设计技巧</h3><p><strong>一定要保证数据私有。</strong></p>
-<p>&emsp;&emsp;绝对不要破坏封装性。保持实例变量的私有化。</p>
-<p><strong>一定要对数据进行初始化。</strong></p>
-<p><strong>不要在类中使用过多的基本类型。</strong></p>
-<p><strong>不是所有的字段都需要单独的访问器和更改器。</strong></p>
-<p><strong>分解有过多职责的类。</strong></p>
-<p><strong>类名和方法名要能体现它们的职责。</strong></p>
-<p>&emsp;&emsp;类名应该是一个名词，或者是有形容词修饰的名词，亦或是有动名词修饰的名词。</p>
-<p>&emsp;&emsp;方法名应该是一个动词。遵循标准惯例：访问器方法用小写get开头，更改器方法用小写的set开头。</p>
-<p><strong>优先使用不可变类。</strong></p>
-<hr>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>《Core Java Volume I-Fundamentals》第四章</p>
-]]></content>
-      <categories>
-        <category>编程笔记</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Core Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记录：hexo+next博客搭建</title>
-    <url>/%E7%BC%96%E7%A8%8B%E5%BF%83%E5%BE%97/%E8%AE%B0%E5%BD%95%EF%BC%9Ahexo-next%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>本篇以记录为主，记录自己搭建hexo+next时候所配置功能的过程，所以并没有把所有的功能都配置上去，现在所看到的的博客就是根据接下来记录的来配置的。（无音乐播放器，无live2D，无鼠标特效等等）</p>
-<p>这是我目前觉得比较简洁平衡的配置了，尽管如此，还是有许多不太满意的地方，<del>比如我还希望能够点击头像回到首页的功能。</del>（已经实现，虽然可能不是正确的改法）</p>
-<a id="more"></a>
-
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>※之前在查找资料的时候经常能看见诸如还在用hexo？next已经烂大街了之类的言论，但我认为，对于一般人来说并不需要去在意什么烂不烂大街，自己能够搭建起来就好，个人博客重要的是里面的内容，而不是去追求一些花里胡哨的功能，hexo和next说白了只是提供了一个平台和一个模板而已。</p>
-<p><strong>nodejs版本：12.18.2</strong></p>
-<p><strong>hexo版本：3.1.0</strong></p>
-<p><strong>next版本：7.8.0</strong></p>
-<p>下面把Blog下的_config.yml文件简称为站点配置文件<br>把主题下的_config.yml文件简称为主题配置文件</p>
-<hr>
-<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>1.Nodejs下载并安装</p>
-<p>2.Git下载并安装<br>3.设置淘宝镜像</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-<p>4.使用Git安装hexo</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<p>5.新建Blog文件夹</p>
-<p>6.在Blog文件夹下使用Git初始化hexo</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
-
-<p>7.使用Git静态部署</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
-
-<p>8.使用Git启动网页</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p>9.下载next主题，<a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">下载地址</a>，推荐使用Git Bash下载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="站点基本属性的编辑和主题的修改"><a href="#站点基本属性的编辑和主题的修改" class="headerlink" title="站点基本属性的编辑和主题的修改"></a>站点基本属性的编辑和主题的修改</h3><h4 id="编辑基本信息"><a href="#编辑基本信息" class="headerlink" title="编辑基本信息"></a>编辑基本信息</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">ゆるる</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">''</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">LAST</span> <span class="string">STARDUST</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">摇曳Kumarinko</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="修改主题"><a href="#修改主题" class="headerlink" title="修改主题"></a>修改主题</h4><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="主题优化"><a href="#主题优化" class="headerlink" title="主题优化"></a>主题优化</h3><h4 id="主题选择"><a href="#主题选择" class="headerlink" title="主题选择"></a>主题选择</h4><p>编辑 主题配置文件，一共四项主题可以选择，我选择的是Gemini。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">scheme:</span> <span class="string">Gemini</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="首页不显示全文"><a href="#首页不显示全文" class="headerlink" title="首页不显示全文"></a>首页不显示全文</h4><p>1.官方建议在写文章的时候加入以下代码，代码以上为首页可见，代码一下为首页不可见。</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="xml"><span class="comment">&lt;!-- more --&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>2.编辑 主题配置文件，把variable取消注释</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">variable:</span> <span class="string">source/_data/variables.styl</span></span><br></pre></td></tr></table></figure>
-
-<p>3.在站点的source下新建_data文件夹，再在里面新建variables.styl，加入以下代码</p>
-<figure class="highlight styl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Buttons</span></span><br><span class="line">$btn-default-bg                 = white;</span><br><span class="line"><span class="variable">$btn</span>-default-<span class="attribute">color</span>              = <span class="number">#006762</span>;</span><br><span class="line"><span class="variable">$btn</span>-default-<span class="attribute">font-size</span>          = <span class="variable">$font</span>-size-small;</span><br><span class="line"><span class="variable">$btn</span>-default-<span class="attribute">border-width</span>       = <span class="number">2px</span>;</span><br><span class="line"><span class="variable">$btn</span>-default-<span class="attribute">border-color</span>       = <span class="number">#006762</span>;</span><br><span class="line">$btn-default-hover-bg           = #456f95;</span><br><span class="line"><span class="variable">$btn</span>-default-hover-<span class="attribute">color</span>        = white;</span><br><span class="line"><span class="variable">$btn</span>-default-hover-<span class="attribute">border-color</span> = <span class="number">#456f95</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="侧边菜单栏设定"><a href="#侧边菜单栏设定" class="headerlink" title="侧边菜单栏设定"></a>侧边菜单栏设定</h4><p>1.编辑 主题配置文件，把需要的菜单取消注释</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="comment">#schedule: /schedule/ || fa fa-calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || fa fa-sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || fa fa-heartbeat</span></span><br></pre></td></tr></table></figure>
-
-<p>2.在Git下创建对应的页面</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page about</span><br><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
-
-<p>3.对应的网页的markdown在站点的source文件夹下，tags和categories的markdown需要加入对应的type，about就像普通写文章一样就行。</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">type: "tags"</span><br></pre></td></tr></table></figure>
-
-<h4 id="头像设定"><a href="#头像设定" class="headerlink" title="头像设定"></a>头像设定</h4><p>编辑 主题配置文件，第一个选项是图片地址（themes\next\source\images\avatar.gif），第二个选项是把头像变圆，第三个选项是鼠标放上面头像会旋转。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="comment"># Replace the default image and set the url here.</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">/images/avatar.gif</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be dispalyed in circle.</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be rotated with the cursor.</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="社交设定"><a href="#社交设定" class="headerlink" title="社交设定"></a>社交设定</h4><p>把自己想要设定的选项前面的#去掉，fab fa-xxx为<a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>的图库</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/yourname</span> <span class="string">||</span> <span class="string">fab</span> <span class="string">fa-github</span></span><br><span class="line">  <span class="comment">#E-Mail: mailto:yourname@gmail.com || fa fa-envelope</span></span><br><span class="line">  <span class="comment">#Weibo: https://weibo.com/yourname || fab fa-weibo</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || fab fa-google</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="打赏设定"><a href="#打赏设定" class="headerlink" title="打赏设定"></a>打赏设定</h4><p>编辑 主题配置文件,编辑reward。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Reward (Donate)</span></span><br><span class="line"><span class="comment"># Front-matter variable (unsupport animation).</span></span><br><span class="line"><span class="attr">reward_settings:</span></span><br><span class="line">  <span class="comment"># If true, reward will be displayed in every article by default.</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">animation:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">comment:</span> <span class="string">'谢谢你的投食~'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">reward:</span></span><br><span class="line">  <span class="attr">wechatpay:</span> <span class="string">/images/wechatpay.png</span></span><br><span class="line">  <span class="attr">alipay:</span> <span class="string">/images/alipay.png</span></span><br><span class="line">  <span class="comment">#paypal: /images/paypal.png</span></span><br><span class="line">  <span class="comment">#bitcoin: /images/bitcoin.png</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="背景以及各板块透明度设定"><a href="#背景以及各板块透明度设定" class="headerlink" title="背景以及各板块透明度设定"></a>背景以及各板块透明度设定</h4><p>1.编辑 主题配置文件，把style取消注释</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">style:</span> <span class="string">source/_data/styles.styl</span></span><br></pre></td></tr></table></figure>
-
-<p>2.在之前创建的_data下新建styles.styl文件，添加以下代码，透明度随自己设定</p>
-<figure class="highlight styl"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Custom styles.</span></span><br><span class="line"><span class="comment">// 整体背景设置</span></span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line"> 	background:url(/images/background.jpg);// 设定背景图片,images同处于source文件夹下</span><br><span class="line"> 	<span class="attribute">background-repeat</span>: no-repeat;<span class="comment">// 设定背景图片非重复填充</span></span><br><span class="line">    <span class="attribute">background-attachment</span>:fixed;<span class="comment">// 设置背景图片不随页面滚动</span></span><br><span class="line">    <span class="attribute">background-position</span>:<span class="number">50%</span> <span class="number">50%</span>;<span class="comment">// 设置背景图片位置</span></span><br><span class="line">	<span class="attribute">background-size</span>: cover// 设置保持图像的纵横比并将图像缩放成将完全覆盖背景定位区域的最小大小</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 页面头样式属性</span></span><br><span class="line"><span class="selector-class">.header-inner</span> &#123;</span><br><span class="line">  <span class="comment">// 也可以同时定义背景色</span></span><br><span class="line">  <span class="comment">// background: #DDD </span></span><br><span class="line">  <span class="comment">// 透明度</span></span><br><span class="line">  <span class="comment">//opacity: 0.9;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// sidebar侧边工具栏样式属性</span></span><br><span class="line">.sidebar&#123;</span><br><span class="line">    <span class="comment">// 动画过渡时间</span></span><br><span class="line">	<span class="attribute">transition-duration</span>: <span class="number">1.0s</span>;</span><br><span class="line">    <span class="comment">// 透明度</span></span><br><span class="line">	<span class="attribute">opacity</span>: <span class="number">0.9</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 标题样式</span></span><br><span class="line"><span class="selector-class">.posts-expand</span> <span class="selector-class">.post-title-link</span> &#123;</span><br><span class="line">	<span class="comment">// 设置字体颜色</span></span><br><span class="line">	<span class="attribute">color</span>: <span class="number">#222</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 文章版块样式</span></span><br><span class="line"><span class="selector-class">.post-block</span> &#123;</span><br><span class="line">	<span class="attribute">background</span>: rgba(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>,<span class="number">0.7</span>); <span class="comment">//0.7是透明度</span></span><br><span class="line">    <span class="attribute">border-radius</span>: initial;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">2px</span> <span class="number">2px</span> <span class="number">0</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.12</span>), <span class="number">0</span> <span class="number">3px</span> <span class="number">1px</span> -<span class="number">2px</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.06</span>), <span class="number">0</span> <span class="number">1px</span> <span class="number">5px</span> <span class="number">0</span> rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.12</span>);</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">40px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 主页文章添加阴影效果</span></span><br><span class="line"><span class="selector-class">.post</span> &#123;</span><br><span class="line">   <span class="attribute">margin-top</span>: <span class="number">60px</span>;</span><br><span class="line">   <span class="attribute">margin-bottom</span>: <span class="number">60px</span>;</span><br><span class="line">   <span class="attribute">padding</span>: <span class="number">25px</span>;</span><br><span class="line">   -webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);</span><br><span class="line">   -moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3.在站点的source下，新建images文件夹，把要放的背景图放在这个文件夹里</p>
-<h4 id="阅读进度百分比设定"><a href="#阅读进度百分比设定" class="headerlink" title="阅读进度百分比设定"></a>阅读进度百分比设定</h4><p>编辑 主题配置文件，编辑back2top，第一个选项是使能，第二个是侧边显示，右下方显示。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">back2top:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Back to top in sidebar.</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># Scroll percent label in b2t button.</span></span><br><span class="line">  <span class="attr">scrollpercent:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="代码块复制和代码高亮设定"><a href="#代码块复制和代码高亮设定" class="headerlink" title="代码块复制和代码高亮设定"></a>代码块复制和代码高亮设定</h4><p>编辑 主题配置文件，编辑codeblock，（注：markdown编写代码的时候在```之后加上使用的语言就可以实现变色。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">codeblock:</span></span><br><span class="line">  <span class="comment"># Code Highlight theme</span></span><br><span class="line">  <span class="attr">highlight_theme:</span> <span class="string">night</span></span><br><span class="line">  <span class="comment"># Add copy button on codeblock</span></span><br><span class="line">  <span class="attr">copy_button:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Show text copy result.</span></span><br><span class="line">    <span class="attr">show_result:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Available values: default | flat | mac</span></span><br><span class="line">    <span class="attr">style:</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="文章结束添加本文结束的小字"><a href="#文章结束添加本文结束的小字" class="headerlink" title="文章结束添加本文结束的小字"></a>文章结束添加本文结束的小字</h4><p>1.编辑 主题配置文件，把postBodyEnd取消注释</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_file_path:</span></span><br><span class="line">  <span class="attr">postBodyEnd:</span> <span class="string">source/_data/post-body-end.swig</span></span><br></pre></td></tr></table></figure>
-
-<p>2.在之前创建的_data下新建post-body-end.swig文件，添加以下代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">    &#123;% if not is_index %&#125;</span><br><span class="line">        &lt;div style&#x3D;&quot;text-align:center;color: #ccc;font-size:14px;&quot;&gt;-------------本文结束&lt;i class&#x3D;&quot;fa fa-hand-peace-o&quot;&gt;&lt;&#x2F;i&gt;感谢您的阅读-------------&lt;&#x2F;div&gt;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h4><p>使用GitBush安装插件,之后在markdown文章里加入top：就行，数字越大置顶等级越高。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-generator-index --save</span><br><span class="line">npm install hexo-generator-index-pin-top --save</span><br></pre></td></tr></table></figure>
-
-<h4 id="网页右上角的fork-me-on-github"><a href="#网页右上角的fork-me-on-github" class="headerlink" title="网页右上角的fork me on github"></a>网页右上角的fork me on github</h4><p>编辑 主题配置文件，编辑github_banner</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># `Follow me on GitHub` banner in the top-right corner.</span></span><br><span class="line"><span class="attr">github_banner:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">permalink:</span> <span class="string">https://github.com/Kumarinkoos</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">Follow</span> <span class="string">me</span> <span class="string">on</span> <span class="string">GitHub</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="网站图标设定"><a href="#网站图标设定" class="headerlink" title="网站图标设定"></a>网站图标设定</h4><p>编辑 主题配置文件，编辑favicon，把图片放到themes\next\source\images文件夹下再对应修改（和头像一个文件夹）</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">apple_touch_icon:</span> <span class="string">/images/apple-touch-icon-next.png</span></span><br><span class="line">  <span class="attr">safari_pinned_tab:</span> <span class="string">/images/logo.svg</span></span><br><span class="line">  <span class="comment">#android_manifest: /images/manifest.json</span></span><br><span class="line">  <span class="comment">#ms_browserconfig: /images/browserconfig.xml</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="底部标签样式设定"><a href="#底部标签样式设定" class="headerlink" title="底部标签样式设定"></a>底部标签样式设定</h4><p>编辑 主题配置文件，编辑tag_icon为true</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Use icon instead of the symbol # to indicate the tag at the bottom of the post</span></span><br><span class="line"><span class="attr">tag_icon:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h4><p>编辑 主题配置文件，编辑copyright,以及creative_commons。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">copyright:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">creative_commons:</span></span><br><span class="line">  <span class="attr">license:</span> <span class="string">by-nc-sa</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">post:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="※点击头像返回首页"><a href="#※点击头像返回首页" class="headerlink" title="※点击头像返回首页"></a>※点击头像返回首页</h4><p>※结合网上老版本next的方法，自己试出来的，有一定问题，但功能能够实现（我没学过前端）</p>
-<p>1.直接在主题文件夹的layout_macro\sidebar.swig里面</p>
-<p>代码div class=”sidebar-inner”下方加入以下代码</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"site-author-image"</span> <span class="attr">itemprop</span>=<span class="string">"image"</span></span></span><br><span class="line"><span class="tag">     <span class="attr">src</span>=<span class="string">"&#123;&#123; url_for( theme.avatar.url | default(theme.images + '/avatar.gif') ) &#125;&#125;"</span></span></span><br><span class="line"><span class="tag">     <span class="attr">alt</span>=<span class="string">"&#123;&#123; author &#125;&#125;"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>2.如果这个时候刷新页面的话会发现头像会有两个，一个是能够实现点击返回首页的，一个是不能够返回首页的，接下来把之前头像设定那边的设定的url给注释掉，就只剩下一个能够返回首页的头像了</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="comment"># Replace the default image and set the url here.</span></span><br><span class="line">  <span class="comment">#url: /images/avatar.gif</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="插件配置"><a href="#插件配置" class="headerlink" title="插件配置"></a>插件配置</h3><h4 id="评论系统（LiveRe）"><a href="#评论系统（LiveRe）" class="headerlink" title="评论系统（LiveRe）"></a>评论系统（LiveRe）</h4><p>注册 <a href="https://livere.com/" target="_blank" rel="noopener">来必力</a> 获取 LiveRe UID。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># LiveRe comments system</span></span><br><span class="line"><span class="attr">livere_uid:</span> <span class="comment">#在这里填入注册网址的uid代码</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="数据统计与分析（不蒜子）"><a href="#数据统计与分析（不蒜子）" class="headerlink" title="数据统计与分析（不蒜子）"></a>数据统计与分析（不蒜子）</h4><p>编辑 主题配置文件，编辑busuanzi_count。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">busuanzi_count:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_visitors:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_visitors_icon:</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">total_views:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_views_icon:</span> <span class="string">fa</span> <span class="string">fa-eye</span></span><br><span class="line">  <span class="attr">post_views:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">post_views_icon:</span> <span class="string">fa</span> <span class="string">fa-eye</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="搜索功能（本地搜索）"><a href="#搜索功能（本地搜索）" class="headerlink" title="搜索功能（本地搜索）"></a>搜索功能（本地搜索）</h4><p>1.安装 hexo-generator-searchdb</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
-
-<p>2.编辑 站点配置文件，新增代码</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure>
-
-<p>3.编辑 主题配置文件，启用本地搜索功能</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local Search</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="推送到github或者gitee"><a href="#推送到github或者gitee" class="headerlink" title="推送到github或者gitee"></a>推送到github或者gitee</h3><p>1.安装hexo-deployer-git插件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>2.生成密钥SSH，输入下面的代码然后敲四下回车</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>3.生成的文件的位置在Git上有显示，复制公钥 id_rsa.pub 文件里的内容，粘贴到github或gitee的SSH公钥里（具体教程网上有很多），具体可以参考：<a href="https://zhuanlan.zhihu.com/p/103391101" target="_blank" rel="noopener">网址</a></p>
-<p>5.编辑 站点配置文件，编辑deploy</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">仓库地址</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
-
-<p>6.上面设定完后在Git依次执行下面的代码，其中hexo d为推送到仓库里去（需要注意的是，gitee部署网页每次需要手动更新）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://theme-next.js.org/docs/theme-settings/posts.html" target="_blank" rel="noopener">next官方文档</a></p>
-<p><a href="https://www.simon96.online/2018/10/12/hexo-tutorial/" target="_blank" rel="noopener">【持续更新】最全Hexo博客搭建+主题优化+插件配置+常用操作+错误分析</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/102592286" target="_blank" rel="noopener">从零开始搭建个人博客（超详细）</a></p>
-<p><a href="https://blog.csdn.net/qq_35396510/article/details/105953460" target="_blank" rel="noopener">hexo 主题 next7.8 版本配置美化</a></p>
-]]></content>
-      <categories>
-        <category>编程心得</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>next</tag>
       </tags>
   </entry>
 </search>
