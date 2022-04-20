@@ -200,7 +200,7 @@
 <span id="more"></span>
 
 <h2 id="Chapter-2-点亮LED"><a href="#Chapter-2-点亮LED" class="headerlink" title="Chapter 2 点亮LED"></a>Chapter 2 点亮LED</h2><h3 id="LED硬件"><a href="#LED硬件" class="headerlink" title="LED硬件"></a>LED硬件</h3><h4 id="发光二极管"><a href="#发光二极管" class="headerlink" title="发光二极管"></a>发光二极管</h4><p>&emsp;&emsp;LED即为发光二极管，这种二极管通常的正向导通电压是1.8-2.2V，工作电流一般在1-20mA。<br>&emsp;&emsp;其中，当电流在1-5mA之间变化时，随着通过LED的电流越大，灯越亮。<br>&emsp;&emsp;而当电流从5-20mA之间变化时，LED亮度变化不大。当电流超过20mA时，LED会有烧坏的风险。</p>
-<h4 id="限流电阻"><a href="#限流电阻" class="headerlink" title="限流电阻"></a>限流电阻</h4><p>&emsp;&emsp;单片机一般接入VCC的电压是5V，发光二级管的工作自身压降大概是2V，所以就需要电阻来串联分走3V的电压，要求这条路电流范围是1-20mA的话，电阻R的取值范围是150-3kΩ（如原理图USB接口电路的R34为1kΩ，原理图USB供电电路的R35为1kΩ），这个电阻直接限制通路的电流大小，因此这个电阻通常称之为 <strong>“限流电阻”</strong>。<br><img src="%E9%99%90%E6%B5%81%E7%94%B5%E9%98%BB.png" alt="限流电阻"></p>
+<h4 id="限流电阻"><a href="#限流电阻" class="headerlink" title="限流电阻"></a>限流电阻</h4><p>&emsp;&emsp;单片机一般接入VCC的电压是5V，发光二级管的工作自身压降大概是2V，所以就需要电阻来串联分走3V的电压，要求这条路电流范围是1-20mA的话，电阻R的取值范围是150-3kΩ（如原理图USB接口电路的R34为1kΩ），这个电阻直接限制通路的电流大小，因此这个电阻通常称之为 <strong>“限流电阻”</strong>。（图F1为自恢复保险丝）<br><img src="USB%E6%8E%A5%E5%8F%A3%E7%94%B5%E8%B7%AF.png" alt="USB接口电路"></p>
 <h3 id="C51特殊语法"><a href="#C51特殊语法" class="headerlink" title="C51特殊语法"></a>C51特殊语法</h3><h4 id="sfr"><a href="#sfr" class="headerlink" title="sfr"></a>sfr</h4><p>&emsp;&emsp;sfr是关键字，它的作用是定义一个单片机特殊功能寄存器，单片机内部有很多寄存器，如果想使用的话必须提前进行声明。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P0 = <span class="number">0x80</span>；    <span class="comment">//查看手册映射(P0,P1,P2,P3,P4)</span></span><br></pre></td></tr></table></figure>
 
@@ -284,9 +284,9 @@
 <h4 id="RAM"><a href="#RAM" class="headerlink" title="RAM"></a>RAM</h4><p>&emsp;&emsp;<strong>RAM是单片机的数据存储空间</strong>，用来存储程序运行过程中产生和需要的数据，跟计算机的内存是相似的概念。RAM的特点是断电后数据丢失。</p>
 <h4 id="SFR"><a href="#SFR" class="headerlink" title="SFR"></a>SFR</h4><p>&emsp;&emsp;<strong>SFR是特殊功能寄存器</strong>，SFR为用户通过对SFR的读写来实现单片机的多种多样的功能。<br>&emsp;&emsp;STC89C52是标准的51体系结构，它的资源为Flash程序空间8K字节，RAM数据空间是512字节，SFR特殊功能寄存器为32各IO，3各定时器，1各UART和8各中断。</p>
 <h3 id="单片机最小系统"><a href="#单片机最小系统" class="headerlink" title="单片机最小系统"></a>单片机最小系统</h3><p>单片机最小系统的三要素就是<strong>电源</strong>，<strong>晶振</strong>和<strong>复位电路</strong></p>
-<h4 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h4><p>&emsp;&emsp;目前主流单片机的电源分为5V和3.3V两个标准。STC89C52为5V直流电。+5V通常也称为VCC或者VDD，代表电源正极，GND代表电源的负极。（如原理图单片机供电电路）<br><img src="%E4%BE%9B%E7%94%B5%E7%94%B5%E8%B7%AF.png" alt="供电电路"></p>
-<h4 id="晶振"><a href="#晶振" class="headerlink" title="晶振"></a>晶振</h4><p>&emsp;&emsp;<strong>晶振的作用就是为单片机系统提供基准时钟信号。</strong><br>单片机的18引脚和19引脚（如原理图单片机晶振电路）接了一个11.0592MHz的晶振（它每秒振荡11059200次），外加两个20pF的电容， <strong>电容的作用是帮助晶振起振，并维持振荡信号的稳定。</strong><br><img src="%E6%99%B6%E6%8C%AF%E7%94%B5%E8%B7%AF.png" alt="晶振电路"></p>
-<h4 id="复位电路"><a href="#复位电路" class="headerlink" title="复位电路"></a>复位电路</h4><p>&emsp;&emsp;单片机复位一般分为三种情况：上电复位，手动复位和程序自动复位。（如原理图单片机复位电路）<br><img src="%E5%A4%8D%E4%BD%8D%E7%94%B5%E8%B7%AF.png" alt="复位电路"></p>
+<h4 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h4><p>&emsp;&emsp;目前主流单片机的电源分为5V和3.3V两个标准。STC89C52为5V直流电。+5V通常也称为VCC或者VDD，代表电源正极，GND代表电源的负极。（如原理图单片机供电电路）<br><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E4%BE%9B%E7%94%B5%E7%94%B5%E8%B7%AF.png" alt="单片机供电电路"></p>
+<h4 id="晶振"><a href="#晶振" class="headerlink" title="晶振"></a>晶振</h4><p>&emsp;&emsp;<strong>晶振的作用就是为单片机系统提供基准时钟信号。</strong><br>单片机的18引脚和19引脚（如原理图单片机晶振电路）接了一个11.0592MHz的晶振（它每秒振荡11059200次），外加两个20pF的电容， <strong>电容的作用是帮助晶振起振，并维持振荡信号的稳定。</strong><br><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%96%E9%83%A8%E6%99%B6%E6%8C%AF%E7%94%B5%E8%B7%AF.png" alt="单片机外部晶振电路"></p>
+<h4 id="复位电路"><a href="#复位电路" class="headerlink" title="复位电路"></a>复位电路</h4><p>&emsp;&emsp;单片机复位一般分为三种情况：上电复位，手动复位和程序自动复位。（如原理图单片机复位电路）<br><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%BD%8D%E7%94%B5%E8%B7%AF.png" alt="单片机复位电路"></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
 <p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
 <p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
