@@ -1,6 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>KingST开发板C51单片机学习笔记-Cheaper 1</title>
+    <url>/2022/04/19/Study-KingST51-Cheaper1/</url>
+    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 1为讲解单片机的基础知识。</p>
+<span id="more"></span>
+
+<h2 id="Chapter-1-单片机基础知识"><a href="#Chapter-1-单片机基础知识" class="headerlink" title="Chapter 1 单片机基础知识"></a>Chapter 1 单片机基础知识</h2><h3 id="单片机的内部资源"><a href="#单片机的内部资源" class="headerlink" title="单片机的内部资源"></a>单片机的内部资源</h3><h4 id="Flash"><a href="#Flash" class="headerlink" title="Flash"></a>Flash</h4><p>&emsp;&emsp;<strong>Flash是程序存储空间</strong>，早期单片机是OTPROM。Flash以其可以重复擦写且容量大成本低的优点为现在绝大多数单片机的程序存储器。Flash最大的意义是断电后数据不丢失。</p>
+<h4 id="RAM"><a href="#RAM" class="headerlink" title="RAM"></a>RAM</h4><p>&emsp;&emsp;<strong>RAM是单片机的数据存储空间</strong>，用来存储程序运行过程中产生和需要的数据，跟计算机的内存是相似的概念。RAM的特点是断电后数据丢失。</p>
+<h4 id="SFR"><a href="#SFR" class="headerlink" title="SFR"></a>SFR</h4><p>&emsp;&emsp;<strong>SFR是特殊功能寄存器</strong>，SFR为用户通过对SFR的读写来实现单片机的多种多样的功能。<br>&emsp;&emsp;STC89C52是标准的51体系结构，它的资源为Flash程序空间8K字节，RAM数据空间是512字节，SFR特殊功能寄存器为32各IO，3各定时器，1各UART和8各中断。</p>
+<h3 id="单片机最小系统"><a href="#单片机最小系统" class="headerlink" title="单片机最小系统"></a>单片机最小系统</h3><p>单片机最小系统的三要素就是<strong>电源</strong>，<strong>晶振</strong>和<strong>复位电路</strong></p>
+<h4 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h4><p>&emsp;&emsp;目前主流单片机的电源分为5V和3.3V两个标准。STC89C52为5V直流电。+5V通常也称为VCC或者VDD，代表电源正极，GND代表电源的负极。（如原理图单片机供电电路）</p>
+<p><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E4%BE%9B%E7%94%B5%E7%94%B5%E8%B7%AF.png" alt="单片机供电电路"></p>
+<h4 id="晶振"><a href="#晶振" class="headerlink" title="晶振"></a>晶振</h4><p>&emsp;&emsp;<strong>晶振的作用就是为单片机系统提供基准时钟信号。</strong><br>单片机的18引脚和19引脚（如原理图单片机晶振电路）接了一个11.0592MHz的晶振（它每秒振荡11059200次），外加两个20pF的电容， <strong>电容的作用是帮助晶振起振，并维持振荡信号的稳定。</strong></p>
+<p><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%96%E9%83%A8%E6%99%B6%E6%8C%AF%E7%94%B5%E8%B7%AF.png" alt="单片机外部晶振电路"></p>
+<h4 id="复位电路"><a href="#复位电路" class="headerlink" title="复位电路"></a>复位电路</h4><p>&emsp;&emsp;单片机复位一般分为三种情况：上电复位，手动复位和程序自动复位。（如原理图单片机复位电路）</p>
+<p><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%BD%8D%E7%94%B5%E8%B7%AF.png" alt="单片机复位电路"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
+<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
+<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
+]]></content>
+      <categories>
+        <category>Code</category>
+      </categories>
+      <tags>
+        <tag>C51</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KingST开发板C51单片机学习笔记-Cheaper 2</title>
+    <url>/2022/04/19/Study-KingST51-Cheaper2/</url>
+    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 2为讲解点亮LED。</p>
+<span id="more"></span>
+
+<h2 id="Chapter-2-点亮LED"><a href="#Chapter-2-点亮LED" class="headerlink" title="Chapter 2 点亮LED"></a>Chapter 2 点亮LED</h2><h3 id="LED硬件"><a href="#LED硬件" class="headerlink" title="LED硬件"></a>LED硬件</h3><h4 id="发光二极管"><a href="#发光二极管" class="headerlink" title="发光二极管"></a>发光二极管</h4><p>&emsp;&emsp;LED即为发光二极管，这种二极管通常的正向导通电压是1.8-2.2V，工作电流一般在1-20mA。<br>&emsp;&emsp;其中，当电流在1-5mA之间变化时，随着通过LED的电流越大，灯越亮。<br>&emsp;&emsp;而当电流从5-20mA之间变化时，LED亮度变化不大。当电流超过20mA时，LED会有烧坏的风险。</p>
+<h4 id="限流电阻"><a href="#限流电阻" class="headerlink" title="限流电阻"></a>限流电阻</h4><p>&emsp;&emsp;单片机一般接入VCC的电压是5V，发光二级管的工作自身压降大概是2V，所以就需要电阻来串联分走3V的电压，要求这条路电流范围是1-20mA的话，电阻R的取值范围是150-3kΩ（如原理图USB接口电路的R34为1kΩ），这个电阻直接限制通路的电流大小，因此这个电阻通常称之为 <strong>“限流电阻”</strong>。（图F1为自恢复保险丝）</p>
+<p><img src="USB%E6%8E%A5%E5%8F%A3%E7%94%B5%E8%B7%AF.png" alt="USB接口电路"></p>
+<h3 id="C51特殊语法"><a href="#C51特殊语法" class="headerlink" title="C51特殊语法"></a>C51特殊语法</h3><h4 id="sfr"><a href="#sfr" class="headerlink" title="sfr"></a>sfr</h4><p>&emsp;&emsp;sfr是关键字，它的作用是定义一个单片机特殊功能寄存器，单片机内部有很多寄存器，如果想使用的话必须提前进行声明。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P0 = <span class="number">0x80</span>；    <span class="comment">//查看手册映射(P0,P1,P2,P3,P4)</span></span><br></pre></td></tr></table></figure>
+
+<p>Keil软件已经将这些声明都写好了，所以用的时候文件开头添加一行</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span>  <span class="comment">//内含标准51的映射，加强型51的映射需要使用sfr</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="sbit"><a href="#sbit" class="headerlink" title="sbit"></a>sbit</h4><p>&emsp;&emsp;sbit是关键字，sfr为映射了一个字节，sbit的作用是单独控制一位。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit LED = P0^<span class="number">0</span>;    <span class="comment">//LED就表示P0.0这一位</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="LED程序"><a href="#LED程序" class="headerlink" title="LED程序"></a>LED程序</h3><p>一般为了防止程序出错，会在程序结尾加入死循环，让程序停在所希望的位置。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>);   <span class="comment">//程序停止在这里，写在程序的最后</span></span><br></pre></td></tr></table></figure>
+
+<p>最终的点亮程序：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span>  <span class="comment">//包含特殊功能寄存器定义的头文件</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;    <span class="comment">//位地址声明</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>     <span class="comment">//主函数入口</span></span><br><span class="line">&#123;</span><br><span class="line">    LED = <span class="number">0</span>;    <span class="comment">//将LED(P0.0)置为低电平，根据原理图决定LED的亮灭</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);   <span class="comment">//死循环，程序停在这里</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span>  <span class="comment">//包含特殊功能寄存器定义的头文件</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;    <span class="comment">//位地址声明</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>     <span class="comment">//主函数入口</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)    <span class="comment">//进入循环</span></span><br><span class="line">    &#123;</span><br><span class="line">        LED = <span class="number">0</span>;    <span class="comment">//将LED(P0.0)置为低电平，根据原理图决定LED的亮灭</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="%E7%82%B9%E4%BA%AELED.png" alt="点亮LED"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
+<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
+<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
+]]></content>
+      <categories>
+        <category>Code</category>
+      </categories>
+      <tags>
+        <tag>C51</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KingST开发板C51单片机学习笔记-Cheaper 3</title>
+    <url>/2022/04/23/Study-KingST51-Cheaper3/</url>
+    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 3为讲解一些硬件知识。</p>
+<span id="more"></span>
+
+<h2 id="Chapter-3-一些硬件知识"><a href="#Chapter-3-一些硬件知识" class="headerlink" title="Chapter 3 一些硬件知识"></a>Chapter 3 一些硬件知识</h2><h3 id="硬件知识"><a href="#硬件知识" class="headerlink" title="硬件知识"></a>硬件知识</h3><h4 id="去耦电容"><a href="#去耦电容" class="headerlink" title="去耦电容"></a>去耦电容</h4><p>※<strong>去耦电容的应用背景</strong></p>
+<p>&emsp;&emsp;由于电磁干扰（EMI），所以需要应用去耦电容。造成电磁干扰的主要有三种形式<br>&emsp;&emsp;&emsp;①存在冬天空气干燥造成“静电放电”（ESD）<br>&emsp;&emsp;&emsp;②电机设备使用时的干扰造成“快速瞬间群脉冲”（EFT）<br>&emsp;&emsp;&emsp;③热插拔造成的“浪涌”（Surge）<br>&emsp;&emsp;基于上面的问题，所以诞生了电磁兼容（EMC）。</p>
+<p>※<strong>耦电容的应用：大电容低频滤波，小电容高频滤波。</strong></p>
+<p>&emsp;&emsp;大电容（如原理图电源开关电路的C19）的作用为<br>&emsp;&emsp;&emsp;①缓冲作用：上电瞬间，让电流缓慢流入电路。<br>&emsp;&emsp;&emsp;②稳定作用：后级电路功率大小不一样，所需电流也不一样，可能导致启动有先后，有电容就可以稳定整个电路的电压不会下降太多。<br>&emsp;&emsp;大电容的选取：<br>&emsp;&emsp;&emsp;第一个参数是耐压值的考虑：一般为系统电压的1.5倍到2倍（一般单片机系统为5V），有些场合可以稍微再高一点。<br>&emsp;&emsp;&emsp;第二个参数是电容容量的考虑：根据整套系统的功率消耗情况决定，如果系统耗电较大，波动可能比较大，容值就要选大一些的，反之可以小一些。</p>
+<p>&emsp;&emsp;小电容（如原理图电源开关电路的C10）的作用为：滤除高频信号的干扰。一般在IC供电的地方都会加上这个小电容，在布线的时候还会考虑尽可能靠近IC。<br>&emsp;&emsp;小电容的选取：在电源处的去耦高频电容，直接选用0.1μF（104电容⇒10×10^4pF=100nF=0.1μF）。</p>
+<p><img src="%E7%94%B5%E6%BA%90%E5%BC%80%E5%85%B3%E7%94%B5%E8%B7%AF.png" alt="电源开关电路"></p>
+<h4 id="三极管"><a href="#三极管" class="headerlink" title="三极管"></a>三极管</h4><p>&emsp;&emsp;三极管是模拟电路和数字电路中经常会用到的一个器件，三极管可分为<strong>PNP型三极管</strong>和<strong>NPN型三极管</strong>。三极管一共有3个极，横向左侧的的引脚叫作<strong>基极b</strong>（base），中间的箭头一头连接基极，一头连接<strong>发射极e</strong>（emitter），剩下一个引脚就是<strong>集电极c</strong>（collector）。</p>
+<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1.png" alt="三极管"></p>
+<p>※<strong>三极管的原理</strong></p>
+<p>&emsp;&emsp;三极管的关键点在于b极和e极之间的电压关系。以PNP型为例，e极电压只要高于b极电压0.7V以上，这个三极管的e极和c极之间就是顺利导通的。也可是说控制端在b和e之间，被控制端在b和c之间。如原理图所示，当P1.0处于高电平（5V）的时候，e和b之间无压降，所以三极管e和c之间不导通，LED就不亮；当P1.0处于低电平（0V）的时候，e和b之间有压降且大于0.7V，三极管e和c之间导通，LED就亮。（e和c之间大概会有0.2V的压降）</p>
+<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E7%9A%84%E7%94%A8%E6%B3%95.png" alt="三极管的用法"></p>
+<p>&emsp;&emsp;三极管有三种状态：<strong>截止状态</strong>，<strong>饱和状态</strong>和<strong>放大状态</strong>。通常截止和饱和在数字电路上用的比较多，放大在模拟电路上用的比较多。<br>&emsp;&emsp;&emsp;截止状态：e和b之间不导通。<br>&emsp;&emsp;&emsp;饱和状态：e和b之间导通，且b极的电流要大于ec间的电流除以β（β为三极管的放大倍数，常用的大概可以认为是100）。<br>&emsp;&emsp;&emsp;放大状态：e和b之间导通，且b极的电流要等于ec间的电流除以β。</p>
+<p>&emsp;&emsp;上图LED的压降为2V，ec之间的压降为0.2V（先忽略不计），则R41的压降为3V，因此，ec之间的电流为3mA。如果eb要导通，那么eb间的最小电流就是30μA，那么R47最大的阻值为4.3V（5V减去0.7V的压降）除以30μA，为143kΩ。R47只要小于这个阻值就行了，但也不能过于小，单片机的IO输入电流太大会烧坏，STC89C52的最大输入电流推荐小于6mA。</p>
+<p>※<strong>三极管的应用</strong></p>
+<p>&emsp;&emsp;三极管的控制应用：<strong>控制应用</strong>，<strong>驱动应用</strong><br>&emsp;&emsp;&emsp;控制应用：如图所示为NPN型三极管，当IO口输出5V高电平的时候，三极管导通，OUT输出低电平；当IO口输出0V低电平的时候，三极管截止，OUT则由于上拉电阻R2的作用而输出12V的高电平。</p>
+<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E7%9A%84%E6%8E%A7%E5%88%B6%E5%BA%94%E7%94%A8.png" alt="三极管的控制应用"></p>
+<p>&emsp;&emsp;&emsp;驱动应用：如图IO口直接驱动LED的话，第一种方式IO口电流承受能力有限，一般为6mA，如果LED数量多了，单片机就会受不了。第二种方式IO口电流输出能力有限，一般不到1mA，LED可能点不亮或者亮度很低。</p>
+<p><img src="IO%E7%9B%B4%E6%8E%A5%E9%A9%B1%E5%8A%A8LED.png" alt="IO直接驱动LED"></p>
+<p>&emsp;&emsp;&emsp;所以就需要用三极管来驱动，如图所示为NPN型三极管来驱动LED，当IO口是高电平的时候，三极管导通，LED就能够被点亮了（9013三极管可以通过500mA的电流）。</p>
+<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E9%A9%B1%E5%8A%A8LED.png" alt="三极管驱动LED"></p>
+<h4 id="74HC245"><a href="#74HC245" class="headerlink" title="74HC245"></a>74HC245</h4><p>&emsp;&emsp;<strong>74HC245是个双向缓冲器</strong>。如果LED多起来的话，总体的电流也相当高，所以需要一个缓冲器来缓冲电流。<br>&emsp;&emsp;其中1号引脚DIR为方向引脚，如果DIR为高电平，右侧B编号引脚的电压等于左侧A编号引脚对应的电压；如果DIR为低电平，左侧A编号引脚的电压等于右侧B编号引脚对应的电压。<br>&emsp;&emsp;19号引脚OE为使能引脚，叫作输出使能，引脚上的一横表示这个引脚为低电平有效，即OE引脚接低电平时，芯片才工作。</p>
+<p><img src="74HC245.png" alt="74HC245"></p>
+<h4 id="74HC138（三八译码器）"><a href="#74HC138（三八译码器）" class="headerlink" title="74HC138（三八译码器）"></a>74HC138（三八译码器）</h4><p>&emsp;&emsp;<strong>74HC138是一种数字芯片，它可以由简单的输入逻辑来控制逻辑输出</strong>三八译码器，就是可以吧3种输入状态翻译成8种输出状态。<br>&emsp;&emsp;其中4号引脚E1、5号引脚E2和6号引脚E3为使能引脚，当E1和E2为低电平，E3为高电平时，芯片才工作。<br>&emsp;&emsp;其中A0、A1、A2为输入端，Y0-Y7为输出端。</p>
+<p><img src="74HC138.png" alt="74HC138"></p>
+<p>*以下为74HC138的输入输出端的真值表</p>
+<table>
+<thead>
+<tr>
+<th>A2</th>
+<th>A1</th>
+<th>A0</th>
+<th>⇒</th>
+<th>Y0</th>
+<th>Y1</th>
+<th>Y2</th>
+<th>Y3</th>
+<th>Y4</th>
+<th>Y5</th>
+<th>Y6</th>
+<th>Y7</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>⇒</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>⇒</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<h3 id="闪烁LED"><a href="#闪烁LED" class="headerlink" title="闪烁LED"></a>闪烁LED</h3><p>&emsp;&emsp;根据开发板的原理图编写程序。如图所示</p>
+<p><img src="LED%E5%B0%8F%E7%81%AF%E6%95%B4%E4%BD%93%E7%94%B5%E8%B7%AF%E5%9B%BE.png" alt="LED小灯整体电路图"></p>
+<p>&emsp;&emsp;如LED小灯整体电路图所示要让LED2点亮的话，Q16三极管需要导通，且DB0为低电平。<br>&emsp;&emsp;Q16三极管需要导通的话基极为低电平，即LEDS6需要为低电平，即74HC138的9号引脚Y6输出低电平。查真值表可知，需要A2为高电平，A1为高电平，A0为低电平，即ADDR2为高电平，ADDR1为高电平，ADDR0为低电平。同时要让74HC138芯片工作，需要ADDR3为高电平，ENLED为低电平。根据图显示译码和步进电机跳线和单片机电路图所示，即为单片机的P1.0需要低电平，P1.1需要高电平，P1.2需要高电平，P1.3需要高电平，P1.4需要低电平。这时三极管就导通了。<br>&emsp;&emsp;DB0连接74HC245的右侧引脚B1，要使B1为低电平的话需要左侧引脚A1为低电平，即DB_0为低电平。DB_0连接到单片机的P0.0引脚上，即P0.0需要低电平，LED就亮。</p>
+<p><img src="%E6%98%BE%E7%A4%BA%E8%AF%91%E7%A0%81%E5%92%8C%E6%AD%A5%E8%BF%9B%E7%94%B5%E6%9C%BA%E8%B7%B3%E7%BA%BF.png" alt="显示译码和步进电机跳线"></p>
+<p><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E7%94%B5%E8%B7%AF.png" alt="单片机电路"></p>
+<p>最终的闪烁程序：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0<span class="number">.0</span>;</span><br><span class="line">sbit ADDR0 = P1<span class="number">.0</span>;</span><br><span class="line">sbit ADDR1 = P1<span class="number">.1</span>;</span><br><span class="line">sbit ADDR2 = P1<span class="number">.2</span>;</span><br><span class="line">sbit ADDR3 = P1<span class="number">.3</span>;</span><br><span class="line">sbit ENLED = P1<span class="number">.4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">0</span>;     <span class="comment">//旧版本C语言需要在最上面定义变量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//以下为执行语句</span></span><br><span class="line">    ENLED = <span class="number">0</span>;      <span class="comment">//使能U3（74HC138）的E1和E2使能</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;      <span class="comment">//使能U3（74HC138）的E3，使之能正常输出</span></span><br><span class="line">    ADDR2 = <span class="number">1</span>;      <span class="comment">//经U3的Y6输出来开启Q16三极管</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        LED = <span class="number">0</span>;                    <span class="comment">//点亮小灯</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">30000</span>;i++);   <span class="comment">//延时一段时间</span></span><br><span class="line">        LED = <span class="number">1</span>;                    <span class="comment">//熄灭小灯</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">30000</span>;i++);   <span class="comment">//延时一段时间</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
+<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
+<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
+]]></content>
+      <categories>
+        <category>Code</category>
+      </categories>
+      <tags>
+        <tag>C51</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo-next博客搭建</title>
     <url>/2022/01/01/hexo-next%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>本篇以记录为主，记录自己搭建hexo+next时候所配置功能的过程，所以并没有把所有的功能都配置上去，现在所看到的的博客就是根据接下来记录的来配置的。（无音乐播放器，无live2D，无鼠标特效等等）</p>
@@ -194,44 +440,6 @@
       </tags>
   </entry>
   <entry>
-    <title>KingST开发板C51单片机学习笔记-Cheaper 2</title>
-    <url>/2022/04/19/Study-KingST51-Cheaper2/</url>
-    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 2为讲解点亮LED。</p>
-<span id="more"></span>
-
-<h2 id="Chapter-2-点亮LED"><a href="#Chapter-2-点亮LED" class="headerlink" title="Chapter 2 点亮LED"></a>Chapter 2 点亮LED</h2><h3 id="LED硬件"><a href="#LED硬件" class="headerlink" title="LED硬件"></a>LED硬件</h3><h4 id="发光二极管"><a href="#发光二极管" class="headerlink" title="发光二极管"></a>发光二极管</h4><p>&emsp;&emsp;LED即为发光二极管，这种二极管通常的正向导通电压是1.8-2.2V，工作电流一般在1-20mA。<br>&emsp;&emsp;其中，当电流在1-5mA之间变化时，随着通过LED的电流越大，灯越亮。<br>&emsp;&emsp;而当电流从5-20mA之间变化时，LED亮度变化不大。当电流超过20mA时，LED会有烧坏的风险。</p>
-<h4 id="限流电阻"><a href="#限流电阻" class="headerlink" title="限流电阻"></a>限流电阻</h4><p>&emsp;&emsp;单片机一般接入VCC的电压是5V，发光二级管的工作自身压降大概是2V，所以就需要电阻来串联分走3V的电压，要求这条路电流范围是1-20mA的话，电阻R的取值范围是150-3kΩ（如原理图USB接口电路的R34为1kΩ），这个电阻直接限制通路的电流大小，因此这个电阻通常称之为 <strong>“限流电阻”</strong>。（图F1为自恢复保险丝）<br><img src="USB%E6%8E%A5%E5%8F%A3%E7%94%B5%E8%B7%AF.png" alt="USB接口电路"></p>
-<h3 id="C51特殊语法"><a href="#C51特殊语法" class="headerlink" title="C51特殊语法"></a>C51特殊语法</h3><h4 id="sfr"><a href="#sfr" class="headerlink" title="sfr"></a>sfr</h4><p>&emsp;&emsp;sfr是关键字，它的作用是定义一个单片机特殊功能寄存器，单片机内部有很多寄存器，如果想使用的话必须提前进行声明。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P0 = <span class="number">0x80</span>；    <span class="comment">//查看手册映射(P0,P1,P2,P3,P4)</span></span><br></pre></td></tr></table></figure>
-
-<p>Keil软件已经将这些声明都写好了，所以用的时候文件开头添加一行</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span>  <span class="comment">//内含标准51的映射，加强型51的映射需要使用sfr</span></span></span><br></pre></td></tr></table></figure>
-
-<h4 id="sbit"><a href="#sbit" class="headerlink" title="sbit"></a>sbit</h4><p>&emsp;&emsp;sbit是关键字，sfr为映射了一个字节，sbit的作用是单独控制一位。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit LED = P0^<span class="number">0</span>;    <span class="comment">//LED就表示P0.0这一位</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="LED程序"><a href="#LED程序" class="headerlink" title="LED程序"></a>LED程序</h3><p>一般为了防止程序出错，会在程序结尾加入死循环，让程序停在所希望的位置。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>);   <span class="comment">//程序停止在这里，写在程序的最后</span></span><br></pre></td></tr></table></figure>
-
-<p>最终的程序：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span>  <span class="comment">//包含特殊功能寄存器定义的头文件</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;    <span class="comment">//位地址声明</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>     <span class="comment">//主函数入口</span></span><br><span class="line">&#123;</span><br><span class="line">    LED = <span class="number">0</span>;    <span class="comment">//将LED(P0.0)置为低电平，根据原理图决定LED的亮灭</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);   <span class="comment">//死循环，程序停在这里</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span>  <span class="comment">//包含特殊功能寄存器定义的头文件</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;    <span class="comment">//位地址声明</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>     <span class="comment">//主函数入口</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)    <span class="comment">//进入循环</span></span><br><span class="line">    &#123;</span><br><span class="line">        LED = <span class="number">0</span>;    <span class="comment">//将LED(P0.0)置为低电平，根据原理图决定LED的亮灭</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="%E7%82%B9%E4%BA%AELED.png" alt="点亮LED"></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
-<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
-<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
-]]></content>
-      <categories>
-        <category>Code</category>
-      </categories>
-      <tags>
-        <tag>C51</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>git的常用指令</title>
     <url>/2022/04/19/git%E7%9A%84%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</url>
     <content><![CDATA[<p>我个人觉得还算比较常用的git指令。包含添加文件到本地仓库和连接远程仓库等等</p>
@@ -272,30 +480,6 @@
       </categories>
       <tags>
         <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>KingST开发板C51单片机学习笔记-Cheaper 1</title>
-    <url>/2022/04/19/Study-KingST51-Cheaper1/</url>
-    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 1为讲解单片机的基础知识。</p>
-<span id="more"></span>
-
-<h2 id="Chapter-1-单片机基础知识"><a href="#Chapter-1-单片机基础知识" class="headerlink" title="Chapter 1 单片机基础知识"></a>Chapter 1 单片机基础知识</h2><h3 id="单片机的内部资源"><a href="#单片机的内部资源" class="headerlink" title="单片机的内部资源"></a>单片机的内部资源</h3><h4 id="Flash"><a href="#Flash" class="headerlink" title="Flash"></a>Flash</h4><p>&emsp;&emsp;<strong>Flash是程序存储空间</strong>，早期单片机是OTPROM。Flash以其可以重复擦写且容量大成本低的优点为现在绝大多数单片机的程序存储器。Flash最大的意义是断电后数据不丢失。</p>
-<h4 id="RAM"><a href="#RAM" class="headerlink" title="RAM"></a>RAM</h4><p>&emsp;&emsp;<strong>RAM是单片机的数据存储空间</strong>，用来存储程序运行过程中产生和需要的数据，跟计算机的内存是相似的概念。RAM的特点是断电后数据丢失。</p>
-<h4 id="SFR"><a href="#SFR" class="headerlink" title="SFR"></a>SFR</h4><p>&emsp;&emsp;<strong>SFR是特殊功能寄存器</strong>，SFR为用户通过对SFR的读写来实现单片机的多种多样的功能。<br>&emsp;&emsp;STC89C52是标准的51体系结构，它的资源为Flash程序空间8K字节，RAM数据空间是512字节，SFR特殊功能寄存器为32各IO，3各定时器，1各UART和8各中断。</p>
-<h3 id="单片机最小系统"><a href="#单片机最小系统" class="headerlink" title="单片机最小系统"></a>单片机最小系统</h3><p>单片机最小系统的三要素就是<strong>电源</strong>，<strong>晶振</strong>和<strong>复位电路</strong></p>
-<h4 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h4><p>&emsp;&emsp;目前主流单片机的电源分为5V和3.3V两个标准。STC89C52为5V直流电。+5V通常也称为VCC或者VDD，代表电源正极，GND代表电源的负极。（如原理图单片机供电电路）<br><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E4%BE%9B%E7%94%B5%E7%94%B5%E8%B7%AF.png" alt="单片机供电电路"></p>
-<h4 id="晶振"><a href="#晶振" class="headerlink" title="晶振"></a>晶振</h4><p>&emsp;&emsp;<strong>晶振的作用就是为单片机系统提供基准时钟信号。</strong><br>单片机的18引脚和19引脚（如原理图单片机晶振电路）接了一个11.0592MHz的晶振（它每秒振荡11059200次），外加两个20pF的电容， <strong>电容的作用是帮助晶振起振，并维持振荡信号的稳定。</strong><br><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%96%E9%83%A8%E6%99%B6%E6%8C%AF%E7%94%B5%E8%B7%AF.png" alt="单片机外部晶振电路"></p>
-<h4 id="复位电路"><a href="#复位电路" class="headerlink" title="复位电路"></a>复位电路</h4><p>&emsp;&emsp;单片机复位一般分为三种情况：上电复位，手动复位和程序自动复位。（如原理图单片机复位电路）<br><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%BD%8D%E7%94%B5%E8%B7%AF.png" alt="单片机复位电路"></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
-<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
-<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
-]]></content>
-      <categories>
-        <category>Code</category>
-      </categories>
-      <tags>
-        <tag>C51</tag>
       </tags>
   </entry>
 </search>
