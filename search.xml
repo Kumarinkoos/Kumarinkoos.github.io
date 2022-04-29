@@ -217,9 +217,15 @@
 <h3 id="利用FreeFileSync对数据进行备份至Copy文件"><a href="#利用FreeFileSync对数据进行备份至Copy文件" class="headerlink" title="利用FreeFileSync对数据进行备份至Copy文件"></a>利用FreeFileSync对数据进行备份至Copy文件</h3><p>&emsp;&emsp;先看一下FreeFileSync的概况。</p>
 <p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E7%94%B5%E8%B7%AF.png" alt="数码管电路"></p>
 <p>&emsp;&emsp;FreeFileSync的比较后的画面</p>
+<p><img src="FreeFileSync%E6%AF%94%E8%BE%83%E5%90%8E.png" alt="FreeFileSync比较后"></p>
 <p>&emsp;&emsp;首先配置比较设定和同步设定，比较设定我选择的是比较文件内容，不过因为往空的文件夹里备份，所以无所谓选择哪一个。同步设定我选择的是镜像，这样就是单向从源备份到目标。目标的更改不会影响到源。在删除文件里我设置了个历史版本，并新建了一个Copy_back的文件夹，意图是在出问题第二个脚本没有执行的时候，将Copy里的3D进行了覆盖，被覆盖文件会被存在Copy_back这里。算是有另一道保障。</p>
+<p><img src="FreeFileSync%E8%AE%BE%E5%AE%9A%E6%AF%94%E8%BE%83.png" alt="FreeFileSync设定比较"></p>
+<p><img src="FreeFileSync%E8%AE%BE%E5%AE%9A%E5%90%8C%E6%AD%A5.png" alt="FreeFileSync设定同步"></p>
 <p>&emsp;&emsp;然后是源文件和目标文件的地址选定。</p>
+<p><img src="FreeFileSync%E6%BA%90%E5%92%8C%E7%9B%AE%E6%A0%87.png" alt="FreeFileSync源和目标"></p>
 <p>&emsp;&emsp;最后是配置的保存和另存为脚本。</p>
+<p><img src="FreeFileSync%E4%BF%9D%E5%AD%98%E9%85%8D%E7%BD%AE%E5%92%8C%E5%8F%A6%E5%AD%98%E4%B8%BA%E8%84%9A%E6%9C%AC.png" alt="FreeFileSync保存配置和另存为脚本"></p>
+<p><img src="FreeFileSync%E8%84%9A%E6%9C%AC%E4%BF%9D%E5%AD%98.png" alt="FreeFileSync脚本保存"></p>
 <h3 id="利用Window自带的任务计划程序定时执行上述操作"><a href="#利用Window自带的任务计划程序定时执行上述操作" class="headerlink" title="利用Window自带的任务计划程序定时执行上述操作"></a>利用Window自带的任务计划程序定时执行上述操作</h3><p>&emsp;&emsp;在此电脑的管理里进入，选择任务计划程序库，新建新的基本任务。</p>
 <p><img src="%E4%B8%AD%E6%96%AD%E6%9F%A5%E8%AF%A2%E5%BA%8F%E5%88%97.png" alt="中断查询序列"></p>
 <p>&emsp;&emsp;命名任务计划程序的名称。</p>
