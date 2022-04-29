@@ -67,331 +67,8 @@
       </tags>
   </entry>
   <entry>
-    <title>KingST开发板C51单片机学习笔记-Cheaper 3</title>
-    <url>/2022/04/23/Study-KingST51-Cheaper3/</url>
-    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 3为讲解一些硬件知识。</p>
-<span id="more"></span>
-
-<h2 id="Chapter-3-一些硬件知识"><a href="#Chapter-3-一些硬件知识" class="headerlink" title="Chapter 3 一些硬件知识"></a>Chapter 3 一些硬件知识</h2><h3 id="硬件知识"><a href="#硬件知识" class="headerlink" title="硬件知识"></a>硬件知识</h3><h4 id="去耦电容"><a href="#去耦电容" class="headerlink" title="去耦电容"></a>去耦电容</h4><p>※<strong>去耦电容的应用背景</strong></p>
-<p>&emsp;&emsp;由于电磁干扰（EMI），所以需要应用去耦电容。造成电磁干扰的主要有三种形式<br>&emsp;&emsp;&emsp;①存在冬天空气干燥造成“静电放电”（ESD）<br>&emsp;&emsp;&emsp;②电机设备使用时的干扰造成“快速瞬间群脉冲”（EFT）<br>&emsp;&emsp;&emsp;③热插拔造成的“浪涌”（Surge）<br>&emsp;&emsp;基于上面的问题，所以诞生了电磁兼容（EMC）。</p>
-<p>※<strong>耦电容的应用：大电容低频滤波，小电容高频滤波。</strong></p>
-<p>&emsp;&emsp;大电容（如原理图电源开关电路的C19）的作用为<br>&emsp;&emsp;&emsp;①缓冲作用：上电瞬间，让电流缓慢流入电路。<br>&emsp;&emsp;&emsp;②稳定作用：后级电路功率大小不一样，所需电流也不一样，可能导致启动有先后，有电容就可以稳定整个电路的电压不会下降太多。<br>&emsp;&emsp;大电容的选取：<br>&emsp;&emsp;&emsp;第一个参数是耐压值的考虑：一般为系统电压的1.5倍到2倍（一般单片机系统为5V），有些场合可以稍微再高一点。<br>&emsp;&emsp;&emsp;第二个参数是电容容量的考虑：根据整套系统的功率消耗情况决定，如果系统耗电较大，波动可能比较大，容值就要选大一些的，反之可以小一些。</p>
-<p>&emsp;&emsp;小电容（如原理图电源开关电路的C10）的作用为：滤除高频信号的干扰。一般在IC供电的地方都会加上这个小电容，在布线的时候还会考虑尽可能靠近IC。<br>&emsp;&emsp;小电容的选取：在电源处的去耦高频电容，直接选用0.1μF（104电容⇒10×10^4pF=100nF=0.1μF）。</p>
-<p><img src="%E7%94%B5%E6%BA%90%E5%BC%80%E5%85%B3%E7%94%B5%E8%B7%AF.png" alt="电源开关电路"></p>
-<h4 id="三极管"><a href="#三极管" class="headerlink" title="三极管"></a>三极管</h4><p>&emsp;&emsp;三极管是模拟电路和数字电路中经常会用到的一个器件，三极管可分为<strong>PNP型三极管</strong>和<strong>NPN型三极管</strong>。三极管一共有3个极，横向左侧的的引脚叫作<strong>基极b</strong>（base），中间的箭头一头连接基极，一头连接<strong>发射极e</strong>（emitter），剩下一个引脚就是<strong>集电极c</strong>（collector）。</p>
-<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1.png" alt="三极管"></p>
-<p>※<strong>三极管的原理</strong></p>
-<p>&emsp;&emsp;三极管的关键点在于b极和e极之间的电压关系。以PNP型为例，e极电压只要高于b极电压0.7V以上，这个三极管的e极和c极之间就是顺利导通的。也可是说控制端在b和e之间，被控制端在b和c之间。如原理图所示，当P1.0处于高电平（5V）的时候，e和b之间无压降，所以三极管e和c之间不导通，LED就不亮；当P1.0处于低电平（0V）的时候，e和b之间有压降且大于0.7V，三极管e和c之间导通，LED就亮。（e和c之间大概会有0.2V的压降）</p>
-<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E7%9A%84%E7%94%A8%E6%B3%95.png" alt="三极管的用法"></p>
-<p>&emsp;&emsp;三极管有三种状态：<strong>截止状态</strong>，<strong>饱和状态</strong>和<strong>放大状态</strong>。通常截止和饱和在数字电路上用的比较多，放大在模拟电路上用的比较多。<br>&emsp;&emsp;&emsp;截止状态：e和b之间不导通。<br>&emsp;&emsp;&emsp;饱和状态：e和b之间导通，且b极的电流要大于ec间的电流除以β（β为三极管的放大倍数，常用的大概可以认为是100）。<br>&emsp;&emsp;&emsp;放大状态：e和b之间导通，且b极的电流要等于ec间的电流除以β。</p>
-<p>&emsp;&emsp;上图LED的压降为2V，ec之间的压降为0.2V（先忽略不计），则R41的压降为3V，因此，ec之间的电流为3mA。如果eb要导通，那么eb间的最小电流就是30μA，那么R47最大的阻值为4.3V（5V减去0.7V的压降）除以30μA，为143kΩ。R47只要小于这个阻值就行了，但也不能过于小，单片机的IO输入电流太大会烧坏，STC89C52的最大输入电流推荐小于6mA。</p>
-<p>※<strong>三极管的应用</strong></p>
-<p>&emsp;&emsp;三极管的控制应用：<strong>控制应用</strong>，<strong>驱动应用</strong><br>&emsp;&emsp;&emsp;控制应用：如图所示为NPN型三极管，当IO口输出5V高电平的时候，三极管导通，OUT输出低电平；当IO口输出0V低电平的时候，三极管截止，OUT则由于上拉电阻R2的作用而输出12V的高电平。</p>
-<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E7%9A%84%E6%8E%A7%E5%88%B6%E5%BA%94%E7%94%A8.png" alt="三极管的控制应用"></p>
-<p>&emsp;&emsp;&emsp;驱动应用：如图IO口直接驱动LED的话，第一种方式IO口电流承受能力有限，一般为6mA，如果LED数量多了，单片机就会受不了。第二种方式IO口电流输出能力有限，一般不到1mA，LED可能点不亮或者亮度很低。</p>
-<p><img src="IO%E7%9B%B4%E6%8E%A5%E9%A9%B1%E5%8A%A8LED.png" alt="IO直接驱动LED"></p>
-<p>&emsp;&emsp;&emsp;所以就需要用三极管来驱动，如图所示为NPN型三极管来驱动LED，当IO口是高电平的时候，三极管导通，LED就能够被点亮了（9013三极管可以通过500mA的电流）。</p>
-<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E9%A9%B1%E5%8A%A8LED.png" alt="三极管驱动LED"></p>
-<h4 id="74HC245"><a href="#74HC245" class="headerlink" title="74HC245"></a>74HC245</h4><p>&emsp;&emsp;<strong>74HC245是个双向缓冲器</strong>。如果LED多起来的话，总体的电流也相当高，所以需要一个缓冲器来缓冲电流。<br>&emsp;&emsp;其中1号引脚DIR为方向引脚，如果DIR为高电平，右侧B编号引脚的电压等于左侧A编号引脚对应的电压；如果DIR为低电平，左侧A编号引脚的电压等于右侧B编号引脚对应的电压。<br>&emsp;&emsp;19号引脚OE为使能引脚，叫作输出使能，引脚上的一横表示这个引脚为低电平有效，即OE引脚接低电平时，芯片才工作。</p>
-<p><img src="74HC245.png" alt="74HC245"></p>
-<h4 id="74HC138（三八译码器）"><a href="#74HC138（三八译码器）" class="headerlink" title="74HC138（三八译码器）"></a>74HC138（三八译码器）</h4><p>&emsp;&emsp;<strong>74HC138是一种数字芯片，它可以由简单的输入逻辑来控制逻辑输出</strong>三八译码器，就是可以吧3种输入状态翻译成8种输出状态。<br>&emsp;&emsp;其中4号引脚E1、5号引脚E2和6号引脚E3为使能引脚，当E1和E2为低电平，E3为高电平时，芯片才工作。<br>&emsp;&emsp;其中A0、A1、A2为输入端，Y0-Y7为输出端。</p>
-<p><img src="74HC138.png" alt="74HC138"></p>
-<p>*以下为74HC138的输入输出端的真值表</p>
-<table>
-<thead>
-<tr>
-<th>A2</th>
-<th>A1</th>
-<th>A0</th>
-<th>⇒</th>
-<th>Y0</th>
-<th>Y1</th>
-<th>Y2</th>
-<th>Y3</th>
-<th>Y4</th>
-<th>Y5</th>
-<th>Y6</th>
-<th>Y7</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>⇒</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>⇒</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>⇒</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>⇒</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>⇒</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>⇒</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>⇒</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>⇒</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-</tr>
-</tbody></table>
-<h3 id="闪烁LED"><a href="#闪烁LED" class="headerlink" title="闪烁LED"></a>闪烁LED</h3><p>&emsp;&emsp;根据开发板的原理图编写程序。如图所示</p>
-<p><img src="LED%E5%B0%8F%E7%81%AF%E6%95%B4%E4%BD%93%E7%94%B5%E8%B7%AF%E5%9B%BE.png" alt="LED小灯整体电路图"></p>
-<p>&emsp;&emsp;如LED小灯整体电路图所示要让LED2点亮的话，Q16三极管需要导通，且DB0为低电平。<br>&emsp;&emsp;Q16三极管需要导通的话基极为低电平，即LEDS6需要为低电平，即74HC138的9号引脚Y6输出低电平。查真值表可知，需要A2为高电平，A1为高电平，A0为低电平，即ADDR2为高电平，ADDR1为高电平，ADDR0为低电平。同时要让74HC138芯片工作，需要ADDR3为高电平，ENLED为低电平。根据图显示译码和步进电机跳线和单片机电路图所示，即为单片机的P1.0需要低电平，P1.1需要高电平，P1.2需要高电平，P1.3需要高电平，P1.4需要低电平。这时三极管就导通了。<br>&emsp;&emsp;DB0连接74HC245的右侧引脚B1，要使B1为低电平的话需要左侧引脚A1为低电平，即DB_0为低电平。DB_0连接到单片机的P0.0引脚上，即P0.0需要低电平，LED就亮。</p>
-<p><img src="%E6%98%BE%E7%A4%BA%E8%AF%91%E7%A0%81%E5%92%8C%E6%AD%A5%E8%BF%9B%E7%94%B5%E6%9C%BA%E8%B7%B3%E7%BA%BF.png" alt="显示译码和步进电机跳线"></p>
-<p><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E7%94%B5%E8%B7%AF.png" alt="单片机电路"></p>
-<p>最终的闪烁程序：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;</span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">0</span>;     <span class="comment">//旧版本C语言需要在最上面定义变量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//以下为执行语句</span></span><br><span class="line">    ENLED = <span class="number">0</span>;      <span class="comment">//使能U3（74HC138）的E1和E2</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;      <span class="comment">//使能U3（74HC138）的E3，使之能正常输出</span></span><br><span class="line">    ADDR2 = <span class="number">1</span>;      <span class="comment">//经U3的Y6输出来开启Q16三极管</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        LED = <span class="number">0</span>;                    <span class="comment">//点亮小灯</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">30000</span>;i++);   <span class="comment">//延时一段时间</span></span><br><span class="line">        LED = <span class="number">1</span>;                    <span class="comment">//熄灭小灯</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">30000</span>;i++);   <span class="comment">//延时一段时间</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
-<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
-<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
-]]></content>
-      <categories>
-        <category>Code</category>
-      </categories>
-      <tags>
-        <tag>C51</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>KingST开发板C51单片机学习笔记-Cheaper 4</title>
-    <url>/2022/04/24/Study-KingST51-Cheaper4/</url>
-    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 4为讲解一些C语言基础知识和流水灯。</p>
-<span id="more"></span>
-
-<h2 id="Chapter-4-C语言和流水灯"><a href="#Chapter-4-C语言和流水灯" class="headerlink" title="Chapter 4 C语言和流水灯"></a>Chapter 4 C语言和流水灯</h2><h3 id="C语言基础"><a href="#C语言基础" class="headerlink" title="C语言基础"></a>C语言基础</h3><h4 id="变量和范围"><a href="#变量和范围" class="headerlink" title="变量和范围"></a>变量和范围</h4><p>&emsp;&emsp;<strong>书写二进制数据时需要加前缀0b，书写十六进制数据时需要加前缀0x。</strong></p>
-<p>&emsp;&emsp;C语言的基本类型由<br>&emsp;&emsp;&emsp;字符型：无符号字符型unsigned char(范围为0～255)；字符型signed char(范围-128～127)<br>&emsp;&emsp;&emsp;整型：无符号整型unsigned int(范围为0～65535)；字符型signed int(范围-32768～32767)<br>&emsp;&emsp;&emsp;长整型：无符号字符型unsigned long(范围为0～4294967295)；字符型signed long(范围-2147483648～2147483647)<br>&emsp;&emsp;&emsp;浮点型：单精度浮点型float(范围为-3.4<em>10^38～3.4</em>10^38；双精度浮点型double（C51里等同于float）)</p>
-<h4 id="基本运算符"><a href="#基本运算符" class="headerlink" title="基本运算符"></a>基本运算符</h4><p>&emsp;&emsp;C语言中的基本运算符加（+）减（-）乘（*）除（/）取余（%）<br>&emsp;&emsp;C语言中的自加（++）自减（–）。其中a++为先做其他运算，再做自加运算；++a为先做自加运算，再做其他运算。<br>&emsp;&emsp;C语言中的赋值运算符为“=”，即将右边的值赋给左边。<br>&emsp;&emsp;C语言中比较运算符为“==”（判断相等）和“！=”（判断不相等）。<br>&emsp;&emsp;C语言中的移位运算符“&lt;&lt;”左移和“&gt;&gt;”右移。左移为最低位填0补充，其他位向左移动，比如1000 0001左移一位为0000 0010。右移位最高位填0补充，其他位向右移动，比如0000 1111右移一位为0100 0000。<br>&emsp;&emsp;C语言中的取反运算符为“~”这个符号的意思是按位取反。比如1000 0001按位取反后为0111 1110。</p>
-<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>&emsp;&emsp;for循环：<br>&emsp;&emsp;&emsp;执行过程中初始化语句执行且只执行一次。判断语句为条件成立就执行需要执行的语句，条件不成立就跳出循环。更新语句是在需要执行的语句执行完后进行执行。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (初始化语句;判断语句;更新语句)</span><br><span class="line">&#123;</span><br><span class="line">    需要执行的语句</span><br><span class="line">&#125;</span><br><span class="line">例如</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>;i &lt; <span class="number">2</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">    a = a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;while循环：<br>&emsp;&emsp;&emsp;如果判断语句为真则执行需要执行的语句，如果判断语句为假则跳出循环。<strong>需要注意的是while循环不带更新，所以在需要执行的语句中需要有更新判断语句的句子，不然就是死循环了。</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(判断语句)</span><br><span class="line">&#123;</span><br><span class="line">    需要执行的语句</span><br><span class="line">&#125;</span><br><span class="line">例如</span><br><span class="line"><span class="keyword">while</span>(i &lt; <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    a = a + b;</span><br><span class="line">    i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>&emsp;&emsp;函数的一般形式为</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">函数值类型 函数名 (形式参数列表)</span><br><span class="line">&#123;</span><br><span class="line">    函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;函数值类型为输出的类型，不为空时函数体需要有return语句。<br>&emsp;&emsp;形式参数列表为输入这个函数的类型。<br>&emsp;&emsp;函数体里通常为声明语句和执行语句。<br>&emsp;&emsp;<strong>一个工程里有且只有一个main函数</strong>，程序执行的时候都是从这里开始的。</p>
-<h3 id="流水灯"><a href="#流水灯" class="headerlink" title="流水灯"></a>流水灯</h3><p>&emsp;&emsp;在流水灯实验前，看一下另外一种使用给P0赋值的方式点亮LED。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    ENLED = <span class="number">0</span>;      <span class="comment">//使能U3（74HC138）的E1和E2</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;      <span class="comment">//使能U3（74HC138）的E3，使之能正常输出</span></span><br><span class="line">    ADDR2 = <span class="number">1</span>;      <span class="comment">//经U3的Y6输出来开启Q16三极管</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    P0 = <span class="number">0xFE</span>;      <span class="comment">//向P0写入数据来控制LED小灯，0xFE为1111 1110</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;要实现流水灯从左往右亮，且LED为低电平才点亮。相当于需要对P0进行了左移后进行取反。比如点亮LED1为1111 1110，点亮LED2为1111 1101。那么就相当于取反之前为0000 0001和0000 0010，即为进行了左移。只要初始设定为0000 0001后，每进行一次左移再取反即可实现流水灯的效果。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//声明语句</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> cnt = <span class="number">0</span>; <span class="comment">//用来移位控制</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">0</span>;     <span class="comment">//用来软件延时</span></span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    ENLED = <span class="number">0</span>;      <span class="comment">//使能U3（74HC138）的E1和E2</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;      <span class="comment">//使能U3（74HC138）的E3，使之能正常输出</span></span><br><span class="line">    ADDR2 = <span class="number">1</span>;      <span class="comment">//经U3的Y6输出来开启Q16三极管</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        P0 = ~(<span class="number">0x01</span> &lt;&lt; cnt);        <span class="comment">//进行左移cnt位后取反即位点亮LED</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">20000</span>;i++)    <span class="comment">//延时一段时间</span></span><br><span class="line">        cnt++;                     <span class="comment">//下次循环时，移动的位数加1即为点亮下一个LED</span></span><br><span class="line">        <span class="keyword">if</span>(cnt &gt;= <span class="number">8</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            cnt = <span class="number">0</span>;                <span class="comment">//如果移动位数超过7后需要重新计数</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
-<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
-<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
-]]></content>
-      <categories>
-        <category>Code</category>
-      </categories>
-      <tags>
-        <tag>C51</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git的常用指令</title>
-    <url>/2022/04/19/git%E7%9A%84%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<p>我个人觉得还算比较常用的git指令。包含添加文件到本地仓库和连接远程仓库等等</p>
-<span id="more"></span>
-
-<h2 id="本地仓库相关"><a href="#本地仓库相关" class="headerlink" title="本地仓库相关"></a>本地仓库相关</h2><h3 id="初始化仓库"><a href="#初始化仓库" class="headerlink" title="初始化仓库"></a>初始化仓库</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
-
-<h3 id="将文件添加到缓冲区"><a href="#将文件添加到缓冲区" class="headerlink" title="将文件添加到缓冲区"></a>将文件添加到缓冲区</h3><p>将单个文件添加到缓冲区（如test.txt)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add test.txt</span><br></pre></td></tr></table></figure>
-
-<p>将整个文件夹添加到缓冲区</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
-
-<h3 id="将缓冲区文件内容添加到本地仓库"><a href="#将缓冲区文件内容添加到本地仓库" class="headerlink" title="将缓冲区文件内容添加到本地仓库"></a>将缓冲区文件内容添加到本地仓库</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit -m &quot;message&quot;</span><br></pre></td></tr></table></figure>
-
-<h3 id="查看仓库状态"><a href="#查看仓库状态" class="headerlink" title="查看仓库状态"></a>查看仓库状态</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-
-<h3 id="查看仓库日志"><a href="#查看仓库日志" class="headerlink" title="查看仓库日志"></a>查看仓库日志</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
-
-<h2 id="本地仓库和远程仓库的关联"><a href="#本地仓库和远程仓库的关联" class="headerlink" title="本地仓库和远程仓库的关联"></a>本地仓库和远程仓库的关联</h2><h3 id="添加远程仓库"><a href="#添加远程仓库" class="headerlink" title="添加远程仓库"></a>添加远程仓库</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add gite git@gitee.com:(SSH的内容)).git</span><br><span class="line">git remote add github git@github.com:(SSH的内容)).git</span><br></pre></td></tr></table></figure>
-
-<h3 id="查看远程仓库的关联有没有被添加"><a href="#查看远程仓库的关联有没有被添加" class="headerlink" title="查看远程仓库的关联有没有被添加"></a>查看远程仓库的关联有没有被添加</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
-
-<h3 id="删除远程仓库的关联"><a href="#删除远程仓库的关联" class="headerlink" title="删除远程仓库的关联"></a>删除远程仓库的关联</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote rm gitee（或者github）</span><br></pre></td></tr></table></figure>
-
-<h2 id="远程仓库相关"><a href="#远程仓库相关" class="headerlink" title="远程仓库相关"></a>远程仓库相关</h2><h3 id="克隆远程仓库"><a href="#克隆远程仓库" class="headerlink" title="克隆远程仓库"></a>克隆远程仓库</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone [url]</span><br></pre></td></tr></table></figure>
-
-<h3 id="上传到远程仓库并合并"><a href="#上传到远程仓库并合并" class="headerlink" title="上传到远程仓库并合并"></a>上传到远程仓库并合并</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push github master</span><br><span class="line">git push gitee master</span><br></pre></td></tr></table></figure>
-
-<h3 id="下载到远程仓库并合并"><a href="#下载到远程仓库并合并" class="headerlink" title="下载到远程仓库并合并"></a>下载到远程仓库并合并</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull github master</span><br><span class="line">git pull gitee master</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.runoob.com/git/git-tutorial.html">git菜鸟教程</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/369486197">还不会使用 GitHub ？ GitHub 教程来了！万字图文详解</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/103391101">个人博客第3篇——绑定GitHub并提交文件</a></p>
-]]></content>
-      <categories>
-        <category>Code</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>KingST开发板C51单片机学习笔记-Cheaper 5</title>
-    <url>/2022/04/26/Study-KingST51-Cheaper5/</url>
-    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 5为讲解基础的逻辑电路，定时器与数码管。</p>
-<span id="more"></span>
-
-<h2 id="Chapter-5-定时器与数码管"><a href="#Chapter-5-定时器与数码管" class="headerlink" title="Chapter 5 定时器与数码管"></a>Chapter 5 定时器与数码管</h2><h3 id="逻辑电路和逻辑运算"><a href="#逻辑电路和逻辑运算" class="headerlink" title="逻辑电路和逻辑运算"></a>逻辑电路和逻辑运算</h3><p><img src="%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF.png" alt="逻辑电路"></p>
-<h4 id="逻辑与-emsp-amp-amp"><a href="#逻辑与-emsp-amp-amp" class="headerlink" title="逻辑与&emsp;&amp;&amp;"></a>逻辑与&emsp;&amp;&amp;</h4><p>&emsp;&emsp;F=A&amp;&amp;B，当A、B的值都为真，其运算结果F为真，当A、B的值任意一个为假，其运算结果F为假。</p>
-<h4 id="逻辑或-emsp"><a href="#逻辑或-emsp" class="headerlink" title="逻辑或&emsp;||"></a>逻辑或&emsp;||</h4><p>&emsp;&emsp;F=A||B，当A、B的值任意一个为真，其运算结果F为真，当A、B的值都为假，其运算结果F为假。</p>
-<h4 id="逻辑非-emsp-emsp"><a href="#逻辑非-emsp-emsp" class="headerlink" title="逻辑非&emsp;!&emsp;"></a>逻辑非&emsp;!&emsp;</h4><p>&emsp;&emsp;F=!A，当A的值为真，其运算结果F为假，当A的值都为假，其运算结果F为真。</p>
-<h4 id="按位与-emsp-amp"><a href="#按位与-emsp-amp" class="headerlink" title="按位与&emsp;&amp;"></a>按位与&emsp;&amp;</h4><p>&emsp;&emsp;F=A&amp;B，将A、B两个字节的每一位都进行与运算，其运算结果为F。例如A=1100 1100、B=1111 0000，则F=1100 0000。</p>
-<h4 id="按位或-emsp"><a href="#按位或-emsp" class="headerlink" title="按位或&emsp;|"></a>按位或&emsp;|</h4><p>&emsp;&emsp;F=A|B，将A、B两个字节的每一位都进行或运算，其运算结果为F。例如A=1100 1100、B=1111 0000，则F=1111 1100。</p>
-<h4 id="按位取反-emsp"><a href="#按位取反-emsp" class="headerlink" title="按位取反&emsp;~"></a>按位取反&emsp;~</h4><p>&emsp;&emsp;F=~A，将A的每一位都进行取反运算，其运算结果为F。例如A=1100 1100，F=0011 0011。</p>
-<h4 id="按位异或-emsp"><a href="#按位异或-emsp" class="headerlink" title="按位异或&emsp;^"></a>按位异或&emsp;^</h4><p>&emsp;&emsp;F=A^B，异或的意思是，如果运算双方的值不同则为真，如果运算双方的值相同则为假。例如A=1100 1100、B=1111 0000，则F=0011 1100。</p>
-<h3 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h3><p>&emsp;&emsp;<strong>时钟周期：时钟周期T是时序中最小的时间单位。</strong>具体算法就是时钟周期=1/时钟源频率，KST-51开发板上用的晶振是11.0592MHz，所以时钟周期为1/11059200秒。</p>
-<p>&emsp;&emsp;<strong>机器周期：单片机完成一个操作的最短时间（主要针对与汇编语言，汇编语言程序每一条语句的执行所用的时间都是机器周期的整数倍）。</strong>标准51单片机（C51）的一个机器周期是12个时钟周期，也就是12/11059200秒。</p>
-<p>&emsp;&emsp;标准51单片机（C51）有两个定时器/计数器，为T0，T1。而STC89C52的资源多个定时器/计数器T2。目前先不看T2，只看T0和T1。<strong>T0和T1共3种6个寄存器，分别为定时值存储寄存器：T0高八位TH0，T0低八位TL0，T1高八位TH1，T1低八位TL1；定时器控制寄存器：TCON；定时器模式寄存器：TMOD。</strong></p>
-<h4 id="定时存储寄存器"><a href="#定时存储寄存器" class="headerlink" title="定时存储寄存器"></a>定时存储寄存器</h4><p>&emsp;&emsp;定时存储寄存器有4个，TH0，TL0，TH1，TL1。<br>&emsp;&emsp;&emsp;TH0寄存器：SFR地址为0x8C，复位值为0x00，不可位寻址<br>&emsp;&emsp;&emsp;TL0寄存器：SFR地址为0x8A，复位值为0x00，不可位寻址<br>&emsp;&emsp;&emsp;TH1寄存器：SFR地址为0x8D，复位值为0x00，不可位寻址<br>&emsp;&emsp;&emsp;TL1寄存器：SFR地址为0x8B，复位值为0x00，不可位寻址</p>
-<p>&emsp;&emsp;定时存储器的作用为当低八位计满时，高八位计1，直至高八位低八位全部被计满就重新开始计。</p>
-<h4 id="定时控制寄存器"><a href="#定时控制寄存器" class="headerlink" title="定时控制寄存器"></a>定时控制寄存器</h4><p>&emsp;&emsp;定时器控制寄存器有1个，为TCON，SFR地址位0x88，可位寻址，各个位的复位值均为0。</p>
-<p>&emsp;&emsp;TCON的各个位的作用：<br>&emsp;&emsp;&emsp;TF1（位7）：定时器1溢出标志位。一旦定时器1发生溢出（高八位和低八位都计满）时硬件置1.清零方式有两种，分别位软件清零（通过程序清零）和硬件清零（通过看门狗之类的单片机自动清零）。<br>&emsp;&emsp;&emsp;TR1（位6）：定时器1运行控制位。软件置位/清零来进行启动/停止定时器。<br>&emsp;&emsp;&emsp;TF0（位5）：定时器0溢出标志位。作用和TF1一样。<br>&emsp;&emsp;&emsp;TR0（位4）：定时器1运行控制位。作用和TR1一样。<br>&emsp;&emsp;&emsp;IE1（位3）：中断相关先不管。<br>&emsp;&emsp;&emsp;IT1（位2）：中断相关先不管。<br>&emsp;&emsp;&emsp;IE0（位1）：中断相关先不管。<br>&emsp;&emsp;&emsp;IT0（位0）：中断相关先不管。  </p>
-<p><img src="%E5%AE%9A%E6%97%B6%E5%99%A8%E6%8E%A7%E5%88%B6%E5%AF%84%E5%AD%98%E5%99%A8TCON.png" alt="定时器控制寄存器TCON"></p>
-<p>&emsp;&emsp;TR1（位6）/TR0（位4）：<strong>定时器运行位</strong>当程序中写TR = 1以后，定时器就会每经过一个机器周期自动加1。当程序中写TR = 0以后，定时器就停止加1，其值（TH1/0和TL1/0）保持不变。</p>
-<p>&emsp;&emsp;TF1（位7）/TF0（位5）：<strong>定时器标志位</strong>它的作用是告诉我们定时器溢出了。当TH1/0和TL1/0同时计满时，TF1/0会自动变成1，但不影响定时器继续工作。</p>
-<h4 id="定时模式寄存器"><a href="#定时模式寄存器" class="headerlink" title="定时模式寄存器"></a>定时模式寄存器</h4><p>&emsp;&emsp;定时器模式寄存器有1个，为TMOD，SFR地址位0x89，不可位寻址，复位值位0x00。</p>
-<p>&emsp;&emsp;TMOD的各个位的作用：<br>&emsp;&emsp;&emsp;GATE（位7）：定时器1门控位。置1时只有在INT1脚为高及TR1控制位置1才可以打开定时器。<br>&emsp;&emsp;&emsp;C/T（位6）：T1的定时器计数器选择位。清零时为选择定时器，置1时为选择计数器。<br>&emsp;&emsp;&emsp;M1（位5）：M1和M0共同组成T1的4种工作模式的选择。<br>&emsp;&emsp;&emsp;M0（位4）：M1和M0共同组成T1的4种工作模式的选择。<br>&emsp;&emsp;&emsp;GATE（位3）：定时器0门控位。作用和GATE（位7）也就是T1的相同<br>&emsp;&emsp;&emsp;C/T（位2）：T0的定时器计数器选择位。作用和C/T（位6）也就是T1的选择位相同<br>&emsp;&emsp;&emsp;M1（位1）：M1和M0共同组成T0的4种工作模式的选择。<br>&emsp;&emsp;&emsp;M0（位0）：M1和M0共同组成T0的4种工作模式的选择。  </p>
-<p><img src="%E5%AE%9A%E6%97%B6%E5%99%A8%E6%A8%A1%E5%BC%8F%E5%AF%84%E5%AD%98%E5%99%A8TMOD.png" alt="定时器模式寄存器TMOD"></p>
-<p>&emsp;&emsp;定时器的4种工作模式：<br>&emsp;&emsp;&emsp;M1=0，M0=0的模式0：兼容8048单片机的13位定时器，THn的8位和TLn的5位组成13位定时器。（不常用）</p>
-<p><img src="TMOD-Mod0.png" alt="TMOD-Mod0"></p>
-<p>&emsp;&emsp;&emsp;M1=0，M0=1的模式1：THn和TLn组成一个16位的定时器。（最常用）</p>
-<p><img src="TMOD-Mod1.png" alt="TMOD-Mod1"></p>
-<p>&emsp;&emsp;&emsp;M1=1，M0=0的模式2：8位自动重装模式，定时器溢出后将THn重装到TLn。（溢出后将THn的值赋值给TLn）</p>
-<p><img src="TMOD-Mod2.png" alt="TMOD-Mod2"></p>
-<p>&emsp;&emsp;&emsp;M1=1，M0=1的模式3：禁用定时器1，定时器0变成2个8位定时器。（不常用）</p>
-<p><img src="TMOD-Mod3.png" alt="TMOD-Mod3"></p>
-<p>&emsp;&emsp;根据模式示意图，定时器部分OSC为时钟频率，d为12，出来的就是机器周期。要启动定时器，C/T要清零，为选择定时器，控制那里要置1，那么与门两边都要为1，那么TRn就要为1，下路的或门的输出也要为1，或门输出为1，那么INTn和非门输出至少有一个为1，非门为GATE位的取反。所以，得出：<br>&emsp;&emsp;&emsp;1.TRn一定要置1。<br>&emsp;&emsp;&emsp;2.当INTn（P3.2引脚）为1时，GATE清零置1都可以。当INTn为0时，GATE一定要清零，定时器才会工作。<br>&emsp;&emsp;&emsp;3.C/T=0时，为定时器，<strong>定时器本质就是计数器，只是它计数的是晶振的数</strong>计数经过了几个机器周期。C/T=1时，为计数器，就是计数外部脉冲的个数。</p>
-<h4 id="定时器的使用的一般流程"><a href="#定时器的使用的一般流程" class="headerlink" title="定时器的使用的一般流程"></a>定时器的使用的一般流程</h4><p>&emsp;&emsp;使用定时器一般需要以下步骤：<br>&emsp;&emsp;&emsp;第一步：设置定时器模式寄存器TMOD，配置好工作模式（不可位寻址，按字节赋值）。<br>&emsp;&emsp;&emsp;第二步：设置定时器存储寄存器THn和TLn的初始值（不可位寻址，按字节赋值，通常位TH0=0xB8，TL0=0x00即位0。02s）。<br>&emsp;&emsp;&emsp;第三步：设置定时器控制寄存器TCON，可位寻址，所以通过TRn置1来让定时器开始计数。<br>&emsp;&emsp;&emsp;第四步：判断定时器控制寄存器TCON中的TFn位来监测定时器溢出情况。<br>&emsp;&emsp;关于THn=0xB8，TLn=0x00的计算。一个机器周期位12/11059200秒，当计到第18432个机器周期即位经过了0.02s。而溢出值是65536，那么从65536-18432=47104开始计，经过18432个机器周期（0.02s），定时器就溢出了，同时TFn被置1.而47104的16进制就是0xB800，即高八位位0xB8，低八位位0x00。利用定时0.02s可以使用50倍变成1s。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inluced<span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;</span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//声明语句</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> cnt = <span class="number">0</span>;  <span class="comment">//用于记录T0溢出次数</span></span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//LED部门</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U3的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;</span><br><span class="line">    ADDR2 = <span class="number">1</span>;  <span class="comment">//使LEDS6输出低电平来选择独立LED</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设置T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xB8</span>;     <span class="comment">//T0赋初值为0xB800即为0.02s</span></span><br><span class="line">    TL0 = <span class="number">0x00</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>;    <span class="comment">//启动T0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(TF0 == <span class="number">1</span>)    <span class="comment">//判断T0是否溢出，1为溢出</span></span><br><span class="line">        &#123;</span><br><span class="line">            TF0 = <span class="number">0</span>;    <span class="comment">//T0溢出后，清除标志</span></span><br><span class="line">            TH0 = <span class="number">0xB8</span>; <span class="comment">//溢出后会重新计数，所以需要再赋值</span></span><br><span class="line">            TL0 = <span class="number">0x00</span>;</span><br><span class="line">            cnt++;</span><br><span class="line">            <span class="keyword">if</span>(cnt &gt;= <span class="number">50</span>)   <span class="comment">//溢出50次为过了1s</span></span><br><span class="line">            &#123;</span><br><span class="line">                cnt = <span class="number">0</span>;    <span class="comment">//达到1s后计数清零</span></span><br><span class="line">                LED = ~LED; <span class="comment">//LED取反即为亮灭闪烁</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="数码管基础"><a href="#数码管基础" class="headerlink" title="数码管基础"></a>数码管基础</h3><h4 id="点亮数码管"><a href="#点亮数码管" class="headerlink" title="点亮数码管"></a>点亮数码管</h4><p>&emsp;&emsp;数码管也是一种LED，常见的数码管分为共阴和共阳。共阴就是所有LED的阴极连接在一起，由阳极控制小灯的亮灭。共阳就是所有LED的阳极连接在一起，由阴极控制小灯的亮灭。</p>
-<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="数码管结构示意图"></p>
-<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E5%8E%9F%E7%90%86%E5%9B%BE.png" alt="数码管原理图"></p>
-<p>&emsp;&emsp;由数码管原理图可以看出通过控制abcdefg和dp来控制数码管的显示。关于公共端由两个，公共端通过的电流较大，所以用两个公共端并联来进行分流。</p>
-<p>&emsp;&emsp;由开发板原理图可知，控制最右边的数码管是通过74HC138输出LEDS0为低电平来控制的，所以U3的75HC138为ADDR2，ADDR1和ADDR0都置0，LEDS0输出0。要让数码管显示数字1，那么就点亮b段和c段，对应就是DB1和DB2都置0。对应的P0就是0b1111 1001，十六进制就是0xF9。</p>
-<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E7%94%B5%E8%B7%AF.png" alt="数码管电路"></p>
-<p><img src="74HC138.png" alt="74HC138"></p>
-<p>&emsp;&emsp;数码管显示1的程序。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inluced<span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    ENLED = <span class="number">1</span>;  <span class="comment">//使能U3的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;</span><br><span class="line">    ADDR2 = <span class="number">0</span>;  <span class="comment">//使Q17三极管导通选择控制DS1</span></span><br><span class="line">    ADDR1 = <span class="number">0</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    P0 = <span class="number">0xF9</span>;  <span class="comment">//点亮数码管b段和c段即为点亮显示1</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="数码管和定时器结合的计时器"><a href="#数码管和定时器结合的计时器" class="headerlink" title="数码管和定时器结合的计时器"></a>数码管和定时器结合的计时器</h4><p>&emsp;&emsp;数码管每一秒进行加1就为数码管的计时器。数码管0-F的真值表如下。利用数组将真值表的数值填入，利用数组的角标来控制P0的值。可以利用code关键词来将真值表进行修饰，这样真值表就会被写入Flash。从而节约RAM空间。</p>
-<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E7%9C%9F%E5%80%BC%E8%A1%A8.png" alt="数码管真值表"></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inluced<span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//用数组来存储数码管的真值表</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> code LedChar[] = &#123;</span><br><span class="line">    <span class="number">0xC0</span>, <span class="number">0xF9</span>, <span class="number">0xA4</span>, <span class="number">0xB0</span>, <span class="number">0x99</span>, <span class="number">0x92</span>, <span class="number">0x82</span>, <span class="number">0xF8</span>,</span><br><span class="line">    <span class="number">0x80</span>, <span class="number">0x90</span>, <span class="number">0x88</span>, <span class="number">0x83</span>, <span class="number">0xC6</span>, <span class="number">0xA1</span>, <span class="number">0x86</span>, <span class="number">0x8E</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//声明语句</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> cnt = <span class="number">0</span>;  <span class="comment">//记录T0溢出次数</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> sec = <span class="number">0</span>;  <span class="comment">//记录经过的秒数</span></span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//数码管部分</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U3的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;</span><br><span class="line">    ADDR2 = <span class="number">0</span>;  <span class="comment">//使Q17三极管导通选择控制DS1</span></span><br><span class="line">    ADDR1 = <span class="number">0</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设置T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xB8</span>;     <span class="comment">//T0赋初值为0xB800即为0.02s</span></span><br><span class="line">    TL0 = <span class="number">0x00</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>;    <span class="comment">//启动T0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(TF == <span class="number">1</span>) <span class="comment">//判断T0是否溢出，1为溢出</span></span><br><span class="line">        &#123;</span><br><span class="line">            TF0 = <span class="number">0</span>;    <span class="comment">//T0溢出后，清除标志</span></span><br><span class="line">            TH0 = <span class="number">0xB8</span>; <span class="comment">//溢出后会重新计数，所以需要再赋值</span></span><br><span class="line">            TL0 = <span class="number">0x00</span>;</span><br><span class="line">            cnt++;</span><br><span class="line">            <span class="keyword">if</span>(cnt &gt;= <span class="number">50</span>)   <span class="comment">//溢出50次为过了1s</span></span><br><span class="line">            &#123;</span><br><span class="line">                cnt = <span class="number">0</span>;</span><br><span class="line">                P0 = LEDChar[sec];</span><br><span class="line">                sec++;  <span class="comment">//每经过1秒要加1</span></span><br><span class="line">                <span class="keyword">if</span>(sec &gt;= <span class="number">16</span>)   <span class="comment">//如果秒数超过了16，重新从0开始</span></span><br><span class="line">                &#123;</span><br><span class="line">                    sec = <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
-<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
-<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
-]]></content>
-      <categories>
-        <category>Code</category>
-      </categories>
-      <tags>
-        <tag>C51</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo-next博客搭建</title>
-    <url>/2022/01/01/hexo-next%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <url>/2022/01/01/Build-hexo-next-Blog/</url>
     <content><![CDATA[<p>本篇以记录为主，记录自己搭建hexo+next时候所配置功能的过程，所以并没有把所有的功能都配置上去，现在所看到的的博客就是根据接下来记录的来配置的。（无音乐播放器，无live2D，无鼠标特效等等）</p>
 <p>这是我目前觉得比较简洁平衡的配置了，尽管如此，还是有许多不太满意的地方，<del>比如我还希望能够点击头像回到首页的功能。</del>（已经实现，虽然可能不是正确的改法）</p>
 <span id="more"></span>
@@ -580,6 +257,329 @@
       <tags>
         <tag>hexo</tag>
         <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KingST开发板C51单片机学习笔记-Cheaper 4</title>
+    <url>/2022/04/24/Study-KingST51-Cheaper4/</url>
+    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 4为讲解一些C语言基础知识和流水灯。</p>
+<span id="more"></span>
+
+<h2 id="Chapter-4-C语言和流水灯"><a href="#Chapter-4-C语言和流水灯" class="headerlink" title="Chapter 4 C语言和流水灯"></a>Chapter 4 C语言和流水灯</h2><h3 id="C语言基础"><a href="#C语言基础" class="headerlink" title="C语言基础"></a>C语言基础</h3><h4 id="变量和范围"><a href="#变量和范围" class="headerlink" title="变量和范围"></a>变量和范围</h4><p>&emsp;&emsp;<strong>书写二进制数据时需要加前缀0b，书写十六进制数据时需要加前缀0x。</strong></p>
+<p>&emsp;&emsp;C语言的基本类型由<br>&emsp;&emsp;&emsp;字符型：无符号字符型unsigned char(范围为0～255)；字符型signed char(范围-128～127)<br>&emsp;&emsp;&emsp;整型：无符号整型unsigned int(范围为0～65535)；字符型signed int(范围-32768～32767)<br>&emsp;&emsp;&emsp;长整型：无符号字符型unsigned long(范围为0～4294967295)；字符型signed long(范围-2147483648～2147483647)<br>&emsp;&emsp;&emsp;浮点型：单精度浮点型float(范围为-3.4<em>10^38～3.4</em>10^38；双精度浮点型double（C51里等同于float）)</p>
+<h4 id="基本运算符"><a href="#基本运算符" class="headerlink" title="基本运算符"></a>基本运算符</h4><p>&emsp;&emsp;C语言中的基本运算符加（+）减（-）乘（*）除（/）取余（%）<br>&emsp;&emsp;C语言中的自加（++）自减（–）。其中a++为先做其他运算，再做自加运算；++a为先做自加运算，再做其他运算。<br>&emsp;&emsp;C语言中的赋值运算符为“=”，即将右边的值赋给左边。<br>&emsp;&emsp;C语言中比较运算符为“==”（判断相等）和“！=”（判断不相等）。<br>&emsp;&emsp;C语言中的移位运算符“&lt;&lt;”左移和“&gt;&gt;”右移。左移为最低位填0补充，其他位向左移动，比如1000 0001左移一位为0000 0010。右移位最高位填0补充，其他位向右移动，比如0000 1111右移一位为0100 0000。<br>&emsp;&emsp;C语言中的取反运算符为“~”这个符号的意思是按位取反。比如1000 0001按位取反后为0111 1110。</p>
+<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>&emsp;&emsp;for循环：<br>&emsp;&emsp;&emsp;执行过程中初始化语句执行且只执行一次。判断语句为条件成立就执行需要执行的语句，条件不成立就跳出循环。更新语句是在需要执行的语句执行完后进行执行。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (初始化语句;判断语句;更新语句)</span><br><span class="line">&#123;</span><br><span class="line">    需要执行的语句</span><br><span class="line">&#125;</span><br><span class="line">例如</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>;i &lt; <span class="number">2</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">    a = a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;while循环：<br>&emsp;&emsp;&emsp;如果判断语句为真则执行需要执行的语句，如果判断语句为假则跳出循环。<strong>需要注意的是while循环不带更新，所以在需要执行的语句中需要有更新判断语句的句子，不然就是死循环了。</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(判断语句)</span><br><span class="line">&#123;</span><br><span class="line">    需要执行的语句</span><br><span class="line">&#125;</span><br><span class="line">例如</span><br><span class="line"><span class="keyword">while</span>(i &lt; <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    a = a + b;</span><br><span class="line">    i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><p>&emsp;&emsp;函数的一般形式为</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">函数值类型 函数名 (形式参数列表)</span><br><span class="line">&#123;</span><br><span class="line">    函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;函数值类型为输出的类型，不为空时函数体需要有return语句。<br>&emsp;&emsp;形式参数列表为输入这个函数的类型。<br>&emsp;&emsp;函数体里通常为声明语句和执行语句。<br>&emsp;&emsp;<strong>一个工程里有且只有一个main函数</strong>，程序执行的时候都是从这里开始的。</p>
+<h3 id="流水灯"><a href="#流水灯" class="headerlink" title="流水灯"></a>流水灯</h3><p>&emsp;&emsp;在流水灯实验前，看一下另外一种使用给P0赋值的方式点亮LED。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    ENLED = <span class="number">0</span>;      <span class="comment">//使能U3（74HC138）的E1和E2</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;      <span class="comment">//使能U3（74HC138）的E3，使之能正常输出</span></span><br><span class="line">    ADDR2 = <span class="number">1</span>;      <span class="comment">//经U3的Y6输出来开启Q16三极管</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    P0 = <span class="number">0xFE</span>;      <span class="comment">//向P0写入数据来控制LED小灯，0xFE为1111 1110</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;要实现流水灯从左往右亮，且LED为低电平才点亮。相当于需要对P0进行了左移后进行取反。比如点亮LED1为1111 1110，点亮LED2为1111 1101。那么就相当于取反之前为0000 0001和0000 0010，即为进行了左移。只要初始设定为0000 0001后，每进行一次左移再取反即可实现流水灯的效果。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//声明语句</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> cnt = <span class="number">0</span>; <span class="comment">//用来移位控制</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">0</span>;     <span class="comment">//用来软件延时</span></span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    ENLED = <span class="number">0</span>;      <span class="comment">//使能U3（74HC138）的E1和E2</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;      <span class="comment">//使能U3（74HC138）的E3，使之能正常输出</span></span><br><span class="line">    ADDR2 = <span class="number">1</span>;      <span class="comment">//经U3的Y6输出来开启Q16三极管</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        P0 = ~(<span class="number">0x01</span> &lt;&lt; cnt);        <span class="comment">//进行左移cnt位后取反即位点亮LED</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">20000</span>;i++)    <span class="comment">//延时一段时间</span></span><br><span class="line">        cnt++;                     <span class="comment">//下次循环时，移动的位数加1即为点亮下一个LED</span></span><br><span class="line">        <span class="keyword">if</span>(cnt &gt;= <span class="number">8</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            cnt = <span class="number">0</span>;                <span class="comment">//如果移动位数超过7后需要重新计数</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
+<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
+<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
+]]></content>
+      <categories>
+        <category>Code</category>
+      </categories>
+      <tags>
+        <tag>C51</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KingST开发板C51单片机学习笔记-Cheaper 5</title>
+    <url>/2022/04/26/Study-KingST51-Cheaper5/</url>
+    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 5为讲解基础的逻辑电路，定时器与数码管。</p>
+<span id="more"></span>
+
+<h2 id="Chapter-5-定时器与数码管"><a href="#Chapter-5-定时器与数码管" class="headerlink" title="Chapter 5 定时器与数码管"></a>Chapter 5 定时器与数码管</h2><h3 id="逻辑电路和逻辑运算"><a href="#逻辑电路和逻辑运算" class="headerlink" title="逻辑电路和逻辑运算"></a>逻辑电路和逻辑运算</h3><p><img src="%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF.png" alt="逻辑电路"></p>
+<h4 id="逻辑与-emsp-amp-amp"><a href="#逻辑与-emsp-amp-amp" class="headerlink" title="逻辑与&emsp;&amp;&amp;"></a>逻辑与&emsp;&amp;&amp;</h4><p>&emsp;&emsp;F=A&amp;&amp;B，当A、B的值都为真，其运算结果F为真，当A、B的值任意一个为假，其运算结果F为假。</p>
+<h4 id="逻辑或-emsp"><a href="#逻辑或-emsp" class="headerlink" title="逻辑或&emsp;||"></a>逻辑或&emsp;||</h4><p>&emsp;&emsp;F=A||B，当A、B的值任意一个为真，其运算结果F为真，当A、B的值都为假，其运算结果F为假。</p>
+<h4 id="逻辑非-emsp-emsp"><a href="#逻辑非-emsp-emsp" class="headerlink" title="逻辑非&emsp;!&emsp;"></a>逻辑非&emsp;!&emsp;</h4><p>&emsp;&emsp;F=!A，当A的值为真，其运算结果F为假，当A的值都为假，其运算结果F为真。</p>
+<h4 id="按位与-emsp-amp"><a href="#按位与-emsp-amp" class="headerlink" title="按位与&emsp;&amp;"></a>按位与&emsp;&amp;</h4><p>&emsp;&emsp;F=A&amp;B，将A、B两个字节的每一位都进行与运算，其运算结果为F。例如A=1100 1100、B=1111 0000，则F=1100 0000。</p>
+<h4 id="按位或-emsp"><a href="#按位或-emsp" class="headerlink" title="按位或&emsp;|"></a>按位或&emsp;|</h4><p>&emsp;&emsp;F=A|B，将A、B两个字节的每一位都进行或运算，其运算结果为F。例如A=1100 1100、B=1111 0000，则F=1111 1100。</p>
+<h4 id="按位取反-emsp"><a href="#按位取反-emsp" class="headerlink" title="按位取反&emsp;~"></a>按位取反&emsp;~</h4><p>&emsp;&emsp;F=~A，将A的每一位都进行取反运算，其运算结果为F。例如A=1100 1100，F=0011 0011。</p>
+<h4 id="按位异或-emsp"><a href="#按位异或-emsp" class="headerlink" title="按位异或&emsp;^"></a>按位异或&emsp;^</h4><p>&emsp;&emsp;F=A^B，异或的意思是，如果运算双方的值不同则为真，如果运算双方的值相同则为假。例如A=1100 1100、B=1111 0000，则F=0011 1100。</p>
+<h3 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h3><p>&emsp;&emsp;<strong>时钟周期：时钟周期T是时序中最小的时间单位。</strong>具体算法就是时钟周期=1/时钟源频率，KST-51开发板上用的晶振是11.0592MHz，所以时钟周期为1/11059200秒。</p>
+<p>&emsp;&emsp;<strong>机器周期：单片机完成一个操作的最短时间（主要针对与汇编语言，汇编语言程序每一条语句的执行所用的时间都是机器周期的整数倍）。</strong>标准51单片机（C51）的一个机器周期是12个时钟周期，也就是12/11059200秒。</p>
+<p>&emsp;&emsp;标准51单片机（C51）有两个定时器/计数器，为T0，T1。而STC89C52的资源多个定时器/计数器T2。目前先不看T2，只看T0和T1。<strong>T0和T1共3种6个寄存器，分别为定时值存储寄存器：T0高八位TH0，T0低八位TL0，T1高八位TH1，T1低八位TL1；定时器控制寄存器：TCON；定时器模式寄存器：TMOD。</strong></p>
+<h4 id="定时存储寄存器"><a href="#定时存储寄存器" class="headerlink" title="定时存储寄存器"></a>定时存储寄存器</h4><p>&emsp;&emsp;定时存储寄存器有4个，TH0，TL0，TH1，TL1。<br>&emsp;&emsp;&emsp;TH0寄存器：SFR地址为0x8C，复位值为0x00，不可位寻址<br>&emsp;&emsp;&emsp;TL0寄存器：SFR地址为0x8A，复位值为0x00，不可位寻址<br>&emsp;&emsp;&emsp;TH1寄存器：SFR地址为0x8D，复位值为0x00，不可位寻址<br>&emsp;&emsp;&emsp;TL1寄存器：SFR地址为0x8B，复位值为0x00，不可位寻址</p>
+<p>&emsp;&emsp;定时存储器的作用为当低八位计满时，高八位计1，直至高八位低八位全部被计满就重新开始计。</p>
+<h4 id="定时控制寄存器"><a href="#定时控制寄存器" class="headerlink" title="定时控制寄存器"></a>定时控制寄存器</h4><p>&emsp;&emsp;定时器控制寄存器有1个，为TCON，SFR地址位0x88，可位寻址，各个位的复位值均为0。</p>
+<p>&emsp;&emsp;TCON的各个位的作用：<br>&emsp;&emsp;&emsp;TF1（位7）：定时器1溢出标志位。一旦定时器1发生溢出（高八位和低八位都计满）时硬件置1.清零方式有两种，分别位软件清零（通过程序清零）和硬件清零（通过看门狗之类的单片机自动清零）。<br>&emsp;&emsp;&emsp;TR1（位6）：定时器1运行控制位。软件置位/清零来进行启动/停止定时器。<br>&emsp;&emsp;&emsp;TF0（位5）：定时器0溢出标志位。作用和TF1一样。<br>&emsp;&emsp;&emsp;TR0（位4）：定时器1运行控制位。作用和TR1一样。<br>&emsp;&emsp;&emsp;IE1（位3）：中断相关先不管。<br>&emsp;&emsp;&emsp;IT1（位2）：中断相关先不管。<br>&emsp;&emsp;&emsp;IE0（位1）：中断相关先不管。<br>&emsp;&emsp;&emsp;IT0（位0）：中断相关先不管。  </p>
+<p><img src="%E5%AE%9A%E6%97%B6%E5%99%A8%E6%8E%A7%E5%88%B6%E5%AF%84%E5%AD%98%E5%99%A8TCON.png" alt="定时器控制寄存器TCON"></p>
+<p>&emsp;&emsp;TR1（位6）/TR0（位4）：<strong>定时器运行位</strong>当程序中写TR = 1以后，定时器就会每经过一个机器周期自动加1。当程序中写TR = 0以后，定时器就停止加1，其值（TH1/0和TL1/0）保持不变。</p>
+<p>&emsp;&emsp;TF1（位7）/TF0（位5）：<strong>定时器标志位</strong>它的作用是告诉我们定时器溢出了。当TH1/0和TL1/0同时计满时，TF1/0会自动变成1，但不影响定时器继续工作。</p>
+<h4 id="定时模式寄存器"><a href="#定时模式寄存器" class="headerlink" title="定时模式寄存器"></a>定时模式寄存器</h4><p>&emsp;&emsp;定时器模式寄存器有1个，为TMOD，SFR地址位0x89，不可位寻址，复位值位0x00。</p>
+<p>&emsp;&emsp;TMOD的各个位的作用：<br>&emsp;&emsp;&emsp;GATE（位7）：定时器1门控位。置1时只有在INT1脚为高及TR1控制位置1才可以打开定时器。<br>&emsp;&emsp;&emsp;C/T（位6）：T1的定时器计数器选择位。清零时为选择定时器，置1时为选择计数器。<br>&emsp;&emsp;&emsp;M1（位5）：M1和M0共同组成T1的4种工作模式的选择。<br>&emsp;&emsp;&emsp;M0（位4）：M1和M0共同组成T1的4种工作模式的选择。<br>&emsp;&emsp;&emsp;GATE（位3）：定时器0门控位。作用和GATE（位7）也就是T1的相同<br>&emsp;&emsp;&emsp;C/T（位2）：T0的定时器计数器选择位。作用和C/T（位6）也就是T1的选择位相同<br>&emsp;&emsp;&emsp;M1（位1）：M1和M0共同组成T0的4种工作模式的选择。<br>&emsp;&emsp;&emsp;M0（位0）：M1和M0共同组成T0的4种工作模式的选择。  </p>
+<p><img src="%E5%AE%9A%E6%97%B6%E5%99%A8%E6%A8%A1%E5%BC%8F%E5%AF%84%E5%AD%98%E5%99%A8TMOD.png" alt="定时器模式寄存器TMOD"></p>
+<p>&emsp;&emsp;定时器的4种工作模式：<br>&emsp;&emsp;&emsp;M1=0，M0=0的模式0：兼容8048单片机的13位定时器，THn的8位和TLn的5位组成13位定时器。（不常用）</p>
+<p><img src="TMOD-Mod0.png" alt="TMOD-Mod0"></p>
+<p>&emsp;&emsp;&emsp;M1=0，M0=1的模式1：THn和TLn组成一个16位的定时器。（最常用）</p>
+<p><img src="TMOD-Mod1.png" alt="TMOD-Mod1"></p>
+<p>&emsp;&emsp;&emsp;M1=1，M0=0的模式2：8位自动重装模式，定时器溢出后将THn重装到TLn。（溢出后将THn的值赋值给TLn）</p>
+<p><img src="TMOD-Mod2.png" alt="TMOD-Mod2"></p>
+<p>&emsp;&emsp;&emsp;M1=1，M0=1的模式3：禁用定时器1，定时器0变成2个8位定时器。（不常用）</p>
+<p><img src="TMOD-Mod3.png" alt="TMOD-Mod3"></p>
+<p>&emsp;&emsp;根据模式示意图，定时器部分OSC为时钟频率，d为12，出来的就是机器周期。要启动定时器，C/T要清零，为选择定时器，控制那里要置1，那么与门两边都要为1，那么TRn就要为1，下路的或门的输出也要为1，或门输出为1，那么INTn和非门输出至少有一个为1，非门为GATE位的取反。所以，得出：<br>&emsp;&emsp;&emsp;1.TRn一定要置1。<br>&emsp;&emsp;&emsp;2.当INTn（P3.2引脚）为1时，GATE清零置1都可以。当INTn为0时，GATE一定要清零，定时器才会工作。<br>&emsp;&emsp;&emsp;3.C/T=0时，为定时器，<strong>定时器本质就是计数器，只是它计数的是晶振的数</strong>计数经过了几个机器周期。C/T=1时，为计数器，就是计数外部脉冲的个数。</p>
+<h4 id="定时器的使用的一般流程"><a href="#定时器的使用的一般流程" class="headerlink" title="定时器的使用的一般流程"></a>定时器的使用的一般流程</h4><p>&emsp;&emsp;使用定时器一般需要以下步骤：<br>&emsp;&emsp;&emsp;第一步：设置定时器模式寄存器TMOD，配置好工作模式（不可位寻址，按字节赋值）。<br>&emsp;&emsp;&emsp;第二步：设置定时器存储寄存器THn和TLn的初始值（不可位寻址，按字节赋值，通常位TH0=0xB8，TL0=0x00即位0。02s）。<br>&emsp;&emsp;&emsp;第三步：设置定时器控制寄存器TCON，可位寻址，所以通过TRn置1来让定时器开始计数。<br>&emsp;&emsp;&emsp;第四步：判断定时器控制寄存器TCON中的TFn位来监测定时器溢出情况。<br>&emsp;&emsp;关于THn=0xB8，TLn=0x00的计算。一个机器周期位12/11059200秒，当计到第18432个机器周期即位经过了0.02s。而溢出值是65536，那么从65536-18432=47104开始计，经过18432个机器周期（0.02s），定时器就溢出了，同时TFn被置1.而47104的16进制就是0xB800，即高八位位0xB8，低八位位0x00。利用定时0.02s可以使用50倍变成1s。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inluced<span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;</span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//声明语句</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> cnt = <span class="number">0</span>;  <span class="comment">//用于记录T0溢出次数</span></span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//LED部门</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U3的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;</span><br><span class="line">    ADDR2 = <span class="number">1</span>;  <span class="comment">//使LEDS6输出低电平来选择独立LED</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设置T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xB8</span>;     <span class="comment">//T0赋初值为0xB800即为0.02s</span></span><br><span class="line">    TL0 = <span class="number">0x00</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>;    <span class="comment">//启动T0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(TF0 == <span class="number">1</span>)    <span class="comment">//判断T0是否溢出，1为溢出</span></span><br><span class="line">        &#123;</span><br><span class="line">            TF0 = <span class="number">0</span>;    <span class="comment">//T0溢出后，清除标志</span></span><br><span class="line">            TH0 = <span class="number">0xB8</span>; <span class="comment">//溢出后会重新计数，所以需要再赋值</span></span><br><span class="line">            TL0 = <span class="number">0x00</span>;</span><br><span class="line">            cnt++;</span><br><span class="line">            <span class="keyword">if</span>(cnt &gt;= <span class="number">50</span>)   <span class="comment">//溢出50次为过了1s</span></span><br><span class="line">            &#123;</span><br><span class="line">                cnt = <span class="number">0</span>;    <span class="comment">//达到1s后计数清零</span></span><br><span class="line">                LED = ~LED; <span class="comment">//LED取反即为亮灭闪烁</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数码管基础"><a href="#数码管基础" class="headerlink" title="数码管基础"></a>数码管基础</h3><h4 id="点亮数码管"><a href="#点亮数码管" class="headerlink" title="点亮数码管"></a>点亮数码管</h4><p>&emsp;&emsp;数码管也是一种LED，常见的数码管分为共阴和共阳。共阴就是所有LED的阴极连接在一起，由阳极控制小灯的亮灭。共阳就是所有LED的阳极连接在一起，由阴极控制小灯的亮灭。</p>
+<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="数码管结构示意图"></p>
+<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E5%8E%9F%E7%90%86%E5%9B%BE.png" alt="数码管原理图"></p>
+<p>&emsp;&emsp;由数码管原理图可以看出通过控制abcdefg和dp来控制数码管的显示。关于公共端由两个，公共端通过的电流较大，所以用两个公共端并联来进行分流。</p>
+<p>&emsp;&emsp;由开发板原理图可知，控制最右边的数码管是通过74HC138输出LEDS0为低电平来控制的，所以U3的75HC138为ADDR2，ADDR1和ADDR0都置0，LEDS0输出0。要让数码管显示数字1，那么就点亮b段和c段，对应就是DB1和DB2都置0。对应的P0就是0b1111 1001，十六进制就是0xF9。</p>
+<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E7%94%B5%E8%B7%AF.png" alt="数码管电路"></p>
+<p><img src="74HC138.png" alt="74HC138"></p>
+<p>&emsp;&emsp;数码管显示1的程序。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inluced<span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    ENLED = <span class="number">1</span>;  <span class="comment">//使能U3的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;</span><br><span class="line">    ADDR2 = <span class="number">0</span>;  <span class="comment">//使Q17三极管导通选择控制DS1</span></span><br><span class="line">    ADDR1 = <span class="number">0</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    P0 = <span class="number">0xF9</span>;  <span class="comment">//点亮数码管b段和c段即为点亮显示1</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="数码管和定时器结合的计时器"><a href="#数码管和定时器结合的计时器" class="headerlink" title="数码管和定时器结合的计时器"></a>数码管和定时器结合的计时器</h4><p>&emsp;&emsp;数码管每一秒进行加1就为数码管的计时器。数码管0-F的真值表如下。利用数组将真值表的数值填入，利用数组的角标来控制P0的值。可以利用code关键词来将真值表进行修饰，这样真值表就会被写入Flash。从而节约RAM空间。</p>
+<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E7%9C%9F%E5%80%BC%E8%A1%A8.png" alt="数码管真值表"></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inluced<span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//用数组来存储数码管的真值表</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> code LedChar[] = &#123;</span><br><span class="line">    <span class="number">0xC0</span>, <span class="number">0xF9</span>, <span class="number">0xA4</span>, <span class="number">0xB0</span>, <span class="number">0x99</span>, <span class="number">0x92</span>, <span class="number">0x82</span>, <span class="number">0xF8</span>,</span><br><span class="line">    <span class="number">0x80</span>, <span class="number">0x90</span>, <span class="number">0x88</span>, <span class="number">0x83</span>, <span class="number">0xC6</span>, <span class="number">0xA1</span>, <span class="number">0x86</span>, <span class="number">0x8E</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//声明语句</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> cnt = <span class="number">0</span>;  <span class="comment">//记录T0溢出次数</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> sec = <span class="number">0</span>;  <span class="comment">//记录经过的秒数</span></span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//数码管部分</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U3的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;</span><br><span class="line">    ADDR2 = <span class="number">0</span>;  <span class="comment">//使Q17三极管导通选择控制DS1</span></span><br><span class="line">    ADDR1 = <span class="number">0</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设置T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xB8</span>;     <span class="comment">//T0赋初值为0xB800即为0.02s</span></span><br><span class="line">    TL0 = <span class="number">0x00</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>;    <span class="comment">//启动T0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(TF == <span class="number">1</span>) <span class="comment">//判断T0是否溢出，1为溢出</span></span><br><span class="line">        &#123;</span><br><span class="line">            TF0 = <span class="number">0</span>;    <span class="comment">//T0溢出后，清除标志</span></span><br><span class="line">            TH0 = <span class="number">0xB8</span>; <span class="comment">//溢出后会重新计数，所以需要再赋值</span></span><br><span class="line">            TL0 = <span class="number">0x00</span>;</span><br><span class="line">            cnt++;</span><br><span class="line">            <span class="keyword">if</span>(cnt &gt;= <span class="number">50</span>)   <span class="comment">//溢出50次为过了1s</span></span><br><span class="line">            &#123;</span><br><span class="line">                cnt = <span class="number">0</span>;</span><br><span class="line">                P0 = LEDChar[sec];</span><br><span class="line">                sec++;  <span class="comment">//每经过1秒要加1</span></span><br><span class="line">                <span class="keyword">if</span>(sec &gt;= <span class="number">16</span>)   <span class="comment">//如果秒数超过了16，重新从0开始</span></span><br><span class="line">                &#123;</span><br><span class="line">                    sec = <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
+<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
+<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
+]]></content>
+      <categories>
+        <category>Code</category>
+      </categories>
+      <tags>
+        <tag>C51</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>KingST开发板C51单片机学习笔记-Cheaper 3</title>
+    <url>/2022/04/23/Study-KingST51-Cheaper3/</url>
+    <content><![CDATA[<p>本篇为KingST的C51单片机的学习笔记，Cheaper 3为讲解一些硬件知识。</p>
+<span id="more"></span>
+
+<h2 id="Chapter-3-一些硬件知识"><a href="#Chapter-3-一些硬件知识" class="headerlink" title="Chapter 3 一些硬件知识"></a>Chapter 3 一些硬件知识</h2><h3 id="硬件知识"><a href="#硬件知识" class="headerlink" title="硬件知识"></a>硬件知识</h3><h4 id="去耦电容"><a href="#去耦电容" class="headerlink" title="去耦电容"></a>去耦电容</h4><p>※<strong>去耦电容的应用背景</strong></p>
+<p>&emsp;&emsp;由于电磁干扰（EMI），所以需要应用去耦电容。造成电磁干扰的主要有三种形式<br>&emsp;&emsp;&emsp;①存在冬天空气干燥造成“静电放电”（ESD）<br>&emsp;&emsp;&emsp;②电机设备使用时的干扰造成“快速瞬间群脉冲”（EFT）<br>&emsp;&emsp;&emsp;③热插拔造成的“浪涌”（Surge）<br>&emsp;&emsp;基于上面的问题，所以诞生了电磁兼容（EMC）。</p>
+<p>※<strong>耦电容的应用：大电容低频滤波，小电容高频滤波。</strong></p>
+<p>&emsp;&emsp;大电容（如原理图电源开关电路的C19）的作用为<br>&emsp;&emsp;&emsp;①缓冲作用：上电瞬间，让电流缓慢流入电路。<br>&emsp;&emsp;&emsp;②稳定作用：后级电路功率大小不一样，所需电流也不一样，可能导致启动有先后，有电容就可以稳定整个电路的电压不会下降太多。<br>&emsp;&emsp;大电容的选取：<br>&emsp;&emsp;&emsp;第一个参数是耐压值的考虑：一般为系统电压的1.5倍到2倍（一般单片机系统为5V），有些场合可以稍微再高一点。<br>&emsp;&emsp;&emsp;第二个参数是电容容量的考虑：根据整套系统的功率消耗情况决定，如果系统耗电较大，波动可能比较大，容值就要选大一些的，反之可以小一些。</p>
+<p>&emsp;&emsp;小电容（如原理图电源开关电路的C10）的作用为：滤除高频信号的干扰。一般在IC供电的地方都会加上这个小电容，在布线的时候还会考虑尽可能靠近IC。<br>&emsp;&emsp;小电容的选取：在电源处的去耦高频电容，直接选用0.1μF（104电容⇒10×10^4pF=100nF=0.1μF）。</p>
+<p><img src="%E7%94%B5%E6%BA%90%E5%BC%80%E5%85%B3%E7%94%B5%E8%B7%AF.png" alt="电源开关电路"></p>
+<h4 id="三极管"><a href="#三极管" class="headerlink" title="三极管"></a>三极管</h4><p>&emsp;&emsp;三极管是模拟电路和数字电路中经常会用到的一个器件，三极管可分为<strong>PNP型三极管</strong>和<strong>NPN型三极管</strong>。三极管一共有3个极，横向左侧的的引脚叫作<strong>基极b</strong>（base），中间的箭头一头连接基极，一头连接<strong>发射极e</strong>（emitter），剩下一个引脚就是<strong>集电极c</strong>（collector）。</p>
+<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1.png" alt="三极管"></p>
+<p>※<strong>三极管的原理</strong></p>
+<p>&emsp;&emsp;三极管的关键点在于b极和e极之间的电压关系。以PNP型为例，e极电压只要高于b极电压0.7V以上，这个三极管的e极和c极之间就是顺利导通的。也可是说控制端在b和e之间，被控制端在b和c之间。如原理图所示，当P1.0处于高电平（5V）的时候，e和b之间无压降，所以三极管e和c之间不导通，LED就不亮；当P1.0处于低电平（0V）的时候，e和b之间有压降且大于0.7V，三极管e和c之间导通，LED就亮。（e和c之间大概会有0.2V的压降）</p>
+<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E7%9A%84%E7%94%A8%E6%B3%95.png" alt="三极管的用法"></p>
+<p>&emsp;&emsp;三极管有三种状态：<strong>截止状态</strong>，<strong>饱和状态</strong>和<strong>放大状态</strong>。通常截止和饱和在数字电路上用的比较多，放大在模拟电路上用的比较多。<br>&emsp;&emsp;&emsp;截止状态：e和b之间不导通。<br>&emsp;&emsp;&emsp;饱和状态：e和b之间导通，且b极的电流要大于ec间的电流除以β（β为三极管的放大倍数，常用的大概可以认为是100）。<br>&emsp;&emsp;&emsp;放大状态：e和b之间导通，且b极的电流要等于ec间的电流除以β。</p>
+<p>&emsp;&emsp;上图LED的压降为2V，ec之间的压降为0.2V（先忽略不计），则R41的压降为3V，因此，ec之间的电流为3mA。如果eb要导通，那么eb间的最小电流就是30μA，那么R47最大的阻值为4.3V（5V减去0.7V的压降）除以30μA，为143kΩ。R47只要小于这个阻值就行了，但也不能过于小，单片机的IO输入电流太大会烧坏，STC89C52的最大输入电流推荐小于6mA。</p>
+<p>※<strong>三极管的应用</strong></p>
+<p>&emsp;&emsp;三极管的控制应用：<strong>控制应用</strong>，<strong>驱动应用</strong><br>&emsp;&emsp;&emsp;控制应用：如图所示为NPN型三极管，当IO口输出5V高电平的时候，三极管导通，OUT输出低电平；当IO口输出0V低电平的时候，三极管截止，OUT则由于上拉电阻R2的作用而输出12V的高电平。</p>
+<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E7%9A%84%E6%8E%A7%E5%88%B6%E5%BA%94%E7%94%A8.png" alt="三极管的控制应用"></p>
+<p>&emsp;&emsp;&emsp;驱动应用：如图IO口直接驱动LED的话，第一种方式IO口电流承受能力有限，一般为6mA，如果LED数量多了，单片机就会受不了。第二种方式IO口电流输出能力有限，一般不到1mA，LED可能点不亮或者亮度很低。</p>
+<p><img src="IO%E7%9B%B4%E6%8E%A5%E9%A9%B1%E5%8A%A8LED.png" alt="IO直接驱动LED"></p>
+<p>&emsp;&emsp;&emsp;所以就需要用三极管来驱动，如图所示为NPN型三极管来驱动LED，当IO口是高电平的时候，三极管导通，LED就能够被点亮了（9013三极管可以通过500mA的电流）。</p>
+<p><img src="%E4%B8%89%E6%9E%81%E7%AE%A1%E9%A9%B1%E5%8A%A8LED.png" alt="三极管驱动LED"></p>
+<h4 id="74HC245"><a href="#74HC245" class="headerlink" title="74HC245"></a>74HC245</h4><p>&emsp;&emsp;<strong>74HC245是个双向缓冲器</strong>。如果LED多起来的话，总体的电流也相当高，所以需要一个缓冲器来缓冲电流。<br>&emsp;&emsp;其中1号引脚DIR为方向引脚，如果DIR为高电平，右侧B编号引脚的电压等于左侧A编号引脚对应的电压；如果DIR为低电平，左侧A编号引脚的电压等于右侧B编号引脚对应的电压。<br>&emsp;&emsp;19号引脚OE为使能引脚，叫作输出使能，引脚上的一横表示这个引脚为低电平有效，即OE引脚接低电平时，芯片才工作。</p>
+<p><img src="74HC245.png" alt="74HC245"></p>
+<h4 id="74HC138（三八译码器）"><a href="#74HC138（三八译码器）" class="headerlink" title="74HC138（三八译码器）"></a>74HC138（三八译码器）</h4><p>&emsp;&emsp;<strong>74HC138是一种数字芯片，它可以由简单的输入逻辑来控制逻辑输出</strong>三八译码器，就是可以吧3种输入状态翻译成8种输出状态。<br>&emsp;&emsp;其中4号引脚E1、5号引脚E2和6号引脚E3为使能引脚，当E1和E2为低电平，E3为高电平时，芯片才工作。<br>&emsp;&emsp;其中A0、A1、A2为输入端，Y0-Y7为输出端。</p>
+<p><img src="74HC138.png" alt="74HC138"></p>
+<p>*以下为74HC138的输入输出端的真值表</p>
+<table>
+<thead>
+<tr>
+<th>A2</th>
+<th>A1</th>
+<th>A0</th>
+<th>⇒</th>
+<th>Y0</th>
+<th>Y1</th>
+<th>Y2</th>
+<th>Y3</th>
+<th>Y4</th>
+<th>Y5</th>
+<th>Y6</th>
+<th>Y7</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>⇒</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>⇒</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>⇒</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<h3 id="闪烁LED"><a href="#闪烁LED" class="headerlink" title="闪烁LED"></a>闪烁LED</h3><p>&emsp;&emsp;根据开发板的原理图编写程序。如图所示</p>
+<p><img src="LED%E5%B0%8F%E7%81%AF%E6%95%B4%E4%BD%93%E7%94%B5%E8%B7%AF%E5%9B%BE.png" alt="LED小灯整体电路图"></p>
+<p>&emsp;&emsp;如LED小灯整体电路图所示要让LED2点亮的话，Q16三极管需要导通，且DB0为低电平。<br>&emsp;&emsp;Q16三极管需要导通的话基极为低电平，即LEDS6需要为低电平，即74HC138的9号引脚Y6输出低电平。查真值表可知，需要A2为高电平，A1为高电平，A0为低电平，即ADDR2为高电平，ADDR1为高电平，ADDR0为低电平。同时要让74HC138芯片工作，需要ADDR3为高电平，ENLED为低电平。根据图显示译码和步进电机跳线和单片机电路图所示，即为单片机的P1.0需要低电平，P1.1需要高电平，P1.2需要高电平，P1.3需要高电平，P1.4需要低电平。这时三极管就导通了。<br>&emsp;&emsp;DB0连接74HC245的右侧引脚B1，要使B1为低电平的话需要左侧引脚A1为低电平，即DB_0为低电平。DB_0连接到单片机的P0.0引脚上，即P0.0需要低电平，LED就亮。</p>
+<p><img src="%E6%98%BE%E7%A4%BA%E8%AF%91%E7%A0%81%E5%92%8C%E6%AD%A5%E8%BF%9B%E7%94%B5%E6%9C%BA%E8%B7%B3%E7%BA%BF.png" alt="显示译码和步进电机跳线"></p>
+<p><img src="%E5%8D%95%E7%89%87%E6%9C%BA%E7%94%B5%E8%B7%AF.png" alt="单片机电路"></p>
+<p>最终的闪烁程序：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;</span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">0</span>;     <span class="comment">//旧版本C语言需要在最上面定义变量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//以下为执行语句</span></span><br><span class="line">    ENLED = <span class="number">0</span>;      <span class="comment">//使能U3（74HC138）的E1和E2</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;      <span class="comment">//使能U3（74HC138）的E3，使之能正常输出</span></span><br><span class="line">    ADDR2 = <span class="number">1</span>;      <span class="comment">//经U3的Y6输出来开启Q16三极管</span></span><br><span class="line">    ADDR1 = <span class="number">1</span>;</span><br><span class="line">    ADDR0 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        LED = <span class="number">0</span>;                    <span class="comment">//点亮小灯</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">30000</span>;i++);   <span class="comment">//延时一段时间</span></span><br><span class="line">        LED = <span class="number">1</span>;                    <span class="comment">//熄灭小灯</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; <span class="number">30000</span>;i++);   <span class="comment">//延时一段时间</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
+<p><a href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
+<p><a href="http://www.qdkingst.com/cn">KingST官网</a></p>
+]]></content>
+      <categories>
+        <category>Code</category>
+      </categories>
+      <tags>
+        <tag>C51</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git的常用指令</title>
+    <url>/2022/04/19/git-Common-dir/</url>
+    <content><![CDATA[<p>我个人觉得还算比较常用的git指令。包含添加文件到本地仓库和连接远程仓库等等</p>
+<span id="more"></span>
+
+<h2 id="本地仓库相关"><a href="#本地仓库相关" class="headerlink" title="本地仓库相关"></a>本地仓库相关</h2><h3 id="初始化仓库"><a href="#初始化仓库" class="headerlink" title="初始化仓库"></a>初始化仓库</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<h3 id="将文件添加到缓冲区"><a href="#将文件添加到缓冲区" class="headerlink" title="将文件添加到缓冲区"></a>将文件添加到缓冲区</h3><p>将单个文件添加到缓冲区（如test.txt)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add test.txt</span><br></pre></td></tr></table></figure>
+
+<p>将整个文件夹添加到缓冲区</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+
+<h3 id="将缓冲区文件内容添加到本地仓库"><a href="#将缓冲区文件内容添加到本地仓库" class="headerlink" title="将缓冲区文件内容添加到本地仓库"></a>将缓冲区文件内容添加到本地仓库</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit -m &quot;message&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看仓库状态"><a href="#查看仓库状态" class="headerlink" title="查看仓库状态"></a>查看仓库状态</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看仓库日志"><a href="#查看仓库日志" class="headerlink" title="查看仓库日志"></a>查看仓库日志</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
+
+<h2 id="本地仓库和远程仓库的关联"><a href="#本地仓库和远程仓库的关联" class="headerlink" title="本地仓库和远程仓库的关联"></a>本地仓库和远程仓库的关联</h2><h3 id="添加远程仓库"><a href="#添加远程仓库" class="headerlink" title="添加远程仓库"></a>添加远程仓库</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add gite git@gitee.com:(SSH的内容)).git</span><br><span class="line">git remote add github git@github.com:(SSH的内容)).git</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看远程仓库的关联有没有被添加"><a href="#查看远程仓库的关联有没有被添加" class="headerlink" title="查看远程仓库的关联有没有被添加"></a>查看远程仓库的关联有没有被添加</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除远程仓库的关联"><a href="#删除远程仓库的关联" class="headerlink" title="删除远程仓库的关联"></a>删除远程仓库的关联</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote rm gitee（或者github）</span><br></pre></td></tr></table></figure>
+
+<h2 id="远程仓库相关"><a href="#远程仓库相关" class="headerlink" title="远程仓库相关"></a>远程仓库相关</h2><h3 id="克隆远程仓库"><a href="#克隆远程仓库" class="headerlink" title="克隆远程仓库"></a>克隆远程仓库</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone [url]</span><br></pre></td></tr></table></figure>
+
+<h3 id="上传到远程仓库并合并"><a href="#上传到远程仓库并合并" class="headerlink" title="上传到远程仓库并合并"></a>上传到远程仓库并合并</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push github master</span><br><span class="line">git push gitee master</span><br></pre></td></tr></table></figure>
+
+<h3 id="下载到远程仓库并合并"><a href="#下载到远程仓库并合并" class="headerlink" title="下载到远程仓库并合并"></a>下载到远程仓库并合并</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull github master</span><br><span class="line">git pull gitee master</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.runoob.com/git/git-tutorial.html">git菜鸟教程</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/369486197">还不会使用 GitHub ？ GitHub 教程来了！万字图文详解</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/103391101">个人博客第3篇——绑定GitHub并提交文件</a></p>
+]]></content>
+      <categories>
+        <category>Code</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
