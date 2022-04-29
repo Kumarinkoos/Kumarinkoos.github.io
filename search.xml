@@ -215,7 +215,7 @@
 <figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">Md</span> &quot;E:\<span class="built_in">Copy</span>\<span class="number">3</span>D&quot;</span><br><span class="line">::<span class="built_in">pause</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="利用FreeFileSync对数据进行备份至Copy文件"><a href="#利用FreeFileSync对数据进行备份至Copy文件" class="headerlink" title="利用FreeFileSync对数据进行备份至Copy文件"></a>利用FreeFileSync对数据进行备份至Copy文件</h3><p>&emsp;&emsp;先看一下FreeFileSync的概况。</p>
-<p><img src="%E6%95%B0%E7%A0%81%E7%AE%A1%E7%94%B5%E8%B7%AF.png" alt="数码管电路"></p>
+<p><img src="FreeFileSync.png" alt="FreeFileSync"></p>
 <p>&emsp;&emsp;FreeFileSync的比较后的画面</p>
 <p><img src="FreeFileSync%E6%AF%94%E8%BE%83%E5%90%8E.png" alt="FreeFileSync比较后"></p>
 <p>&emsp;&emsp;首先配置比较设定和同步设定，比较设定我选择的是比较文件内容，不过因为往空的文件夹里备份，所以无所谓选择哪一个。同步设定我选择的是镜像，这样就是单向从源备份到目标。目标的更改不会影响到源。在删除文件里我设置了个历史版本，并新建了一个Copy_back的文件夹，意图是在出问题第二个脚本没有执行的时候，将Copy里的3D进行了覆盖，被覆盖文件会被存在Copy_back这里。算是有另一道保障。</p>
@@ -229,12 +229,19 @@
 <h3 id="利用Window自带的任务计划程序定时执行上述操作"><a href="#利用Window自带的任务计划程序定时执行上述操作" class="headerlink" title="利用Window自带的任务计划程序定时执行上述操作"></a>利用Window自带的任务计划程序定时执行上述操作</h3><p>&emsp;&emsp;在此电脑的管理里进入，选择任务计划程序库，新建新的基本任务。</p>
 <p><img src="%E4%B8%AD%E6%96%AD%E6%9F%A5%E8%AF%A2%E5%BA%8F%E5%88%97.png" alt="中断查询序列"></p>
 <p>&emsp;&emsp;命名任务计划程序的名称。</p>
+<p><img src="%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%E7%AC%AC1%E6%AD%A5.png" alt="任务计划程序第1步"></p>
 <p>&emsp;&emsp;选择启动任务的间隔。我选择的是周六当天进行备份。</p>
+<p><img src="%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%E7%AC%AC2%E6%AD%A5.png" alt="任务计划程序第2步"></p>
 <p>&emsp;&emsp;选择启动任务的时间。我选择的是第一个创建日期的文件夹的脚本为周六0点启动，剪切操作脚本为周六1点启动，创建3D文件夹的脚本为周六2点启动，备份脚本为周六6点启动。</p>
+<p><img src="%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%E7%AC%AC3%E6%AD%A5.png" alt="任务计划程序第3步"></p>
 <p>&emsp;&emsp;选择启动程序。</p>
+<p><img src="%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%E7%AC%AC4%E6%AD%A5.png" alt="任务计划程序第4步"></p>
 <p>&emsp;&emsp;选择想要启动的脚本。</p>
+<p><img src="%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%E7%AC%AC5%E6%AD%A5.png" alt="任务计划程序第5步"></p>
 <p>&emsp;&emsp;完成后右击属性，变更权限。默认的为需要用户登录才能启动脚本，把它变更为不需要登陆就启动，且以最高权限运行。这样就只需要开机，不需要登陆到window就能进行备份。</p>
+<p><img src="%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%E5%85%B6%E4%BB%96%E5%B1%9E%E6%80%A7.png" alt="任务计划程序其他属性"></p>
 <p>&emsp;&emsp;完成任务计划程序设定。</p>
+<p><img src="%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%E8%AE%BE%E5%AE%9A%E5%AE%8C%E6%AF%95.png" alt="任务计划程序设定完毕"></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://blog.csdn.net/Fabuler/article/details/44974777">在当前文件夹下创建以日期和时间命名的文件夹</a></p>
 <p><a href="https://post.smzdm.com/p/a27gxw62/">硬核教程：如何使用【FreeFileSync】实现电脑文件自动备份功能</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/266883367">好用的自动同步软件：FreeFileSync</a></p>
