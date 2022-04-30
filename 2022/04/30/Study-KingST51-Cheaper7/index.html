@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kumarinko.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#D1F88F","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本篇为KingST的C51单片机的学习笔记，Cheaper 7为讲解变量的进阶知识和点阵LED。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KingST开发板C51单片机学习笔记-Cheaper 7">
+<meta property="og:url" content="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/index.html">
+<meta property="og:site_name" content="ゆるる">
+<meta property="og:description" content="本篇为KingST的C51单片机的学习笔记，Cheaper 7为讲解变量的进阶知识和点阵LED。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/%E7%82%B9%E9%98%B5LED%E5%8E%9F%E7%90%86%E5%9B%BE.png">
+<meta property="og:image" content="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/%E7%82%B9%E9%98%B5LED%E7%94%B5%E8%B7%AF%E5%9B%BE.png">
+<meta property="og:image" content="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/74HC138%E7%94%B5%E8%B7%AF%E5%9B%BE.png">
+<meta property="og:image" content="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/%E5%8F%96%E6%A8%A1%E7%88%B1%E5%BF%83.png">
+<meta property="article:published_time" content="2022-04-30T12:24:14.000Z">
+<meta property="article:modified_time" content="2022-04-30T12:28:48.289Z">
+<meta property="article:author" content="摇曳Kumarinko">
+<meta property="article:tag" content="C51">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/%E7%82%B9%E9%98%B5LED%E5%8E%9F%E7%90%86%E5%9B%BE.png">
+
+<link rel="canonical" href="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>KingST开发板C51单片机学习笔记-Cheaper 7 | ゆるる</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ゆるる</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Kumarinkoos" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="摇曳Kumarinko">
+      <meta itemprop="description" content="LAST STARDUST">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ゆるる">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          KingST开发板C51单片机学习笔记-Cheaper 7
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-30 20:24:14 / 修改时间：20:28:48" itemprop="dateCreated datePublished" datetime="2022-04-30T20:24:14+08:00">2022-04-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Code/" itemprop="url" rel="index"><span itemprop="name">Code</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本篇为KingST的C51单片机的学习笔记，Cheaper 7为讲解变量的进阶知识和点阵LED。</p>
+<span id="more"></span>
+
+<h2 id="Chapter-7-变量进阶与点阵LED"><a href="#Chapter-7-变量进阶与点阵LED" class="headerlink" title="Chapter 7 变量进阶与点阵LED"></a>Chapter 7 变量进阶与点阵LED</h2><h3 id="变量进阶"><a href="#变量进阶" class="headerlink" title="变量进阶"></a>变量进阶</h3><h4 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h4><p>&emsp;&emsp;<strong>局部变量：</strong>函数内部声明的变量，只在本函数内有效，此函数以外不能使用，叫做局部变量。（另外函数的形参也是局部变量）</p>
+<p>&emsp;&emsp;<strong>全局变量：</strong>在函数外部声明的变量就是全局变量。一个源程序可以包含一个或者多个函数，全局变量的作用范围是从它开始声明的位置一直到程序结束。</p>
+<p>&emsp;&emsp;全局变量的副作用：<br>&emsp;&emsp;&emsp;1.降低函数的独立性，对任何一个函数的修改都可能影响到其他函数。<br>&emsp;&emsp;&emsp;2.降低函数的通用性，不利于函数的重复调用。<br>&emsp;&emsp;&emsp;3.降低程序的清晰度，每个函数执行都有可能改变全局变量的值，无法清楚判断每个时刻的全局变量的值。<br>&emsp;&emsp;&emsp;4.全局变量永久占据内存单元。</p>
+<p>&emsp;&emsp;<strong>所以原则上，尽量减少全局变量的使用，能用局部变量就不用全局变量。</strong>当全局变量和局部变量同名，在局部变量作用域范围内，局部变量有效，但应该极力避免变量的重名。</p>
+<h4 id="变量的存储类别"><a href="#变量的存储类别" class="headerlink" title="变量的存储类别"></a>变量的存储类别</h4><p>&emsp;&emsp;变量的存储类别分为自动，静态，寄存器和外部这四种，这里先介绍前两种。</p>
+<p>&emsp;&emsp;<strong>自动变量：</strong>函数中的局部变量，如果不加static关键字修饰，都属于自动变量，也叫做动态变量。动态变量的关键字是auto，但一般可以省略。</p>
+<p>&emsp;&emsp;<strong>静态变量：</strong>全局变量均始于静态变量，局部变量如果加了static关键字修饰的话，也是静态变量。它的特点是，在整个生存期中只赋一次初值。</p>
+<p>&emsp;&emsp;在上一章中断函数相关的程序中，我们用了三个全局变量，因为i和cnt只在中断函数中使用，这里我们将其缩少至一个全局变量，另外因为我们希望i和cnt值并不是每次进入中断函数都会被重新赋值的，所以i和cnt我我们需要使用静态变量。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">include&lt;reg52.h&gt;</span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//用数组来存储数码管的真值表</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> code LedChar[] = &#123;</span><br><span class="line">    <span class="number">0xC0</span>, <span class="number">0xF9</span>, <span class="number">0xA4</span>, <span class="number">0xB0</span>, <span class="number">0x99</span>, <span class="number">0x92</span>, <span class="number">0x82</span>, <span class="number">0xF8</span>,</span><br><span class="line">    <span class="number">0x80</span>, <span class="number">0x90</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//数码管显示缓冲区，初值0xFF确保启动是所有数码管都不亮</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> LedBuff[<span class="number">6</span>] = &#123;</span><br><span class="line">    <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明全局变量，这里的变量main函数和中断函数都要用</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> flag1s = <span class="number">0</span>    <span class="comment">//到达1s的标志位</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//声明局部变量语句</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> sec = <span class="number">0</span>;  <span class="comment">//记录经过的秒数</span></span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//LED部分</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U3的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">1</span>;  <span class="comment">//因为需要动态改变ADDR0-2的值，所有不用再初始化了</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//中断部分</span></span><br><span class="line">    EA = <span class="number">1</span>; <span class="comment">//使能总中断</span></span><br><span class="line">    ET0 = <span class="number">1</span>;    <span class="comment">//使能T0中断</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设定定时器T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xFC</span>;     <span class="comment">//T0赋值0xFC67，定时为1ms</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>;    <span class="comment">//启动T0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(flag1s == <span class="number">1</span>)    <span class="comment">//判断1s标志位是否为1</span></span><br><span class="line">        &#123;</span><br><span class="line">            flag1s = <span class="number">0</span>; <span class="comment">//1s标志位清零</span></span><br><span class="line">            sec++;      <span class="comment">//经过一秒秒计数加1</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//以下代码将sec按十进制从低位到高位依次存到显示缓冲区中</span></span><br><span class="line">            LedBuff[<span class="number">0</span>] = LedChar[sec % <span class="number">10</span>];</span><br><span class="line">            LedBuff[<span class="number">1</span>] = LedChar[sec / <span class="number">10</span> % <span class="number">10</span>];</span><br><span class="line">            LedBuff[<span class="number">2</span>] = LedChar[sec / <span class="number">100</span> % <span class="number">10</span>];</span><br><span class="line">            LedBuff[<span class="number">3</span>] = LedChar[sec / <span class="number">1000</span> % <span class="number">10</span>];</span><br><span class="line">            LedBuff[<span class="number">4</span>] = LedChar[sec / <span class="number">10000</span> % <span class="number">10</span>];</span><br><span class="line">            LedBuff[<span class="number">5</span>] = LedChar[sec / <span class="number">10000</span> % <span class="number">10</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*定时器T0的中断函数*/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InterruptTimer0</span><span class="params">()</span> interrupt 1  <span class="comment">//进入中断函数即为定时器到1ms</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//声明局部静态变量</span></span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> cnt = <span class="number">0</span>;   <span class="comment">//记录T0溢出次数</span></span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> i = <span class="number">0</span>;    <span class="comment">//动态扫描的索引，即数码管的脚标</span></span><br><span class="line">    <span class="comment">//定时器溢出时的中断标志位会被中断函数自动清零</span></span><br><span class="line">    TH0 = <span class="number">0xFC</span>;    <span class="comment">//定时器T0溢出后，重新赋值</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line">    cnt++;</span><br><span class="line">    <span class="keyword">if</span>(cnt &gt;= <span class="number">1000</span> )    <span class="comment">//达到1s</span></span><br><span class="line">    &#123;</span><br><span class="line">        cnt = <span class="number">0</span>;    <span class="comment">//达到1s后计数清零</span></span><br><span class="line">        flag1s = <span class="number">1</span>;      <span class="comment">//1s标志位置1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//每次1ms中断都要刷新一下数码管</span></span><br><span class="line">    <span class="comment">//以下为数码管动态扫描刷新</span></span><br><span class="line">    P0 = <span class="number">0xFF</span>;  <span class="comment">//消影</span></span><br><span class="line">    <span class="keyword">switch</span>(i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span> : ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = LedBuff[<span class="number">0</span>];<span class="keyword">break</span>;     <span class="comment">//第一次溢出点亮第一个数码管</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span> : ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = LedBuff[<span class="number">1</span>];<span class="keyword">break</span>;     <span class="comment">//第二次溢出点亮第二个数码管</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span> : ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = LedBuff[<span class="number">2</span>];<span class="keyword">break</span>;     <span class="comment">//第三次溢出点亮第三个数码管</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span> : ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i++;P0 = LedBuff[<span class="number">3</span>];<span class="keyword">break</span>;     <span class="comment">//第四次溢出点亮第四个数码管</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span> : ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = LedBuff[<span class="number">4</span>];<span class="keyword">break</span>;     <span class="comment">//第五次溢出点亮第五个数码管</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span> : ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = LedBuff[<span class="number">5</span>];<span class="keyword">break</span>;     <span class="comment">//第六次溢出点亮第六个数码管</span></span><br><span class="line">        <span class="keyword">default</span> : <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="点阵LED"><a href="#点阵LED" class="headerlink" title="点阵LED"></a>点阵LED</h3><h4 id="点阵LED静态显示"><a href="#点阵LED静态显示" class="headerlink" title="点阵LED静态显示"></a>点阵LED静态显示</h4><p>&emsp;&emsp;点阵LED本质也是LED，其结构图如图所示，左侧8个数字引脚是接的内部LED的阳极，上侧的8个引脚接的是内部LED的阴极，然后他们组成了阵列，所以要点亮它们就和点亮普通LED小灯一样，比如要点亮第1行第A列的LED就把9号引脚置高电平，13号引脚置低电平就能把这颗LED点亮。</p>
+<p><img src="%E7%82%B9%E9%98%B5LED%E5%8E%9F%E7%90%86%E5%9B%BE.png" alt="点阵LED原理图"></p>
+<p><img src="%E7%82%B9%E9%98%B5LED%E7%94%B5%E8%B7%AF%E5%9B%BE.png" alt="点阵LED电路图"></p>
+<p>&emsp;&emsp;如电路图所示，控制点阵LED的左侧引脚为U4的74HC138控制，即ADDR0-2控制，控制点阵LED的上侧引脚为单片机P0控制。注意U4的74HC138，ENLED控制E2，ADDR3控制E1，E3直接连了5V不需要控制了（这里和U3的不一样）。所以启动U4的74HC138需要ENLED=0，ADDR3=0。所以，U3和U4是没有办法同时启动的。点亮点阵的第1行第A列的LED的程序为。</p>
+<p><img src="74HC138%E7%94%B5%E8%B7%AF%E5%9B%BE.png" alt="74HC138电路图"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit LED = P0^<span class="number">0</span>;</span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U4的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">0</span>;</span><br><span class="line">    ADDR2 = <span class="number">0</span>;  <span class="comment">//经过三八译码器使能Q10</span></span><br><span class="line">    ADDR1 = <span class="number">0</span>;</span><br><span class="line">    ADDR0 = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    LED = <span class="number">0</span>;    <span class="comment">//点亮点阵左上角的小灯</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;点亮点阵第一行LED的程序就如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U4的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">0</span>;</span><br><span class="line">    ADDR2 = <span class="number">0</span>;  <span class="comment">//经过三八译码器使能Q10</span></span><br><span class="line">    ADDR1 = <span class="number">0</span>;</span><br><span class="line">    ADDR0 = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    P0 = <span class="number">0x00</span>;    <span class="comment">//点亮点阵第一行</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;和数码管一样点亮点阵的所有LED需要用到动态刷新，使用定时器每1ms轮流使Q10，Q11，Q12，Q13，Q18，Q19，Q20，Q21导通，这样就能看上去点亮所有LED了。程序如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//LED部分</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U4的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//中断部分</span></span><br><span class="line">    EA = <span class="number">1</span>;     <span class="comment">//使能总中断</span></span><br><span class="line">    ET0 = <span class="number">1</span>;    <span class="comment">//使能定时器0中断</span></span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设置T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xFC</span>;     <span class="comment">//T0初值赋0xFC67，定时1ms</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>；       <span class="comment">//启动定时器T0</span></span><br><span class="line">    <span class="comment">//循环体</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//中断函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InterruptTimer0</span><span class="params">()</span> interrupt 1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> i = <span class="number">0</span>; <span class="comment">//动态扫描索引</span></span><br><span class="line"></span><br><span class="line">    TH0 = <span class="number">0xFC</span>; <span class="comment">//重新加载初值</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//以下为动态刷新</span></span><br><span class="line">    P0 = <span class="number">0xFF</span>;  <span class="comment">//消隐</span></span><br><span class="line">    <span class="keyword">switch</span>(i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = <span class="number">0x00</span>;<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = <span class="number">0x00</span>;<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = <span class="number">0x00</span>;<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i++;P0 = <span class="number">0x00</span>;<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = <span class="number">0x00</span>;<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = <span class="number">0x00</span>;<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = <span class="number">0x00</span>;<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i = <span class="number">0</span>;P0 = <span class="number">0x00</span>;<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span> :<span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;可以利用点阵LED显示图案，使用取模软件，将要点亮的LED的对应的赋值就能直接得出，比如要点亮形成一个爱心。程序如下。</p>
+<p><img src="%E5%8F%96%E6%A8%A1%E7%88%B1%E5%BF%83.png" alt="取模爱心"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> code image[] = &#123;  <span class="comment">//图片的字模表</span></span><br><span class="line">    <span class="number">0xFF</span>, <span class="number">0x99</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x81</span>, <span class="number">0xC3</span>, <span class="number">0xE7</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//LED部分</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U4的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//中断部分</span></span><br><span class="line">    EA = <span class="number">1</span>;     <span class="comment">//使能总中断</span></span><br><span class="line">    ET0 = <span class="number">1</span>;    <span class="comment">//使能定时器0中断</span></span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设置T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xFC</span>;     <span class="comment">//T0初值赋0xFC67，定时1ms</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>；       <span class="comment">//启动定时器T0</span></span><br><span class="line">    <span class="comment">//循环体</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//中断函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InterruptTimer0</span><span class="params">()</span> interrupt 1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> i = <span class="number">0</span>; <span class="comment">//动态扫描索引</span></span><br><span class="line"></span><br><span class="line">    TH0 = <span class="number">0xFC</span>; <span class="comment">//重新加载初值</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//以下为动态刷新</span></span><br><span class="line">    P0 = <span class="number">0xFF</span>;  <span class="comment">//消隐</span></span><br><span class="line">    <span class="keyword">switch</span>(i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[<span class="number">0</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[<span class="number">1</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[<span class="number">2</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[<span class="number">3</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[<span class="number">4</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[<span class="number">5</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[<span class="number">6</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i = <span class="number">0</span>;P0 = image[<span class="number">7</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span> :<span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="点阵LED纵向移动"><a href="#点阵LED纵向移动" class="headerlink" title="点阵LED纵向移动"></a>点阵LED纵向移动</h4><p>&emsp;&emsp;因为电路图的设计，可以看出，三八译码器控制的三极管连接着点阵LED的左侧引脚，所以这个电路设计就定死了刷新的方向，即这个电路设计的点阵LED刷新是一行一行刷新的，这就决定了这个点阵LED是纵向移动的程序比较简洁，横向移动就需要用到二维数组了。</p>
+<p>&emsp;&emsp;基于该电路图的点阵LED纵向移动，读取LED显示为第一幅图为数组的0到7，第二幅图为数组的1-8……所以可以用一维数组顺序读取下去。程序如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> code image[] = &#123;  <span class="comment">//图片的字模表</span></span><br><span class="line">    <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>,</span><br><span class="line">    <span class="number">0x7D</span>, <span class="number">0x01</span>, <span class="number">0x01</span>, <span class="number">0x7D</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xE3</span>, <span class="number">0xC1</span>,</span><br><span class="line">    <span class="number">0x81</span>, <span class="number">0x03</span>, <span class="number">0x03</span>, <span class="number">0x81</span>, <span class="number">0xC1</span>, <span class="number">0xE3</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>,</span><br><span class="line">    <span class="number">0x81</span>, <span class="number">0x01</span>, <span class="number">0x3F</span>, <span class="number">0x3F</span>, <span class="number">0x3F</span>, <span class="number">0x01</span>, <span class="number">0x81</span>, <span class="number">0xFF</span>,</span><br><span class="line">    <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>, <span class="number">0xFF</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//LED部分</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U4的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//中断部分</span></span><br><span class="line">    EA = <span class="number">1</span>;     <span class="comment">//使能总中断</span></span><br><span class="line">    ET0 = <span class="number">1</span>;    <span class="comment">//使能定时器0中断</span></span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设置T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xFC</span>;     <span class="comment">//T0初值赋0xFC67，定时1ms</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>；       <span class="comment">//启动定时器T0</span></span><br><span class="line">    <span class="comment">//循环体</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//中断函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InterruptTimer0</span><span class="params">()</span> interrupt 1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> i = <span class="number">0</span>; <span class="comment">//动态扫描索引</span></span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> tmr = <span class="number">0</span>;   <span class="comment">//用于累加后延时250ms</span></span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> index = <span class="number">0</span>; <span class="comment">//用于图片刷新</span></span><br><span class="line"></span><br><span class="line">    TH0 = <span class="number">0xFC</span>; <span class="comment">//重新加载初值</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//以下为动态刷新</span></span><br><span class="line">    P0 = <span class="number">0xFF</span>;  <span class="comment">//消隐</span></span><br><span class="line">    <span class="keyword">switch</span>(i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[index];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[index + <span class="number">1</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[index + <span class="number">2</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[index + <span class="number">3</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[index + <span class="number">4</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[index + <span class="number">5</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[index + <span class="number">6</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i = <span class="number">0</span>;P0 = image[index + <span class="number">7</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span> :<span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定时器250ms用来切换图片</span></span><br><span class="line">    tmr++;</span><br><span class="line">    <span class="keyword">if</span>(tmr &gt;= <span class="number">250</span>)  <span class="comment">//达到250ms切换图片</span></span><br><span class="line">    &#123;</span><br><span class="line">        tmr = <span class="number">0</span>;</span><br><span class="line">        index++;    <span class="comment">//每250ms切换下一张图片</span></span><br><span class="line">        <span class="keyword">if</span>(index &gt;= <span class="number">32</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            index = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="点阵LED横向移动"><a href="#点阵LED横向移动" class="headerlink" title="点阵LED横向移动"></a>点阵LED横向移动</h4><p>&emsp;&emsp;由于这个电路图不是为横向移动设计的，所以不能像纵向移动一样进行一维数组的连续读取，需要用到二维数组，每次读取下一行数组。程序如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;reg52.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sbit ADDR0 = P1^<span class="number">0</span>;</span><br><span class="line">sbit ADDR1 = P1^<span class="number">1</span>;</span><br><span class="line">sbit ADDR2 = P1^<span class="number">2</span>;</span><br><span class="line">sbit ADDR3 = P1^<span class="number">3</span>;</span><br><span class="line">sbit ENLED = P1^<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> code image[<span class="number">30</span>][<span class="number">8</span>] = &#123;</span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>&#125;,  <span class="comment">//动画帧1</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x7F</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0xFF</span>,<span class="number">0x7F</span>&#125;,  <span class="comment">//动画帧2</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x3F</span>,<span class="number">0x7F</span>,<span class="number">0x7F</span>,<span class="number">0x7F</span>,<span class="number">0x7F</span>,<span class="number">0x7F</span>,<span class="number">0x3F</span>&#125;,  <span class="comment">//动画帧3</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x1F</span>,<span class="number">0x3F</span>,<span class="number">0x3F</span>,<span class="number">0x3F</span>,<span class="number">0x3F</span>,<span class="number">0x3F</span>,<span class="number">0x1F</span>&#125;,  <span class="comment">//动画帧4</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x0F</span>,<span class="number">0x9F</span>,<span class="number">0x9F</span>,<span class="number">0x9F</span>,<span class="number">0x9F</span>,<span class="number">0x9F</span>,<span class="number">0x0F</span>&#125;,  <span class="comment">//动画帧5</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x87</span>,<span class="number">0xCF</span>,<span class="number">0xCF</span>,<span class="number">0xCF</span>,<span class="number">0xCF</span>,<span class="number">0xCF</span>,<span class="number">0x87</span>&#125;,  <span class="comment">//动画帧6</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xC3</span>,<span class="number">0xE7</span>,<span class="number">0xE7</span>,<span class="number">0xE7</span>,<span class="number">0xE7</span>,<span class="number">0xE7</span>,<span class="number">0xC3</span>&#125;,  <span class="comment">//动画帧7</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xE1</span>,<span class="number">0x73</span>,<span class="number">0x73</span>,<span class="number">0x73</span>,<span class="number">0xF3</span>,<span class="number">0xF3</span>,<span class="number">0xE1</span>&#125;,  <span class="comment">//动画帧8</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x70</span>,<span class="number">0x39</span>,<span class="number">0x39</span>,<span class="number">0x39</span>,<span class="number">0x79</span>,<span class="number">0xF9</span>,<span class="number">0xF0</span>&#125;,  <span class="comment">//动画帧9</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x38</span>,<span class="number">0x1C</span>,<span class="number">0x1C</span>,<span class="number">0x1C</span>,<span class="number">0x3C</span>,<span class="number">0x7C</span>,<span class="number">0xF8</span>&#125;,  <span class="comment">//动画帧10</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x9C</span>,<span class="number">0x0E</span>,<span class="number">0x0E</span>,<span class="number">0x0E</span>,<span class="number">0x1E</span>,<span class="number">0x3E</span>,<span class="number">0x7C</span>&#125;,  <span class="comment">//动画帧11</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xCE</span>,<span class="number">0x07</span>,<span class="number">0x07</span>,<span class="number">0x07</span>,<span class="number">0x0F</span>,<span class="number">0x1F</span>,<span class="number">0x3E</span>&#125;,  <span class="comment">//动画帧12</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x67</span>,<span class="number">0x03</span>,<span class="number">0x03</span>,<span class="number">0x03</span>,<span class="number">0x07</span>,<span class="number">0x0F</span>,<span class="number">0x9F</span>&#125;,  <span class="comment">//动画帧13</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x33</span>,<span class="number">0x01</span>,<span class="number">0x01</span>,<span class="number">0x01</span>,<span class="number">0x03</span>,<span class="number">0x87</span>,<span class="number">0xCF</span>&#125;,  <span class="comment">//动画帧14</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x99</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x81</span>,<span class="number">0xC3</span>,<span class="number">0xE7</span>&#125;,  <span class="comment">//动画帧15</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xCC</span>,<span class="number">0x80</span>,<span class="number">0x80</span>,<span class="number">0x80</span>,<span class="number">0xC0</span>,<span class="number">0xE1</span>,<span class="number">0xF3</span>&#125;,  <span class="comment">//动画帧16</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xE6</span>,<span class="number">0xC0</span>,<span class="number">0xC0</span>,<span class="number">0xC0</span>,<span class="number">0xE0</span>,<span class="number">0xF0</span>,<span class="number">0xF9</span>&#125;,  <span class="comment">//动画帧17</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x73</span>,<span class="number">0x60</span>,<span class="number">0x60</span>,<span class="number">0x60</span>,<span class="number">0x70</span>,<span class="number">0x78</span>,<span class="number">0xFC</span>&#125;,  <span class="comment">//动画帧18</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x39</span>,<span class="number">0x30</span>,<span class="number">0x30</span>,<span class="number">0x30</span>,<span class="number">0x38</span>,<span class="number">0x3C</span>,<span class="number">0x7E</span>&#125;,  <span class="comment">//动画帧19</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x9C</span>,<span class="number">0x98</span>,<span class="number">0x98</span>,<span class="number">0x98</span>,<span class="number">0x9C</span>,<span class="number">0x1E</span>,<span class="number">0x3F</span>&#125;,  <span class="comment">//动画帧20</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xCE</span>,<span class="number">0xCC</span>,<span class="number">0xCC</span>,<span class="number">0xCC</span>,<span class="number">0xCE</span>,<span class="number">0x0F</span>,<span class="number">0x1F</span>&#125;,  <span class="comment">//动画帧21</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x67</span>,<span class="number">0x66</span>,<span class="number">0x66</span>,<span class="number">0x66</span>,<span class="number">0x67</span>,<span class="number">0x07</span>,<span class="number">0x0F</span>&#125;,  <span class="comment">//动画帧22</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x33</span>,<span class="number">0x33</span>,<span class="number">0x33</span>,<span class="number">0x33</span>,<span class="number">0x33</span>,<span class="number">0x03</span>,<span class="number">0x87</span>&#125;,  <span class="comment">//动画帧23</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0x99</span>,<span class="number">0x99</span>,<span class="number">0x99</span>,<span class="number">0x99</span>,<span class="number">0x99</span>,<span class="number">0x81</span>,<span class="number">0xC3</span>&#125;,  <span class="comment">//动画帧24</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xCC</span>,<span class="number">0xCC</span>,<span class="number">0xCC</span>,<span class="number">0xCC</span>,<span class="number">0xCC</span>,<span class="number">0xC0</span>,<span class="number">0xE1</span>&#125;,  <span class="comment">//动画帧25</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xE6</span>,<span class="number">0xE6</span>,<span class="number">0xE6</span>,<span class="number">0xE6</span>,<span class="number">0xE6</span>,<span class="number">0xE0</span>,<span class="number">0xF0</span>&#125;,  <span class="comment">//动画帧26</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xF3</span>,<span class="number">0xF3</span>,<span class="number">0xF3</span>,<span class="number">0xF3</span>,<span class="number">0xF3</span>,<span class="number">0xF0</span>,<span class="number">0xF8</span>&#125;,  <span class="comment">//动画帧27</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xF9</span>,<span class="number">0xF9</span>,<span class="number">0xF9</span>,<span class="number">0xF9</span>,<span class="number">0xF9</span>,<span class="number">0xF8</span>,<span class="number">0xFC</span>&#125;,  <span class="comment">//动画帧28</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xFC</span>,<span class="number">0xFC</span>,<span class="number">0xFC</span>,<span class="number">0xFC</span>,<span class="number">0xFC</span>,<span class="number">0xFC</span>,<span class="number">0xFE</span>&#125;,  <span class="comment">//动画帧29</span></span><br><span class="line">    &#123;<span class="number">0xFF</span>,<span class="number">0xFE</span>,<span class="number">0xFE</span>,<span class="number">0xFE</span>,<span class="number">0xFE</span>,<span class="number">0xFE</span>,<span class="number">0xFE</span>,<span class="number">0xFF</span>&#125;   <span class="comment">//动画帧30</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//执行语句</span></span><br><span class="line">    <span class="comment">//LED部分</span></span><br><span class="line">    ENLED = <span class="number">0</span>;  <span class="comment">//使能U4的74HC138</span></span><br><span class="line">    ADDR3 = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//中断部分</span></span><br><span class="line">    EA = <span class="number">1</span>;     <span class="comment">//使能总中断</span></span><br><span class="line">    ET0 = <span class="number">1</span>;    <span class="comment">//使能定时器0中断</span></span><br><span class="line">    <span class="comment">//定时器部分</span></span><br><span class="line">    TMOD = <span class="number">0x01</span>;    <span class="comment">//设置T0为模式1</span></span><br><span class="line">    TH0 = <span class="number">0xFC</span>;     <span class="comment">//T0初值赋0xFC67，定时1ms</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line">    TR0 = <span class="number">1</span>；       <span class="comment">//启动定时器T0</span></span><br><span class="line">    <span class="comment">//循环体</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//中断函数</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InterruptTimer0</span><span class="params">()</span> interrupt 1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> i = <span class="number">0</span>; <span class="comment">//动态扫描索引</span></span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> tmr = <span class="number">0</span>;   <span class="comment">//用于累加后延时250ms</span></span><br><span class="line">    <span class="type">static</span> <span class="type">unsigned</span> <span class="type">char</span> index = <span class="number">0</span>; <span class="comment">//用于图片刷新</span></span><br><span class="line"></span><br><span class="line">    TH0 = <span class="number">0xFC</span>; <span class="comment">//重新加载初值</span></span><br><span class="line">    TL0 = <span class="number">0x67</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//以下为动态刷新</span></span><br><span class="line">    P0 = <span class="number">0xFF</span>;  <span class="comment">//消隐</span></span><br><span class="line">    <span class="keyword">switch</span>(i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[index][<span class="number">0</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[index][<span class="number">1</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[index][<span class="number">2</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span> :ADDR2 = <span class="number">0</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[index][<span class="number">3</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[index][<span class="number">4</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">0</span>;ADDR0 = <span class="number">1</span>;i++;P0 = image[index][<span class="number">5</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">0</span>;i++;P0 = image[index][<span class="number">6</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span> :ADDR2 = <span class="number">1</span>;ADDR1 = <span class="number">1</span>;ADDR0 = <span class="number">1</span>;i = <span class="number">0</span>;P0 = image[index][<span class="number">7</span>];<span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span> :<span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定时器250ms用来切换图片</span></span><br><span class="line">    tmr++;</span><br><span class="line">    <span class="keyword">if</span>(tmr &gt;= <span class="number">250</span>)  <span class="comment">//达到250ms切换图片</span></span><br><span class="line">    &#123;</span><br><span class="line">        tmr = <span class="number">0</span>;</span><br><span class="line">        index++;    <span class="comment">//每250ms切换下一张图片</span></span><br><span class="line">        <span class="keyword">if</span>(index &gt;= <span class="number">30</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            index = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1RJ411k74J">手把手教你学51单片机-视频教程</a></p>
+<p><a target="_blank" rel="noopener" href="http://res.kingst.site/kfs/doc/%e6%89%8b%e6%8a%8a%e6%89%8b%e6%95%99%e4%bd%a0%e5%ad%a651%e5%8d%95%e7%89%87%e6%9c%ba-C%e8%af%ad%e8%a8%80%e7%89%88.pdf">手把手教你学51单片机-电子书教材</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.qdkingst.com/cn">KingST官网</a></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-hand-peace-o"></i>感谢您的阅读-------------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>谢谢你的投食~~</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="摇曳Kumarinko 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="摇曳Kumarinko 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>摇曳Kumarinko
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/" title="KingST开发板C51单片机学习笔记-Cheaper 7">http://kumarinko.gitee.io/2022/04/30/Study-KingST51-Cheaper7/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C51/" rel="tag"><i class="fa fa-tag"></i> C51</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/29/Bat_with_FreeFileSync/" rel="prev" title="利用FreeFileSync和bat实现多版本备份">
+      <i class="fa fa-chevron-left"></i> 利用FreeFileSync和bat实现多版本备份
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <a href="/">
+          <img class="site-author-image" itemprop="image"
+           src="/images/avatar.gif"
+           alt="摇曳Kumarinko" />
+      </a>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chapter-7-%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6%E4%B8%8E%E7%82%B9%E9%98%B5LED"><span class="nav-number">1.</span> <span class="nav-text">Chapter 7 变量进阶与点阵LED</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E8%BF%9B%E9%98%B6"><span class="nav-number">1.1.</span> <span class="nav-text">变量进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">1.1.1.</span> <span class="nav-text">变量作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB"><span class="nav-number">1.1.2.</span> <span class="nav-text">变量的存储类别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E9%98%B5LED"><span class="nav-number">1.2.</span> <span class="nav-text">点阵LED</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%82%B9%E9%98%B5LED%E9%9D%99%E6%80%81%E6%98%BE%E7%A4%BA"><span class="nav-number">1.2.1.</span> <span class="nav-text">点阵LED静态显示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%82%B9%E9%98%B5LED%E7%BA%B5%E5%90%91%E7%A7%BB%E5%8A%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">点阵LED纵向移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%82%B9%E9%98%B5LED%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">点阵LED横向移动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">摇曳Kumarinko</p>
+  <div class="site-description" itemprop="description">LAST STARDUST</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Kumarinkoos" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Kumarinkoos" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://gitee.com/kumarinko" title="Gitee → https:&#x2F;&#x2F;gitee.com&#x2F;kumarinko" rel="noopener" target="_blank"><i class="fab fa-gitter fa-fw"></i>Gitee</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1020405346&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1020405346&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fab fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/kuma_rinko" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;kuma_rinko" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">摇曳Kumarinko</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
